@@ -1,12 +1,10 @@
-import About from "./about";
-import Features from "./features";
-import Header from "./header";
+import Header from "./Header";
+import Features from "./Features";
 
 function LandingPage() {
   return (
     <>
       <Header />
-      <About />
       <Features />
     </>
   );
