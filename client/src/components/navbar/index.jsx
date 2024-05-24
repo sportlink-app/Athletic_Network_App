@@ -75,13 +75,16 @@ function Navbar() {
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            link 1
+            Discover
           </a>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            link 2
+            Testimonials
           </a>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            link 3
+            Features
+          </a>
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            Pricing
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">

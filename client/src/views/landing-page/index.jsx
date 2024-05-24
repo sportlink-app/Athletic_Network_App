@@ -1,6 +1,7 @@
 import Header from "./Header";
 import Features from "./Features";
 import Reviews from "./Reviews";
+import Pricing from "./Pricing";
 
 function LandingPage() {
   return (
@@ -8,6 +9,7 @@ function LandingPage() {
       <Header />
       <Reviews />
       <Features />
+      <Pricing />
     </>
   );
 }
