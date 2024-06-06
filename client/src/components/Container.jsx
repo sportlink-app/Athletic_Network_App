@@ -12,6 +12,11 @@ const Container = ({ children, className }) => {
 
 Container.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string, // Add prop type validation for className
+};
+
+Container.defaultProps = {
+  className: "", // Provide a default value for className
 };
 
 export default Container;

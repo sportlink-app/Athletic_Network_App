@@ -1,10 +1,9 @@
-import { TinyColor } from "@ctrl/tinycolor";
 import { Button, ConfigProvider } from "antd";
+import PropTypes from "prop-types";
 
 function MainButton(props) {
   const colors = ["#00E0B5", "#31E528"];
-  const getHoverColors = (colors) =>
-    colors.map((color) => new TinyColor(color).lighten(5).toString());
+  const gradient = `linear-gradient(116deg, ${colors.join(", ")})`;
 
   return (
     <ConfigProvider
@@ -12,16 +11,8 @@ function MainButton(props) {
         components: {
           Button: {
             colorText: "white",
-            colorPrimary: `${
-              props.bgColor === "light"
-                ? "white"
-                : `linear-gradient(116deg, ${colors.join(", ")})`
-            }`,
-            colorPrimaryHover: `${
-              props.bgColor === "light"
-                ? "white"
-                : `linear-gradient(116deg, ${colors.join(", ")})`
-            }`,
+            colorPrimary: props.bgColor === "light" ? "white" : gradient,
+            colorPrimaryHover: props.bgColor === "light" ? "white" : gradient,
             lineWidth: 0,
           },
         },
@@ -41,5 +32,19 @@ function MainButton(props) {
     </ConfigProvider>
   );
 }
+
+MainButton.propTypes = {
+  href: PropTypes.string,
+  type: PropTypes.string,
+  shape: PropTypes.string,
+  icon: PropTypes.node,
+  text: PropTypes.string.isRequired,
+  bgColor: PropTypes.oneOf(["light", "dark"]),
+  className: PropTypes.string,
+};
+
+MainButton.defaultProps = {
+  bgColor: "dark",
+};
 
 export default MainButton;

@@ -1,9 +1,3 @@
-import {
-  ArrowPathIcon,
-  CloudArrowUpIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/outline";
 import Text from "../../components/Text";
 import Container from "../../components/Container";
 import BlurShape from "../../components/styled/BlurShape";

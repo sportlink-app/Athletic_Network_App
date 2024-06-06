@@ -1,4 +1,6 @@
+import PropTypes from "prop-types";
 import MainButton from "../../components/Button";
+
 function NavbarLinks(props) {
   return (
     <ul
@@ -18,5 +20,11 @@ function NavbarLinks(props) {
     </ul>
   );
 }
+
+NavbarLinks.propTypes = {
+  links: PropTypes.arrayOf(PropTypes.string).isRequired,
+  scroll: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 export default NavbarLinks;
