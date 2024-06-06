@@ -21,7 +21,9 @@
 *{
     font-family: 'Sofia Pro' !important;
 }
-
+html{
+    @apply scroll-smooth;
+}
 /* light button */
 .light span{
    @apply text-green

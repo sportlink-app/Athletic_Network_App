@@ -10,7 +10,10 @@ function Discover() {
       >
         <BlurShape color="bg-gradient-to-r from-green to-yellow" />
       </div>
-      <div className="relative bg-gradient-to-r from-cyan to-green mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden">
+      <div
+        id="discover"
+        className="relative bg-gradient-to-r from-cyan to-green mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"
+      >
         <img
           src="https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt=""

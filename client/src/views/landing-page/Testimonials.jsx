@@ -2,7 +2,7 @@ import Container from "../../components/Container";
 import Text from "../../components/Text";
 import BlurShape from "../../components/styled/BlurShape";
 
-function Reviews() {
+function Testimonials() {
   const postsList = [
     {
       id: 1,
@@ -65,6 +65,7 @@ function Reviews() {
   return (
     <Container>
       <div
+        id="testimonials"
         className="absolute top-0 -left-3/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-50"
         aria-hidden="true"
       >
@@ -79,4 +80,4 @@ function Reviews() {
   );
 }
 
-export default Reviews;
+export default Testimonials;

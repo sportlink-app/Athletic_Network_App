@@ -8,7 +8,7 @@ function NavbarLinks(props) {
         <li key={link}>
           <MainButton
             text={link}
-            href={`/${link}`}
+            href={props.scroll ? `#${link}` : `/${link}`}
             type="text"
             shape="round"
             className="text-lg md:text-base"

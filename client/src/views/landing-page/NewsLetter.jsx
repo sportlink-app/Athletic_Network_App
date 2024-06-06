@@ -15,7 +15,7 @@ function Newsletter() {
       >
         <BlurShape color="bg-gradient-to-r from-green to-yellow" />
       </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="newsletter" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Text type="title" text="Subscribe to our newsletter." />
         <div className="mt-16 sm:mt-20 lg:mt-24 mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
           <div className="max-w-xl lg:max-w-lg text-left">

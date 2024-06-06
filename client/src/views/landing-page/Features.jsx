@@ -76,7 +76,7 @@ function Features() {
       >
         <BlurShape color="bg-gradient-to-r from-yellow to-green" />
       </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl ">
           <Text type="title" text="explore our features" />
           <Text

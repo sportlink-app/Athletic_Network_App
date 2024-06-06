@@ -39,6 +39,7 @@ function Navbar() {
           </a>
         </div>
         <NavbarLinks
+          scroll
           links={["discover", "testimonials", "features", "newsletter"]}
           className="hidden md:flex"
         />

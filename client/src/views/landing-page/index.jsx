@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Features from "./Features";
-import Reviews from "./Reviews";
+import Testimonials from "./Testimonials";
 import Discover from "./Discover";
 import Newsletter from "./NewsLetter";
 import Footer from "../../components/Footer";
@@ -12,7 +12,7 @@ function LandingPage() {
     <>
       <Header />
       <Discover />
-      <Reviews />
+      <Testimonials />
       <Features />
       <Newsletter />
       <Footer />
