@@ -13,7 +13,8 @@ function Navbar() {
       } absolute top-full bg-gradient-to-r from-cyan to-green left-0 w-full flex flex-col gap-14 items-center md:hidden overflow-hidden`}
     >
       <NavbarLinks
-        links={["discover", "testimonials", "features", "pricing"]}
+        scroll
+        links={["discover", "testimonials", "features", "newsletter"]}
         className="mt-20"
       />
       <MainButton
@@ -30,7 +31,7 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-cyan to-green">
       <nav
-        className="relative mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-8"
+        className="relative mx-auto flex max-w-7xl items-center justify-between px-5 p-4 md:p-3 lg:px-8"
         aria-label="Global"
       >
         <div className="flex">

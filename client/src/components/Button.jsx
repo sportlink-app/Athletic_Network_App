@@ -21,6 +21,7 @@ function MainButton(props) {
       <Button
         size="large"
         href={props.href}
+        onClick={props.onClick}
         type={props.type}
         shape={props.shape}
         icon={props.icon}
@@ -35,16 +36,13 @@ function MainButton(props) {
 
 MainButton.propTypes = {
   href: PropTypes.string,
+  onClick: PropTypes.func,
   type: PropTypes.string,
   shape: PropTypes.string,
   icon: PropTypes.node,
   text: PropTypes.string.isRequired,
-  bgColor: PropTypes.oneOf(["light", "dark"]),
+  bgColor: PropTypes.string,
   className: PropTypes.string,
-};
-
-MainButton.defaultProps = {
-  bgColor: "dark",
 };
 
 export default MainButton;

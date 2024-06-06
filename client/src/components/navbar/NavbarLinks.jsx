@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import MainButton from "../../components/Button";
+import mainStore from "../../store/mainStore";
 
 function NavbarLinks(props) {
+  const { closeNavbar } = mainStore();
   return (
     <ul
       className={`flex gap-10 md:gap-4 items-center flex-col md:flex-row ${props.className}`}
@@ -11,6 +13,7 @@ function NavbarLinks(props) {
           <MainButton
             text={link}
             href={props.scroll ? `#${link}` : `/${link}`}
+            onClick={closeNavbar}
             type="text"
             shape="round"
             className="text-lg md:text-base"
