@@ -16,7 +16,7 @@ function LandingPage() {
       <Features />
       <Newsletter />
       <Footer />
-      <FloatButton.BackTop />
+      <FloatButton.BackTop duration={100} />
     </>
   );
 }

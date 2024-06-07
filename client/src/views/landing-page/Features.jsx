@@ -1,6 +1,6 @@
 import Text from "../../components/Text";
 import Container from "../../components/Container";
-import BlurShape from "../../components/styled/BlurShape";
+import BlurShape from "../../components/BlurShape";
 import {
   UserOutlined,
   NodeIndexOutlined,
@@ -58,17 +58,17 @@ function Features() {
   );
   return (
     <Container>
-      <div
-        className="absolute top-0 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-15"
+      <span
+        className="absolute top-0 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-20"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
-      </div>
+      </span>
       <div
         className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20"
         aria-hidden="true"
       >
-        <BlurShape color="bg-gradient-to-r from-yellow to-green" />
+        <BlurShape color="bg-green" />
       </div>
       <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl ">

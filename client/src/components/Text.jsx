@@ -15,12 +15,12 @@ const Text = (props) => {
 };
 
 Text.propTypes = {
-  type: PropTypes.oneOf(["title", "subtitle"]), // Validate type prop
-  text: PropTypes.string.isRequired, // Validate text prop as a required string
+  type: PropTypes.oneOf(["title", "subtitle"]),
+  text: PropTypes.string,
 };
 
 Text.defaultProps = {
-  type: "title", // Provide a default value for type prop
+  type: "title",
 };
 
 export default Text;

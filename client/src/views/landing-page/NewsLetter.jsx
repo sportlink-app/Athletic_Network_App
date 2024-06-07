@@ -2,19 +2,19 @@ import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
 import Container from "../../components/Container";
 import Text from "../../components/Text";
 import { Input } from "antd";
-import BlurShape from "../../components/styled/BlurShape";
+import BlurShape from "../../components/BlurShape";
 import MainButton from "../../components/Button";
 import { SendOutlined } from "@ant-design/icons";
 
 function Newsletter() {
   return (
     <Container>
-      <div
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20 "
+      <span
+        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-25"
         aria-hidden="true"
       >
-        <BlurShape color="bg-gradient-to-r from-green to-yellow" />
-      </div>
+        <BlurShape color="bg-green" />
+      </span>
       <div id="newsletter" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Text type="title" text="Subscribe to our newsletter." />
         <div className="mt-16 sm:mt-20 lg:mt-24 mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">

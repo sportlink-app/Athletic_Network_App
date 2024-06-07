@@ -1,13 +1,13 @@
 import MainButton from "../../components/Button";
 import Text from "../../components/Text";
-import BlurShape from "../../components/styled/BlurShape";
+import BlurShape from "../../components/BlurShape";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 function Header() {
   const hero = (
     <>
       <div className="mx-auto max-w-2xl lg:mx-0 w-full text-center ">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-title font-black tracking-tight  bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-title font-black italic tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green">
           Your Team Awaits !
         </h2>
         <Text
@@ -59,18 +59,18 @@ function Header() {
             "linear-gradient(to bottom, #ffffff 5%, #ffffffca, #ffffffea 90%, #ffffff )",
         }}
       ></span>
-      <div
+      <span
         className="absolute -top-10 -left-1/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-15"
         aria-hidden="true"
       >
-        <BlurShape color="bg-gradient-to-tr from-green to-yellow" />
-      </div>
-      <div
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20 md:opacity-25"
+        <BlurShape color="bg-green" />
+      </span>
+      <span
+        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-25"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
-      </div>
+      </span>
       <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center gap-8 z-10">
         {hero}
         {stats}

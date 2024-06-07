@@ -1,12 +1,12 @@
 import Container from "../../components/Container";
-import BlurShape from "../../components/styled/BlurShape";
+import BlurShape from "../../components/BlurShape";
 
 function Discover() {
   return (
     <Container>
-      <div className="absolute -top-52 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-20 md:opacity-35">
-        <BlurShape color="bg-gradient-to-r from-green to-yellow" />
-      </div>
+      <span className="absolute -top-52 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-25 md:opacity-40">
+        <BlurShape color="bg-green" />
+      </span>
       <div
         id="discover"
         className="relative bg-gradient-to-r from-cyan to-green mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl rounded-3xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"

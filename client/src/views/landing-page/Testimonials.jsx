@@ -1,6 +1,6 @@
 import Container from "../../components/Container";
 import Text from "../../components/Text";
-import BlurShape from "../../components/styled/BlurShape";
+import BlurShape from "../../components/BlurShape";
 
 function Testimonials() {
   const postsList = [
@@ -64,15 +64,13 @@ function Testimonials() {
   );
   return (
     <Container>
-      <div
-        id="testimonials"
-        className="absolute top-0 -left-3/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-50"
+      <span
+        className="absolute top-0 -left-3/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-55"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
-      </div>
-
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      </span>
+      <div id="testimonials" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Text type="title" text="what our athletes say" />
         {posts}
       </div>

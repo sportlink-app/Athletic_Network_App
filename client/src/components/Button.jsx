@@ -13,6 +13,7 @@ function MainButton(props) {
             colorText: "white",
             colorPrimary: props.bgColor === "light" ? "white" : gradient,
             colorPrimaryHover: props.bgColor === "light" ? "white" : gradient,
+            colorPrimaryActive: props.bgColor === "light" ? "white" : gradient,
             lineWidth: 0,
           },
         },
@@ -25,7 +26,7 @@ function MainButton(props) {
         type={props.type}
         shape={props.shape}
         icon={props.icon}
-        iconPosition="end"
+        iconPosition={props.iconPosition}
         className={`capitalize h-fit w-fit hover:-translate-y-1 duration-500 ${props.bgColor} ${props.className}`}
       >
         {props.text}
@@ -42,7 +43,12 @@ MainButton.propTypes = {
   icon: PropTypes.node,
   text: PropTypes.string.isRequired,
   bgColor: PropTypes.string,
+  iconPosition: PropTypes.string,
   className: PropTypes.string,
+};
+
+MainButton.defaultProps = {
+  iconPosition: "end",
 };
 
 export default MainButton;

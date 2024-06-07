@@ -11,7 +11,7 @@ const BlurShape = (props) => {
 };
 
 BlurShape.propTypes = {
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string,
 };
 
 export default BlurShape;

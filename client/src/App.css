@@ -22,7 +22,7 @@
     font-family: 'Sofia Pro' !important;
 }
 html{
-    @apply scroll-smooth;
+    @apply scroll-smooth ;
 }
 /* light button */
 .light span{
@@ -34,10 +34,11 @@ html{
     @apply bg-gradient-to-r from-cyan to-green !important;
 }
 .anticon-vertical-align-top{
-    @apply text-white
+    @apply text-white !important
 }
 
 /* Input */
-:where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:hover, :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus {
-    @apply border-green
+:where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:hover, :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus, 
+:where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus-within {
+    @apply border-green !important
 }
