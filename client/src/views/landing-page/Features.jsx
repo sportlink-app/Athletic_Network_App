@@ -59,7 +59,7 @@ function Features() {
   return (
     <Container>
       <span
-        className="absolute top-0 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-20"
+        className="absolute top-6 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-20"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
@@ -70,17 +70,19 @@ function Features() {
       >
         <BlurShape color="bg-green" />
       </div>
-      <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div
+        id="features"
+        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
+      >
         <div className="mx-auto max-w-2xl ">
-          <Text type="title" text="explore our features" />
+          <Text type="title" text="explore our features" className="mb-6" />
           <Text
             type="subtitle"
             text="Uncover the capabilities that make our platform unique and effective in connecting athletes seamlessly."
+            color="text-gray-600"
           />
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          {features}
-        </div>
+        <div className="mx-auto max-w-2xl lg:max-w-none">{features}</div>
       </div>
     </Container>
   );

@@ -1,7 +1,19 @@
 import { Button, ConfigProvider } from "antd";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-function MainButton(props) {
+function MainButton({
+  text,
+  href,
+  onClick,
+  type = "primary",
+  shape = "round",
+  icon,
+  iconPosition = "end",
+  danger = false,
+  bgColor,
+  className,
+}) {
   const colors = ["#00E0B5", "#31E528"];
   const gradient = `linear-gradient(116deg, ${colors.join(", ")})`;
 
@@ -11,44 +23,43 @@ function MainButton(props) {
         components: {
           Button: {
             colorText: "white",
-            colorPrimary: props.bgColor === "light" ? "white" : gradient,
-            colorPrimaryHover: props.bgColor === "light" ? "white" : gradient,
-            colorPrimaryActive: props.bgColor === "light" ? "white" : gradient,
+            colorPrimary: bgColor === "light" ? "white" : gradient,
+            colorPrimaryHover: bgColor === "light" ? "white" : gradient,
+            colorPrimaryActive: bgColor === "light" ? "white" : gradient,
             lineWidth: 0,
           },
         },
       }}
     >
-      <Button
-        size="large"
-        href={props.href}
-        onClick={props.onClick}
-        type={props.type}
-        shape={props.shape}
-        icon={props.icon}
-        iconPosition={props.iconPosition}
-        className={`capitalize h-fit w-fit hover:-translate-y-1 duration-500 ${props.bgColor} ${props.className}`}
-      >
-        {props.text}
-      </Button>
+      <Link to={href} className={className}>
+        <Button
+          danger={danger}
+          size="large"
+          onClick={onClick}
+          type={type}
+          shape={shape}
+          icon={icon}
+          iconPosition={iconPosition}
+          className={` capitalize h-fit w-fit hover:-translate-y-1 duration-500 ${bgColor}`}
+        >
+          {text}
+        </Button>
+      </Link>
     </ConfigProvider>
   );
 }
 
 MainButton.propTypes = {
+  text: PropTypes.string,
   href: PropTypes.string,
   onClick: PropTypes.func,
   type: PropTypes.string,
   shape: PropTypes.string,
   icon: PropTypes.node,
-  text: PropTypes.string.isRequired,
-  bgColor: PropTypes.string,
   iconPosition: PropTypes.string,
+  danger: PropTypes.bool,
+  bgColor: PropTypes.string,
   className: PropTypes.string,
-};
-
-MainButton.defaultProps = {
-  iconPosition: "end",
 };
 
 export default MainButton;

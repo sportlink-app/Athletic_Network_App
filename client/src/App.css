@@ -23,6 +23,7 @@
 }
 html{
     @apply scroll-smooth ;
+    color: #32e52877;
 }
 /* light button */
 .light span{
@@ -39,6 +40,22 @@ html{
 
 /* Input */
 :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:hover, :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus, 
-:where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus-within {
+:where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus-within, 
+:where(.css-dev-only-do-not-override-17seli4).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector {
     @apply border-green !important
 }
+.ant-select-selector{
+    border-radius: 18px !important;
+}
+
+/* Modal */
+:where(.css-dev-only-do-not-override-17seli4).ant-modal .ant-modal-content {
+    @apply p-4 md:p-6 rounded-3xl bg-gray-50 border-solid border-[.5px] border-gray-200 !important;
+}
+
+/* Switch */
+:where(.css-dev-only-do-not-override-17seli4).ant-switch.ant-switch-checked,
+:where(.css-dev-only-do-not-override-17seli4).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled){
+    @apply bg-gradient-to-r from-cyan to-green
+}
+

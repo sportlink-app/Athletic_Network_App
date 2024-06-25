@@ -15,13 +15,17 @@ function Newsletter() {
       >
         <BlurShape color="bg-green" />
       </span>
-      <div id="newsletter" className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div
+        id="newsletter"
+        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
+      >
         <Text type="title" text="Subscribe to our newsletter." />
-        <div className="mt-16 sm:mt-20 lg:mt-24 mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+        <div className=" mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
           <div className="max-w-xl lg:max-w-lg text-left">
             <Text
               type="subtitle"
               text="Stay updated with the latest sports news, events, and tips. Join our community and never miss out on exciting opportunities and updates!"
+              color="text-gray-600"
             />
             <div className="mt-6 flex flex-col sm:flex-row gap-4 max-w-md gap-x-4">
               <Input
@@ -30,15 +34,10 @@ function Newsletter() {
                 size="large"
                 style={{ borderRadius: "50px" }}
               />
-              <MainButton
-                text="subscribe"
-                type="primary"
-                shape="round"
-                icon={<SendOutlined />}
-              />
+              <MainButton text="subscribe" icon={<SendOutlined />} />
             </div>
           </div>
-          <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 text-left">
+          <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 text-left">
             <div className="flex flex-col items-start ">
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                 <CalendarDaysIcon

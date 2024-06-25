@@ -1,6 +1,5 @@
 import Container from "../../components/Container";
 import Text from "../../components/Text";
-import BlurShape from "../../components/BlurShape";
 
 function Testimonials() {
   const postsList = [
@@ -11,7 +10,7 @@ function Testimonials() {
       name: "seifeddine aaza",
       sport: "Tennis",
       imageUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://s3-eu-west-1.amazonaws.com/files2.fd.nl/Erwin/Slider+Daan/stefan-bron-2.jpg",
     },
     {
       id: 2,
@@ -33,14 +32,15 @@ function Testimonials() {
     },
   ];
   const posts = (
-    <div className="mx-auto mt-10 grid items-center grid-cols-1 gap-6 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
+    <div className="mx-auto grid items-center grid-cols-1 gap-6 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
       {postsList.map((post) => (
         <article
           key={post.id}
           className="flex flex-col items-start justify-between"
         >
-          <div className="relative mt-8 flex items-center gap-x-4">
+          <div className="relative flex items-center gap-x-4 text-left">
             <img
+              loading="lazy"
               src={post.imageUrl}
               alt=""
               className="h-14 w-14 rounded-full object-cover bg-gray-50"
@@ -64,14 +64,11 @@ function Testimonials() {
   );
   return (
     <Container>
-      <span
-        className="absolute top-0 -left-3/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-55"
-        aria-hidden="true"
+      <div
+        id="testimonials"
+        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
       >
-        <BlurShape color="bg-cyan" />
-      </span>
-      <div id="testimonials" className="mx-auto max-w-7xl px-6 lg:px-8">
-        <Text type="title" text="what our athletes say" />
+        <Text text="insights from our athletes" />
         {posts}
       </div>
     </Container>

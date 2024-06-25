@@ -7,7 +7,7 @@ function Error() {
   return (
     <Container className="h-screen w-screen flex flex-col justify-center items-center">
       <span
-        className="absolute top-0 -left-2/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-15"
+        className="absolute top-0 -left-2/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-25"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
@@ -26,6 +26,7 @@ function Error() {
       </p>
 
       <MainButton
+        href={"/"}
         text="get started"
         type="primary"
         shape="round"

@@ -1,18 +1,28 @@
 import "./App.css";
-import Error from "./components/Error";
-import Navbar from "./components/navbar";
-import Login from "./views/auth/Login";
-import SignUp from "./views/auth/SignUp";
+import { Route, Routes, useLocation } from "react-router-dom";
+import MainNavbar from "./views/landing-page/MainNavbar";
+import AccountNavbar from "./views/account/AccountNavbar";
 import LandingPage from "./views/landing-page";
+import GuestRoutes from "./routes/GuestRoutes";
+import AccountRoutes from "./routes/AccountRoutes";
+import authStore from "./store/authStore";
 
 function App() {
+  const { isAuthenticated } = authStore();
+  const location = useLocation();
+
   return (
     <>
-      <Navbar />
-      <LandingPage />
-      {/* <Login /> */}
-      {/* <SignUp /> */}
-      {/* <Error /> */}
+      {!isAuthenticated || location.pathname === "/" ? (
+        <MainNavbar />
+      ) : (
+        <AccountNavbar />
+      )}
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/*" element={<AccountRoutes />} />
+        <Route path="account/*" element={<GuestRoutes />} />
+      </Routes>
     </>
   );
 }
