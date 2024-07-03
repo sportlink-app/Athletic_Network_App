@@ -1,12 +1,28 @@
 import Container from "../../components/Container";
 import BlurShape from "../../components/BlurShape";
+import Star from "../../components/Star";
 
 function Discover() {
   return (
-    <Container>
+    <Container className="relative">
       <span className="absolute -top-52 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-25 md:opacity-40">
         <BlurShape color="bg-green" />
       </span>
+      <Star
+        type="filled"
+        color="#00e0b5"
+        className="opacity-70 absolute top-1/4 left-[5%] xl:left-[10%] w-6 rotate-45"
+      />
+      <Star
+        type="outlined"
+        color="#31e528"
+        className=" absolute top-0 left-[60%] w-8 rotate-12"
+      />
+      <Star
+        type="filled"
+        color="#31e528"
+        className="opacity-80 absolute top-2/4 right-[10%] w-6 -rotate-12"
+      />
       <div
         id="discover"
         className="mx-auto relative bg-gradient-to-r from-cyan to-green max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl rounded-3xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"

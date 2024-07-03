@@ -16,17 +16,19 @@ function UserCard(props) {
     >
       <div
         style={{ backgroundColor: coverBgColor }}
-        className={`${coverBgColor} relative w-full h-14`}
+        className={`${coverBgColor} relative w-full h-14 rounded-t-2xl border-4 border-white`}
       >
         <ProfileAvatar
           username={props.username}
           gender={props.gender}
           size={58}
           bgColor={avatarBgColor}
-          className="border-[1px] border-white absolute -bottom-[29px] left-[10%]"
+          dot={true}
+          dotColor={`${props.available ? "green" : "red"}`}
+          className=" absolute -bottom-[29px] left-[8%]"
         />
       </div>
-      <div className="mt-12 p-5 pt-0">
+      <div className="mt-10 p-5 pt-0">
         <div className="flex justify-between">
           <h3 className="text-sm font-medium text-gray-900">
             {props.username}
@@ -46,6 +48,7 @@ UserCard.propTypes = {
   gender: PropTypes.string,
   city: PropTypes.string,
   sports: PropTypes.arrayOf(PropTypes.string),
+  available: PropTypes.bool,
   key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

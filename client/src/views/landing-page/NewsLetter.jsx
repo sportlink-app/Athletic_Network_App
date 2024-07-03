@@ -5,16 +5,22 @@ import { Input } from "antd";
 import BlurShape from "../../components/BlurShape";
 import MainButton from "../../components/Button";
 import { SendOutlined } from "@ant-design/icons";
+import Star from "../../components/Star";
 
 function Newsletter() {
   return (
     <Container>
       <span
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-25"
+        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20"
         aria-hidden="true"
       >
         <BlurShape color="bg-green" />
       </span>
+      <Star
+        type="filled"
+        color="#31e528"
+        className=" absolute top-1/4 right-[15%] w-5 rotate-12"
+      />
       <div
         id="newsletter"
         className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"

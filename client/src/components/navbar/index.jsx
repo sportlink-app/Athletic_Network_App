@@ -21,12 +21,7 @@ function Navbar({ items, navScroll }) {
     ),
     profile: (
       <Link to={"/profile"}>
-        <ProfileAvatar
-          username="seifAaza 37"
-          gender="male"
-          size={40}
-          className="bg-white"
-        />
+        <ProfileAvatar username="seifAaza 37" gender="male" size={40} />
       </Link>
     ),
   };
@@ -71,7 +66,7 @@ function Navbar({ items, navScroll }) {
     `}
     >
       <nav
-        className="relative mx-auto flex max-w-7xl items-center justify-between px-5 p-4 md:p-3 lg:px-8"
+        className="relative mx-auto flex max-w-7xl items-center justify-between px-5 p-[.6rem] lg:px-8"
         aria-label="Global"
       >
         <div className="flex">{startBtn}</div>

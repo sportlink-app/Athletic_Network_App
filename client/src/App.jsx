@@ -6,6 +6,7 @@ import LandingPage from "./views/landing-page";
 import GuestRoutes from "./routes/GuestRoutes";
 import AccountRoutes from "./routes/AccountRoutes";
 import authStore from "./store/authStore";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 function App() {
   const { isAuthenticated } = authStore();
@@ -23,6 +24,7 @@ function App() {
         <Route path="/*" element={<AccountRoutes />} />
         <Route path="account/*" element={<GuestRoutes />} />
       </Routes>
+      <ScrollToTop />
     </>
   );
 }

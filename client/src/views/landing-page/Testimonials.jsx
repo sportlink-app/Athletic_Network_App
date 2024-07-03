@@ -1,4 +1,5 @@
 import Container from "../../components/Container";
+import Star from "../../components/Star";
 import Text from "../../components/Text";
 
 function Testimonials() {
@@ -32,11 +33,11 @@ function Testimonials() {
     },
   ];
   const posts = (
-    <div className="mx-auto grid items-center grid-cols-1 gap-6 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
+    <div className="mx-auto grid items-start grid-cols-1 gap-6 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
       {postsList.map((post) => (
         <article
           key={post.id}
-          className="flex flex-col items-start justify-between"
+          className="flex flex-col items-start justify-between "
         >
           <div className="relative flex items-center gap-x-4 text-left">
             <img
@@ -54,7 +55,7 @@ function Testimonials() {
             </div>
           </div>
           <div className="group relative">
-            <p className="mt-5 line-clamp-3 text-base leading-6 text-gray-600">
+            <p className="mt-5 text-left text-base leading-6 text-gray-600">
               {post.review}
             </p>
           </div>
@@ -63,7 +64,12 @@ function Testimonials() {
     </div>
   );
   return (
-    <Container>
+    <Container className="relative">
+      <Star
+        type="outlined"
+        color="#00e0b5"
+        className=" absolute top-[5%] left-1/4 w-6 rotate-12"
+      />
       <div
         id="testimonials"
         className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"

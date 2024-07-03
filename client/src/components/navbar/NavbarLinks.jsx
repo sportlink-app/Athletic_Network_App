@@ -27,7 +27,6 @@ function NavbarLinks(props) {
             onClick={() => scrollToSection(link.id)}
             type="text"
             shape="round"
-            className="text-lg md:text-base"
           />
         </li>
       ))}

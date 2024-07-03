@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Avatar } from "antd";
+import { Avatar, Badge } from "antd";
 import { getRandomColor } from "./utils/randomColor";
 
 // Simple hash function to generate a number from a string
@@ -14,7 +14,14 @@ const hashCode = (str) => {
 // Function to get a random element based on a hash
 const getElementByHash = (arr, hash) => arr[Math.abs(hash) % arr.length];
 
-function ProfileAvatar({ username, gender, size = 64, className = "" }) {
+function ProfileAvatar({
+  username,
+  gender,
+  size = 64,
+  className = "",
+  dot = false,
+  dotColor,
+}) {
   const maleHair = ["dougFunny", "dannyPhantom", "fonze", "mrClean"];
   const femaleHair = ["pixie", "full"];
   const mouth = ["laughing", "pucker", "smile", "smirk"];
@@ -36,7 +43,15 @@ function ProfileAvatar({ username, gender, size = 64, className = "" }) {
 
   const avatarUrl = getAvatarUrl(username, hairStyle, mouthStyle);
 
-  return <Avatar src={avatarUrl} size={size} className={className} />;
+  return (
+    <Badge dot={dot} color={dotColor} offset={[-8, 50]} className={className}>
+      <Avatar
+        src={avatarUrl}
+        size={size}
+        className="border-[1px] border-white"
+      />
+    </Badge>
+  );
 }
 
 ProfileAvatar.propTypes = {
@@ -45,6 +60,8 @@ ProfileAvatar.propTypes = {
   bgColor: PropTypes.string,
   size: PropTypes.number,
   className: PropTypes.string,
+  dot: PropTypes.bool,
+  dotColor: PropTypes.string,
 };
 
 export default ProfileAvatar;
