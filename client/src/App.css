@@ -1,30 +1,10 @@
-@font-face {
-    font-family: 'Sofia Pro';
-    src: url('/font/SofiaProBold-Italic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
+html{
+    @apply bg-gray-50 scroll-smooth !important;
 }
-  
-@font-face {
-    font-family: 'Sofia Pro';
-    src: url('/font/SofiaProMedium.ttf') format('truetype');
-    font-weight: 500; /* Medium weight */
-    font-style: normal;
-}
-  
-@font-face {
-    font-family: 'Sofia Pro';
-    src: url('/font/SofiaProLight.ttf') format('truetype');
-    font-style: normal;
+*{
+    @apply font-main !important;
 }
 
-*{
-    font-family: 'Sofia Pro' !important;
-}
-html{
-    @apply scroll-smooth bg-gray-50 !important;
-    /* color: #32e52877; */
-}
 /* light button */
 .light span{
    @apply text-green !important;

@@ -11,6 +11,10 @@ export default {
         'green': "#31E528",
         'cyan': "#00E0B5",
       },
+      fontFamily: {
+        title: ['Billion Dreams', 'sans-serif'],
+        main: ['Nunito', 'sans-serif']
+      },
     },
   },
   plugins: [],

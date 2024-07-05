@@ -68,7 +68,7 @@ function Testimonials() {
       <Star
         type="outlined"
         color="#00e0b5"
-        className=" absolute top-[5%] left-1/4 w-6 rotate-12"
+        className=" absolute top-0 lg:top-12 left-1/4 w-6 rotate-12"
       />
       <div
         id="testimonials"

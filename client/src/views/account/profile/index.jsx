@@ -6,10 +6,10 @@ import ProfileAvatar from "../../../components/Avatar";
 
 function Profile() {
   const profileAside = (
-    <div className="md:w-40 lg:w-48 lg:sticky top-20 self-center md:self-start flex flex-col items-center gap-4 md:gap-6 mt-4 md:mt-0">
+    <div className="md:w-40 lg:w-48 lg:sticky top-20 self-center md:self-start flex flex-col items-center gap-3 mt-4 md:mt-0">
       <ProfileAvatar username="seifAaza 37" gender="male" size={140} />
 
-      <h2 className="text-gray-600 text-xl lg:text-2xl xl:text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden">
+      <h2 className="text-gray-600 text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden mt-4">
         seifeddine
       </h2>
       <Availability />

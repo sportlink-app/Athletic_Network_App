@@ -8,7 +8,10 @@ function Header() {
   const hero = (
     <>
       <div className="mx-auto max-w-2xl lg:mx-0 w-full text-center ">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-title font-black italic tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green mb-6">
+        <h2
+          style={{ wordSpacing: "-10px" }}
+          className="text-[3.1rem] sm:text-6xl md:text-7xl lg:text-8xl !font-title bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green mb-6"
+        >
           Your Team Awaits !
         </h2>
         <Text
@@ -32,7 +35,7 @@ function Header() {
     { name: "Service Cost", value: "Free" },
   ];
   const stats = (
-    <dl className="mt-24 lg:mt-28 grid  gap-8 grid-cols-2 lg:grid-cols-4 text-center">
+    <dl className="mt-28 grid  gap-8 grid-cols-2 lg:grid-cols-4 text-center">
       {statsList.map((stat) => (
         <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
           <dt className="text-base lg:text-lg leading-7 text-gray-600">
@@ -76,12 +79,12 @@ function Header() {
       <img
         src="/icons/bottle.svg"
         alt=""
-        className="opacity-60 sm:opacity-100 absolute bottom-72 left-[10%] lg:left-[20%] w-7 rotate-12"
+        className="opacity-60 sm:opacity-100 absolute bottom-72 left-[10%] lg:left-[20%] w-6 md:w-7 rotate-12"
       />
       <img
         src="/icons/basketball.svg"
         alt=""
-        className="opacity-60 sm:opacity-100 absolute bottom-60 lg:bottom-52 left-[30%] lg:left-[35%] w-16"
+        className="opacity-60 sm:opacity-100 absolute bottom-60 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16"
       />
       <img
         src="/icons/dumbbell.svg"
@@ -91,7 +94,7 @@ function Header() {
       <img
         src="/icons/dumbbell-ball.svg"
         alt=""
-        className="opacity-60 sm:opacity-100 absolute bottom-72 lg:bottom-72 right-[10%] lg:right-[20%] w-14 rotate-12"
+        className="opacity-60 sm:opacity-100 absolute bottom-72 lg:bottom-72 right-[10%] lg:right-[20%] w-10 md:w-14 rotate-12"
       />
       <Star
         type="filled"
@@ -101,7 +104,7 @@ function Header() {
       <Star
         type="outlined"
         color="#00e0b5"
-        className="opacity-50 sm:opacity-100 absolute top-6 lg:top-36 left-[15%] lg:left-[25%] w-8 lg:w-10 rotate-45"
+        className="opacity-50 sm:opacity-100 absolute top-6 lg:top-12 left-[15%] lg:left-[25%] w-8 lg:w-10 rotate-45"
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center gap-8 z-10">
         {hero}

@@ -15,24 +15,24 @@ function Error() {
       <span className="absolute -top-24 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-25 md:opacity-30">
         <BlurShape color="bg-green" />
       </span>
-      <p className="text-7xl font-semibold  bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green">
+      <p className="text-7xl md:text-8xl lg:text-9xl font-semibold  bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green">
         404
       </p>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-800 sm:text-5xl">
+      <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-800 ">
         Page not found
       </h1>
-      <p className="mt-6 text-base leading-7 text-gray-600">
+      <p className="mt-3 text-lg leading-7 text-gray-600">
         Sorry, we couldn&apos;t find the page you&apos;re looking for.
       </p>
 
       <MainButton
         href={"/"}
-        text="get started"
+        text="back home"
         type="primary"
         shape="round"
         icon={<ArrowLeftOutlined />}
         iconPosition="start"
-        className="mt-10"
+        className="mt-6"
       />
     </Container>
   );

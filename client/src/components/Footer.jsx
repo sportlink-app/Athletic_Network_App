@@ -12,7 +12,10 @@ function Footer() {
         className="absolute w-full object-center object-cover opacity-10 grayscale z-0"
       />
       <img src="/logo.svg" alt="" className="h-8 w-8" />
-      <h3 className="text-white text-lg"> &copy; {year} all rights reserved</h3>
+      <h3 className="text-white text-lg font-semibold">
+        {" "}
+        &copy; {year} all rights reserved
+      </h3>
     </Container>
   );
 }

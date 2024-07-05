@@ -23,7 +23,7 @@ function Login() {
         <BlurShape color="bg-cyan" />
       </span>
       <Text text="sign in to your account" />
-      <div className="mt-10 lg:mt-12 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="px-4 mt-10 lg:mt-12 sm:mx-auto sm:w-full sm:max-w-sm">
         <form
           className="flex flex-col gap-2 text-left"
           action="#"
