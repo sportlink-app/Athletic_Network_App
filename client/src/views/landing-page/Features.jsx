@@ -74,7 +74,7 @@ function Features() {
       <Star
         type="filled"
         color="#00e0b5"
-        className=" absolute top-1/4 left-[20%] w-5 -rotate-45"
+        className=" absolute top-0 xl:top-1/4 left-[20%] w-5 -rotate-45"
       />
       <Star
         type="filled"

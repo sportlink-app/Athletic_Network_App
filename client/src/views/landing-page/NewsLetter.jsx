@@ -19,7 +19,7 @@ function Newsletter() {
       <Star
         type="filled"
         color="#31e528"
-        className=" absolute top-1/4 right-[15%] w-5 rotate-12"
+        className=" absolute top-0 lg:top-1/4 right-[15%] w-5 rotate-12"
       />
       <div
         id="newsletter"
