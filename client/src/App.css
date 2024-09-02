@@ -6,6 +6,10 @@ html{
     @apply font-main !important;
 }
 
+input::placeholder, textarea::placeholder, .ant-select-selection-placeholder{
+    @apply text-[0.8rem] !important;
+}
+
 /* light button */
 .light span{
    @apply text-green !important;
