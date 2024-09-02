@@ -3,7 +3,7 @@ import { create } from "zustand";
 // import Cookies from "js-cookie";
 
 const authStore = create((set) => ({
-  isAuthenticated: true,
+  isAuthenticated: false,
 }));
 
 export default authStore;

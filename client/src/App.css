@@ -1,6 +1,7 @@
 html{
-    @apply bg-gray-50 scroll-smooth !important;
+    @apply bg-gray-50 scroll-smooth  !important;
 }
+
 *{
     @apply font-main !important;
 }

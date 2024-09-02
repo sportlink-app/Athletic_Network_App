@@ -22,7 +22,7 @@ function NavbarLinks(props) {
         <li key={index}>
           <MainButton
             text={link.title}
-            href={link.href}
+            href={link.href || "/"}
             icon={link.icon}
             onClick={() => scrollToSection(link.id)}
             type="text"

@@ -41,14 +41,16 @@ function Navbar({ items, navScroll }) {
   const navScrollAnim =
     scrollDirection === "down" ? navbarDisplay.show : navbarDisplay.hide;
 
+  const { closeNavbar } = mainStore();
   const mobileCustom = (
     <div
       className={`${
-        isNavbarOpen ? "h-[calc(100vh-68px)] duration-500" : "h-0 duration-200"
+        isNavbarOpen ? "h-screen duration-500" : "h-0 duration-200"
       } absolute top-full bg-gradient-to-r from-cyan to-green left-0 w-full flex flex-col gap-14 items-center md:hidden overflow-hidden `}
     >
       <NavbarLinks links={items} className="mt-20" />
       <MainButton
+        onClick={() => closeNavbar()}
         href={endBtn}
         text={endBtn}
         type="primary"
@@ -73,6 +75,7 @@ function Navbar({ items, navScroll }) {
         <NavbarLinks links={items} className="hidden md:flex" />
         <NavbarToggle />
         <MainButton
+          onClick={() => closeNavbar()}
           href={endBtn}
           text={endBtn}
           type="primary"
