@@ -1,5 +1,6 @@
 .env
-venv/
+zozo.py
+venv3/
 __pycache__/
 *.pyc
 
