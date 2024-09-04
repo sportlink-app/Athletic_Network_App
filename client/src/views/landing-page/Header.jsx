@@ -12,7 +12,7 @@ function Header() {
           style={{ wordSpacing: "-10px" }}
           className="text-[3.1rem] sm:text-6xl md:text-7xl lg:text-8xl !font-title bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green mb-6"
         >
-          Your Team Awaits !
+          Your Team Awaits!
         </h2>
         <Text
           type="subtitle"

@@ -1,8 +1,13 @@
 html{
-    @apply bg-gray-50 scroll-smooth !important;
+    @apply bg-gray-50 scroll-smooth  !important;
 }
+
 *{
     @apply font-main !important;
+}
+
+input::placeholder, textarea::placeholder, .ant-select-selection-placeholder{
+    @apply text-[0.8rem] !important;
 }
 
 /* light button */

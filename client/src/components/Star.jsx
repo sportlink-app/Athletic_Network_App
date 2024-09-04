@@ -54,5 +54,5 @@ export default function Star(props) {
 Star.propTypes = {
   type: PropTypes.oneOf(["filled", "outlined"]),
   color: PropTypes.string,
-  className: PropTypes.className,
+  className: PropTypes.string,
 };

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import MainButton from "../../../../components/Button";
 import { Modal, Form, Select, Tag, Input, Switch } from "antd";
 const { TextArea } = Input;
-import { UserOutlined } from "@ant-design/icons";
 import sportsNames from "../../../../components/SportsNames";
 
 function EditProfile() {
@@ -19,14 +18,13 @@ function EditProfile() {
   };
 
   const usernameInput = (
-    <span className="mt-2 flex flex-col gap-1">
+    <span className="mt-2 flex flex-col gap-1 ">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         username
       </label>
       <Input
         placeholder="Enter your username"
         maxLength={12}
-        prefix={<UserOutlined />}
         size="middle"
         style={{ borderRadius: "50px" }}
       />
@@ -68,7 +66,7 @@ function EditProfile() {
         color="default"
         closable={closable}
         onClose={onClose}
-        className="m-[.15rem] py-1 px-4 rounded-full text-sm capitalize"
+        className="m-[.15rem] py-[3px] px-4 rounded-full text-xs capitalize"
       >
         {label}
       </Tag>
@@ -94,7 +92,7 @@ function EditProfile() {
           value: name,
           label: name,
         }))}
-        size="large"
+        size="middle"
       />
     </span>
   );
