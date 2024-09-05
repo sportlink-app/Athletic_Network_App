@@ -112,7 +112,9 @@ function CompleteProfileForm() {
         style={{ borderRadius: "50px" }}
       />
       {errors.tel && (
-        <p className="text-sm ml-2 text-red-500 sm:max-w-44">{errors.tel}</p>
+        <p className="text-sm ml-2 text-red-500 max-w-60 sm:max-w-44">
+          {errors.tel}
+        </p>
       )}
     </li>
   );
