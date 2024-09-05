@@ -43,6 +43,7 @@ function EditProfileForm() {
         name="username"
         value={updateForm.username}
         onChange={handleUpdateFieldChange}
+        status={errors.username ? "error" : ""}
         placeholder="Enter your username"
         maxLength={16}
         size="large"
@@ -85,6 +86,7 @@ function EditProfileForm() {
         name="bio"
         value={updateForm.bio}
         onChange={handleUpdateFieldChange}
+        status={errors.bio ? "error" : ""}
         placeholder="Write a brief biography about yourself"
         maxLength={180}
         rows={4}
@@ -165,6 +167,7 @@ function EditProfileForm() {
         name="tel"
         value={updateForm.tel}
         onChange={handleUpdateFieldChange}
+        status={errors.tel ? "error" : ""}
         maxLength={12}
         type="number"
         placeholder="Your phone number"
