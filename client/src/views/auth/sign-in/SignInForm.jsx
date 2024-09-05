@@ -4,7 +4,7 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from "@ant-design/icons";
-import authStore from "../../../store/authStore";
+import authStore from "../../../store/user/authStore";
 
 function SignInForm() {
   const { signInForm, handleSignInForm, isSignInFormComplete, isLoading } =

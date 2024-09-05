@@ -1,23 +1,23 @@
-import { Form, Input, Select, Tag, Button, Spin } from "antd";
 import PropTypes from "prop-types";
+import { Form, Input, Select, Tag, Button, Spin } from "antd";
 import sportsNames from "../../../../../components/SportsNames";
 import TextArea from "antd/es/input/TextArea";
-import userStore from "../../../../../store/userStore";
 import { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
+import editUserProfileStore from "../../../../../store/user/editUserProfile";
 
 function EditProfileForm() {
   const {
     gender,
-    updateForm,
+    editForm,
     handleSportsChange,
     handleUpdateFieldChange,
     isFormComplete,
     updateValidationErrors,
     isLoading,
-  } = userStore((state) => ({
+  } = editUserProfileStore((state) => ({
     gender: state.gender,
-    updateForm: state.updateForm,
+    editForm: state.editForm,
     handleSportsChange: state.handleSportsChange,
     handleUpdateFieldChange: state.handleUpdateFieldChange,
     isFormComplete: state.isFormComplete(),
@@ -27,7 +27,7 @@ function EditProfileForm() {
 
   const errors = updateValidationErrors();
 
-  const [genderValue, setGenderValue] = useState(updateForm.gender || gender);
+  const [genderValue, setGenderValue] = useState(editForm.gender || gender);
 
   const handleGenderChange = (value) => {
     setGenderValue(value);
@@ -41,7 +41,7 @@ function EditProfileForm() {
       </label>
       <Input
         name="username"
-        value={updateForm.username}
+        value={editForm.username}
         onChange={handleUpdateFieldChange}
         status={errors.username ? "error" : ""}
         placeholder="Enter your username"
@@ -84,7 +84,7 @@ function EditProfileForm() {
       </label>
       <TextArea
         name="bio"
-        value={updateForm.bio}
+        value={editForm.bio}
         onChange={handleUpdateFieldChange}
         status={errors.bio ? "error" : ""}
         placeholder="Write a brief biography about yourself"
@@ -121,7 +121,7 @@ function EditProfileForm() {
         Sports
       </label>
       <Select
-        value={updateForm.sports}
+        value={editForm.sports}
         placeholder="Select your favorite sports"
         mode="multiple"
         tagRender={tagRender}
@@ -148,7 +148,7 @@ function EditProfileForm() {
       </label>
       <Input
         name="city"
-        value={updateForm.city}
+        value={editForm.city}
         onChange={handleUpdateFieldChange}
         maxLength={14}
         placeholder="Your city"
@@ -165,7 +165,7 @@ function EditProfileForm() {
       </label>
       <Input
         name="tel"
-        value={updateForm.tel}
+        value={editForm.tel}
         onChange={handleUpdateFieldChange}
         status={errors.tel ? "error" : ""}
         maxLength={12}

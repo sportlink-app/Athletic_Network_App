@@ -1,12 +1,12 @@
 import { Divider } from "antd";
 import DeactivateAccount from "./modals/DeactivateAccount";
-import userStore from "../../../store/userStore";
 import DataField from "../../../components/DataField";
 import Tags from "../../../components/Tags";
 import Text from "../../../components/Text";
+import userInfoStore from "../../../store/user/userInfoStore";
 
 function ProfileContent() {
-  const { bio, sports, email, city, tel } = userStore();
+  const { bio, sports, email, city, tel } = userInfoStore();
   return (
     <form className="container mx-auto flex gap-4">
       <div className="pb-12">

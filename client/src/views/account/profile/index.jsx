@@ -10,11 +10,11 @@ import {
 
 import { Link } from "react-router-dom";
 import Text from "../../../components/Text";
-import UserStore from "../../../store/userStore";
 import EditProfile from "./modals/edit";
+import userInfoStore from "../../../store/user/userInfoStore";
 
 function MyProfile() {
-  const { username, gender, isAvailable, setAvailability } = UserStore();
+  const { username, gender, isAvailable, setAvailability } = userInfoStore();
   const profileAside = (
     <div className="md:w-40 lg:w-48 lg:sticky top-20 self-center md:self-start flex flex-col items-center gap-3 mt-4 md:mt-0">
       <ProfileAvatar username={username} gender={gender} size={140} />

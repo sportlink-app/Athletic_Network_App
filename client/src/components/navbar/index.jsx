@@ -3,7 +3,7 @@ import NavbarToggle from "./toggle/NavbarToggle";
 import NavbarLinks from "./NavbarLinks";
 import MainButton from "../Button";
 import mainStore from "../../store/mainStore";
-import authStore from "../../store/authStore";
+import authStore from "../../store/user/authStore";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../Avatar";
 

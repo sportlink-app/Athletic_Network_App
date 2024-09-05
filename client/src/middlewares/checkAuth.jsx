@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import authStore from "../store/authStore"; // Ensure the correct import path
+import authStore from "../store/user/authStore"; // Ensure the correct import path
 import { Spin } from "antd";
 
 function CheckAuth(props) {
