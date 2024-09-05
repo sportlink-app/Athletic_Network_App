@@ -85,7 +85,9 @@ function SignUpForm() {
           status={errors.password ? "error" : ""}
         />
         {errors.password && (
-          <p className="text-sm ml-2 text-red-500">{errors.password}</p>
+          <p className="text-sm ml-2 text-red-500 max-w-64 xl:max-w-80">
+            {errors.password}
+          </p>
         )}
       </li>
       <Button
