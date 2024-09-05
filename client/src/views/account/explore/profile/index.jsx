@@ -10,24 +10,29 @@ import DataField from "../../../../components/DataField";
 function UserProfile() {
   const { username } = useParams();
   const availability = (isAvailable) => {
-    <li className="flex gap-2 justify-center items-center">
-      <Text
-        text={isAvailable ? "available" : "unavailable"}
-        type="subtitle"
-        className={`${!isAvailable && "text-red-400"} font-medium capitalize`}
-      />
-      <span className="relative flex h-3 w-3">
-        {isAvailable && (
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75"></span>
-        )}
-        <span
+    return (
+      <li className="flex gap-2 justify-center items-center">
+        <Text
+          text={isAvailable ? "available" : "unavailable"}
+          type="subtitle"
           className={`${
-            isAvailable ? "bg-green" : "bg-red-400"
-          } relative inline-flex rounded-full h-3 w-3`}
-        ></span>
-      </span>
-    </li>;
+            !isAvailable && "!text-red-400"
+          } font-medium capitalize`}
+        />
+        <span className="relative flex h-3 w-3">
+          {isAvailable && (
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75"></span>
+          )}
+          <span
+            className={`${
+              isAvailable ? "bg-green" : "bg-red-400"
+            } relative inline-flex rounded-full h-3 w-3`}
+          ></span>
+        </span>
+      </li>
+    );
   };
+
   const profileAside = (
     <div className="h-[248px] !w-1/2 lg:!w-1/3 xl:!w-1/5 self-center md:self-start mt-4 md:mt-0 relative">
       <div className="md:absolute -top-32 flex flex-col items-center gap-3">
@@ -35,10 +40,12 @@ function UserProfile() {
         <h2 className="text-gray-600 text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden mt-4">
           {username}
         </h2>
-        {availability(false)}
+
+        {availability(true)}
       </div>
     </div>
   );
+
   const profileContent = (
     <form className="container mx-auto flex gap-4">
       <div className="pb-12">
@@ -58,6 +65,11 @@ function UserProfile() {
             <Tags list={["sport", "sport"]} className="py-1 px-4 text-sm" />
           </div>
         </li>
+        <Divider
+          type="horizontal"
+          className="w-full border-gray-200 my-6 xl:my-8"
+        />
+        <DataField title="City" content="city" />
       </div>
     </form>
   );

@@ -7,10 +7,9 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 chara
 
 const authStore = create((set, get) => ({
   isAuthenticated: true,
-  isProfileCompleted: false,
+  isProfileCompleted: true,
   dataError: false,
   isLoading: false,
-
   signUpForm: {
     username: "",
     email: "",
