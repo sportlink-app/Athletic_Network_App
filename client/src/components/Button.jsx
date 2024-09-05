@@ -24,7 +24,7 @@ function MainButton({
           Button: {
             colorText: "white",
             colorPrimary: bgColor === "light" ? "white" : gradient,
-            colorPrimaryHover: bgColor === "light" ? "white" : gradient,
+            colorPrimaryHover: bgColor === "light" ? "#f3f4f6" : gradient,
             colorPrimaryActive: bgColor === "light" ? "white" : gradient,
             lineWidth: 0,
           },

@@ -1,4 +1,4 @@
-import { SearchOutlined, TeamOutlined, BellOutlined } from "@ant-design/icons";
+import { CompassOutlined, TeamOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import Navbar from "../../components/navbar";
 
@@ -7,7 +7,7 @@ function AccountNavbar() {
     {
       title: "explore",
       href: "/explore",
-      icon: <SearchOutlined />,
+      icon: <CompassOutlined />,
     },
     {
       title: "my matches",
@@ -25,7 +25,7 @@ function AccountNavbar() {
     },
   ];
 
-  return <Navbar items={links} navScroll />;
+  return <Navbar items={links} />;
 }
 
 export default AccountNavbar;

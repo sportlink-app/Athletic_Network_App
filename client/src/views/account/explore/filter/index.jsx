@@ -11,7 +11,7 @@ function Filter() {
       </span>
       <span className="flex items-center gap-6 sm:gap-8">
         <Availability />
-        <Button shape="circle" icon={<SearchOutlined />} />
+        <Button shape="circle" icon={<SearchOutlined />} size="middle" />
       </span>
     </ul>
   );

@@ -1,7 +1,8 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import SignUp from "../views/auth/SignUp";
-import Login from "../views/auth/Login";
+
+import Login from "../views/auth/sign-in";
 import Error from "../components/Error";
+import SignUp from "../views/auth/sign-up";
 
 function GuestRoutes() {
   return (

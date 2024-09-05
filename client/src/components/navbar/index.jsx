@@ -1,15 +1,13 @@
-import { useEffect } from "react";
 import PropTypes from "prop-types";
 import NavbarToggle from "./toggle/NavbarToggle";
 import NavbarLinks from "./NavbarLinks";
 import MainButton from "../Button";
 import mainStore from "../../store/mainStore";
-import useScroll from "./UseScroll";
 import authStore from "../../store/authStore";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../Avatar";
 
-function Navbar({ items, navScroll }) {
+function Navbar({ items }) {
   const { isNavbarOpen } = mainStore();
   const { isAuthenticated } = authStore();
   const endBtn = isAuthenticated ? "logout" : "account";
@@ -26,20 +24,6 @@ function Navbar({ items, navScroll }) {
     ),
   };
   const startBtn = isAuthenticated ? startBtns.profile : startBtns.logo;
-  useEffect(() => {
-    isNavbarOpen
-      ? document.documentElement.classList.add("overflow-hidden")
-      : document.documentElement.classList.remove("overflow-hidden");
-  }, [isNavbarOpen]);
-
-  const { scrollDirection } = useScroll();
-
-  const navbarDisplay = {
-    show: "visible duration-500",
-    hide: "invisible -translate-y-full duration-500",
-  };
-  const navScrollAnim =
-    scrollDirection === "down" ? navbarDisplay.show : navbarDisplay.hide;
 
   const { closeNavbar } = mainStore();
   const mobileCustom = (
@@ -62,11 +46,7 @@ function Navbar({ items, navScroll }) {
   );
 
   return (
-    <header
-      className={`sticky top-0 z-50 bg-gradient-to-r from-cyan to-green
-      ${navScroll ? navScrollAnim : ""}
-    `}
-    >
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-cyan to-green">
       <nav
         className="relative mx-auto flex max-w-7xl items-center justify-between px-5 p-[.6rem] lg:px-8"
         aria-label="Global"

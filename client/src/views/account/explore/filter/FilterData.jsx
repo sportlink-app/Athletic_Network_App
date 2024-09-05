@@ -18,6 +18,7 @@ const City = () => {
       style={{ borderRadius: "50px" }}
       placeholder="Enter city name"
       className="max-w-52"
+      size="large"
     />
   );
 };
@@ -74,6 +75,7 @@ const Sport = () => {
       onSearch={(text) => setOptions(getPanelValue(text))}
       onSelect={handleSportSelect}
       placeholder="Select a sport"
+      size="large"
     />
   );
 };

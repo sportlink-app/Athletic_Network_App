@@ -3,16 +3,20 @@ html{
 }
 
 *{
-    @apply font-main !important;
+    @apply !font-main ;
 }
 
 input::placeholder, textarea::placeholder, .ant-select-selection-placeholder{
-    @apply text-[0.8rem] !important;
+    @apply !text-[0.8rem] ;
+}
+
+li{
+    list-style: none
 }
 
 /* light button */
 .light span{
-   @apply text-green !important;
+   @apply !text-green ;
 }
 
 /* scroll to top button */
@@ -20,18 +24,21 @@ input::placeholder, textarea::placeholder, .ant-select-selection-placeholder{
     @apply bg-gradient-to-r from-cyan to-green !important;
 }
 .anticon-vertical-align-top{
-    @apply text-white !important
+    @apply !text-white 
 }
 
 /* Input */
 :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:hover, :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus, 
 :where(.css-dev-only-do-not-override-17seli4).ant-input-outlined:focus-within, 
 :where(.css-dev-only-do-not-override-17seli4).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector,
-.ant-select-focused:where(.css-dev-only-do-not-override-17seli4).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector  {
-    @apply border-green !important
+.ant-select-focused:where(.css-dev-only-do-not-override-17seli4).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector, :where(.css-dev-only-do-not-override-17seli4).ant-pagination .ant-pagination-item-active  {
+    @apply !border-green 
 }
-.ant-select-selector{
+.ant-select-selector, :where(.css-dev-only-do-not-override-17seli4).ant-popover .ant-popover-inner, :where(.css-dev-only-do-not-override-17seli4).ant-select-dropdown, :where(.css-dev-only-do-not-override-17seli4).ant-pagination .ant-pagination-item  {
     border-radius: 18px !important;
+}
+:where(.css-dev-only-do-not-override-17seli4).ant-pagination .ant-pagination-item-active a{
+    @apply !text-green 
 }
 
 /* Modal */
@@ -62,11 +69,18 @@ input::placeholder, textarea::placeholder, .ant-select-selection-placeholder{
 .ant-dropdown-menu-item{
     @apply rounded-full mt-1 !important;
 }
-.ant-dropdown-menu-item-selected{
+.ant-dropdown-menu-item-selected, :where(.css-dev-only-do-not-override-17seli4).ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
     @apply text-[#389e0d] bg-[#f6ffed] !important;
 }
 
 /* Icon hover */
 :where(.css-dev-only-do-not-override-17seli4).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
     @apply text-green border-green !important;
+}
+
+.white-spin .ant-spin-dot-item {
+    @apply !bg-white
+}
+.green-spin .ant-spin-dot-item {
+    @apply !bg-green
 }

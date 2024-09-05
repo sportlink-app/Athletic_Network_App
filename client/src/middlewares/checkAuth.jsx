@@ -1,46 +1,43 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import authStore from "../store/authStore";
+import authStore from "../store/authStore"; // Ensure the correct import path
+import { Spin } from "antd";
 
-function checkAuth(props) {
-  const { isAuthenticated } = authStore();
-
-  // State to track loading state
+function CheckAuth(props) {
+  const { isProfileCompleted, isAuthenticated } = authStore();
   const [loading, setLoading] = useState(false);
 
-  // Hook for navigating between pages
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Function to check authorization
-    const checkAuth = async () => {
-      // Set loading to true to indicate that the check is in progress
-      setLoading(true);
+    setLoading(true);
 
-      // If accessToken exists, set loading to false and navigate to the admin page
-      if (isAuthenticated) {
-        setLoading(false);
-        navigate("/admin");
-      }
-    };
+    if (!isAuthenticated) {
+      setLoading(false);
+      navigate("/account");
+    } else if (!isProfileCompleted) {
+      setLoading(false);
+      navigate("/complete-profile");
+    } else {
+      setLoading(false);
+    }
+  }, [isAuthenticated, isProfileCompleted, navigate]);
 
-    // Invoke the checkAuth function
-    checkAuth();
-  }, []);
-
-  // If loading is null, render a loading spinner (Progress component)
-  if (loading === null) {
-    return <div>load ...</div>;
+  if (loading) {
+    return (
+      <div className="h-[calc(100vh-59.19px)] grid place-items-center">
+        <Spin size="large" className="green-spin" />
+      </div>
+    );
   }
 
-  // Render the children (typically the content to be displayed for authenticated or unauthenticated users)
+  // Render the children only if the profile is complete
   return <div>{props.children}</div>;
 }
 
-// Prop types for the checkAuth component
-checkAuth.propTypes = {
+CheckAuth.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default checkAuth;
+export default CheckAuth;

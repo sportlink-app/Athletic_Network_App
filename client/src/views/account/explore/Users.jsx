@@ -3,7 +3,7 @@ function Users() {
   const users = [
     {
       id: 1,
-      username: "seifAaza 37",
+      username: "seifAaza37",
       gender: "male",
       city: "casablanca",
       sports: ["Black", "Black", "Black"],
@@ -11,7 +11,7 @@ function Users() {
     },
     {
       id: 1,
-      username: "Bassssssé1ic Tee",
+      username: "Bassssssé1icTee",
       gender: "male",
       city: "casablanca",
       sports: [
@@ -36,7 +36,7 @@ function Users() {
     },
     {
       id: 1,
-      username: "cTee z",
+      username: "cTeez",
       gender: "male",
       city: "casablanca",
       sports: [
@@ -53,7 +53,7 @@ function Users() {
     },
     {
       id: 1,
-      username: "Base cT ee",
+      username: "BasecTee",
       gender: "female",
       city: "casablanca",
       sports: ["Black", "Black", "Black", "Black", "Black", "Black"],

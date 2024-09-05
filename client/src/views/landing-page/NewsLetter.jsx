@@ -37,7 +37,7 @@ function Newsletter() {
               <Input
                 placeholder="Enter your email address"
                 enterButton="Search"
-                size="large"
+                size="middle"
                 style={{ borderRadius: "50px" }}
               />
               <MainButton text="subscribe" icon={<SendOutlined />} />

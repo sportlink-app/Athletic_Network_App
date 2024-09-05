@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Modal } from "antd";
-import MainButton from "../../../../components/Button";
+import { Button, Modal } from "antd";
 import Card from "../../../../components/Card";
+import { CloseOutlined } from "@ant-design/icons";
+
 function DeactivateAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -26,7 +27,17 @@ function DeactivateAccount() {
           </p>
         </div>
         <div className="mt-6 sm:flex sm:flex-row-reverse">
-          <MainButton text="deactivate" danger onClick={showModal} />
+          <Button
+            onClick={showModal}
+            danger
+            type="primary"
+            shape="round"
+            size="large"
+            icon={<CloseOutlined size={16} />}
+            iconPosition="end"
+          >
+            Deactivate
+          </Button>
         </div>
       </Card>
       <Modal
@@ -43,11 +54,17 @@ function DeactivateAccount() {
         </p>
 
         <div className="mt-6 sm:flex sm:flex-row-reverse">
-          <MainButton
-            text="deactivate this account"
-            danger
+          <Button
             onClick={showModal}
-          />
+            danger
+            type="primary"
+            shape="round"
+            size="large"
+            icon={<CloseOutlined size={16} />}
+            iconPosition="end"
+          >
+            Deactivate This Account
+          </Button>
         </div>
       </Modal>
     </>
