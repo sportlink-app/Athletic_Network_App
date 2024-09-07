@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import Config
 from models import db, Myusers  # Import the database and the Myusers model
+from flask_migrate import Migrate 
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -9,6 +10,8 @@ app.config.from_object(Config)
 # Initialize extensions
 db.init_app(app)  # Initialize SQLAlchemy with Flask app
 CORS(app)  # Enable CORS for handling cross-origin requests
+
+migrate = Migrate(app, db)  # Initialize Flask-Migrate with the app and db
 
 # Ensure database tables are created if they don't exist
 with app.app_context():
