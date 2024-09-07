@@ -20,7 +20,7 @@ with app.app_context():
 # Home route for testing
 @app.route('/')
 def home():
-    return {"message": "Welcome to SportLink API!v3"}
+    return {"message": "Welcome to SportLink API!v3-with_Migration"}
 
 # Route for adding a user
 @app.route('/add_user', methods=['POST'])
