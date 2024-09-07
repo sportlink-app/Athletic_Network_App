@@ -1,28 +1,54 @@
-from flask import Flask
-#Testing CI/CD on render 
-#from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import Config
-from models import db, Myusers  # Import the database and the User model
+from models import db, Myusers  # Import the database and the Myusers model
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # Initialize extensions
-db.init_app(app)  # Ensure db is initialized with the app
-CORS(app)
+db.init_app(app)  # Initialize SQLAlchemy with Flask app
+CORS(app)  # Enable CORS for handling cross-origin requests
 
+# Ensure database tables are created if they don't exist
+with app.app_context():
+    db.create_all()
+
+# Home route for testing
 @app.route('/')
 def home():
-    return {"message": "Welcome to SportLink API! v2"}
+    return {"message": "Welcome to SportLink API!v3"}
 
+# Route for adding a user
 @app.route('/add_user', methods=['POST'])
 def add_user():
-    data = request.get_json()
-    new_user = Myusers(username=data['username'], email=data['email'], password=data['password'])  # Include password
-    db.session.add(new_user)
-    db.session.commit()
-    return {"message": f"User {new_user.username} added successfully!"}
+    try:
+        data = request.get_json()  # Get the JSON data from the request
+        new_user = Myusers(
+            username=data['username'],
+            email=data['email'],
+            password=data['password']  # Storing plain password for now; consider hashing
+        )
+        db.session.add(new_user)  # Add the user to the session
+        db.session.commit()  # Commit the transaction to save the user
+        return jsonify({"message": f"User {new_user.username} added successfully!"}), 201
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+# Route to list all users (for testing purposes)
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = Myusers.query.all()  # Query all users from the database
+    result = [
+        {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+        for user in users
+    ]
+    return jsonify(result), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+

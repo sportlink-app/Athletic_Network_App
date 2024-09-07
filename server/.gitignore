@@ -10,3 +10,4 @@ __pycache__/
 
 # Ignore temporary script
 zozo.py
+zozo*.py
