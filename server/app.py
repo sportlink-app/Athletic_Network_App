@@ -14,7 +14,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return {"message": "Welcome to SportLink API!"}
+    return {"message": "Welcome to SportLink API! v2"}
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
