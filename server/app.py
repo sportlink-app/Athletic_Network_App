@@ -3,7 +3,7 @@ from flask import Flask
 #from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from config import Config
-from models import db, User  # Import the database and the User model
+from models import db, Myusers  # Import the database and the User model
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -19,7 +19,7 @@ def home():
 @app.route('/add_user', methods=['POST'])
 def add_user():
     data = request.get_json()
-    new_user = User(username=data['username'], email=data['email'], password=data['password'])  # Include password
+    new_user = Myusers(username=data['username'], email=data['email'], password=data['password'])  # Include password
     db.session.add(new_user)
     db.session.commit()
     return {"message": f"User {new_user.username} added successfully!"}
