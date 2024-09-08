@@ -4,7 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 from functools import wraps
+from config import Config  # Import Config to load SECRET_KEY
 
+SECRET_KEY = Config.SECRET_KEY
 user_blueprint = Blueprint('user_blueprint', __name__)
 
 # JWT Token Decorator
@@ -151,6 +153,7 @@ def update_profile(current_user, id):
         user.sports = ','.join(data.get('sports', []))
         user.city = data.get('city')
         user.tel = data.get('tel')
+        user.email = data.get('email')  # Ensure email is being updated
         db.session.commit()
         return jsonify({"message": "Profile updated successfully"}), 200
     except Exception as e:
