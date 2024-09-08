@@ -14,9 +14,8 @@ app.config.from_object(Config)
 db.init_app(app)
 CORS(app)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()  # This will create all tables if they don't already exist
+with app.app_context():
+    db.create_all()
 
 # Register blueprints
 app.register_blueprint(user_blueprint)
