@@ -12,7 +12,7 @@ app.config.from_object(Config)
 
 # Initialize extensions
 db.init_app(app)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 with app.app_context():
     db.create_all()
