@@ -94,8 +94,7 @@ const authStore = create((set, get) => ({
           password,
         },
         {
-          headers: { "content-type": "application/json" },
-          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         }
       );
       console.log(response.data);
