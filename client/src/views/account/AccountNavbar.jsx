@@ -1,4 +1,9 @@
-import { CompassOutlined, TeamOutlined, BellOutlined } from "@ant-design/icons";
+import {
+  CompassOutlined,
+  TeamOutlined,
+  BellOutlined,
+  MessageOutlined,
+} from "@ant-design/icons";
 import { Badge } from "antd";
 import Navbar from "../../components/navbar";
 
@@ -13,6 +18,11 @@ function AccountNavbar() {
       title: "my matches",
       href: "/matches",
       icon: <TeamOutlined />,
+    },
+    {
+      title: "blog",
+      href: "/blog",
+      icon: <MessageOutlined />,
     },
     {
       title: "notifications",

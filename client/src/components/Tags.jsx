@@ -11,9 +11,12 @@ function getColorBySport(sport) {
 }
 
 function Tags({ list, className }) {
+  // If it's a string, wrap it in an array for consistent rendering logic
+  const sports = Array.isArray(list) ? list : [list];
+
   return (
     <>
-      {list.map((sport) => {
+      {sports.map((sport) => {
         const color = getColorBySport(sport);
         return (
           <Tag
@@ -30,7 +33,10 @@ function Tags({ list, className }) {
 }
 
 Tags.propTypes = {
-  list: PropTypes.arrayOf(PropTypes.string).isRequired,
+  list: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string), // For multiple tags
+    PropTypes.string, // For a single tag
+  ]).isRequired,
   className: PropTypes.string,
 };
 

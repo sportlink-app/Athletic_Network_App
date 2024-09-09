@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 // Regex patterns for validation
 const usernameRegex = /^[a-zA-Z0-9_]{6,16}$/; // 6 to 16 alphanumeric characters or underscores
@@ -78,6 +80,32 @@ const authStore = create((set, get) => ({
   isSignInFormComplete: () => {
     const { email, password } = get().signInForm;
     return email !== "" && password !== "";
+  },
+
+  login: async () => {
+    try {
+      const {
+        signInForm: { email, password },
+      } = get();
+      const response = await axios.post(
+        "https://sportlink-z9gy.onrender.com/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: { "content-type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+      set({ isAuthenticated: true });
+      // Save token or perform other authentication actions if needed
+    } catch (error) {
+      console.error("Login failed", error);
+      set({ isAuthenticated: false });
+      throw error; // Re-throw to be caught in the SignInForm
+    }
   },
 }));
 

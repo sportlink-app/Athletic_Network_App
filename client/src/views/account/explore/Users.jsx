@@ -71,7 +71,7 @@ function Users() {
     />
   ));
   return (
-    <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 lg:gap-y-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+    <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 lg:gap-y-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 xl:gap-x-8">
       {usersList}
     </div>
   );

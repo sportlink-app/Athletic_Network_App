@@ -10,7 +10,7 @@ function UserCard({ username, gender, isAvailable, city, sports }) {
   const coverBgColor = getRandomColor(username);
   return (
     <Link to={`/explore/${username}`}>
-      <Card className="p-0 rounded-2xl overflow-hidden hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer">
+      <Card className="h-full p-0 rounded-2xl overflow-hidden hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer">
         <div
           style={{ backgroundColor: coverBgColor }}
           className=" relative w-full h-14 rounded-t-2xl border-4 border-white"

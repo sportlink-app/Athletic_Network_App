@@ -15,6 +15,9 @@ li {
     list-style: none;
 }
 
+p{
+    line-height: 1.7 !important;
+}
 /* Light button */
 .light span {
     color: #31e528 !important; /* green */
@@ -108,3 +111,8 @@ li {
 .green-spin .ant-spin-dot-item {
     background-color: #31e528 !important; /* green */
 }
+
+
+
+
+

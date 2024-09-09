@@ -1,4 +1,4 @@
-import { Button, Input, Spin } from "antd";
+import { Button, Input, Spin, message } from "antd";
 import {
   UserOutlined,
   EyeInvisibleOutlined,
@@ -7,16 +7,40 @@ import {
 import authStore from "../../../store/user/authStore";
 
 function SignInForm() {
-  const { signInForm, handleSignInForm, isSignInFormComplete, isLoading } =
-    authStore((state) => ({
-      signInForm: state.signInForm,
-      handleSignInForm: state.handleSignInForm,
-      isSignInFormComplete: state.isSignInFormComplete(),
-      isLoading: state.isLoading,
-    }));
+  const {
+    signInForm,
+    handleSignInForm,
+    isSignInFormComplete,
+    isLoading,
+    login,
+  } = authStore((state) => ({
+    signInForm: state.signInForm,
+    handleSignInForm: state.handleSignInForm,
+    isSignInFormComplete: state.isSignInFormComplete(),
+    isLoading: state.isLoading,
+    login: state.login,
+  }));
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Call login function from authStore
+      await login();
+      message.success("Login successful");
+      // Optionally redirect or perform other actions
+    } catch (error) {
+      message.error("Login failed. Please check your credentials.");
+    }
+  };
 
   return (
-    <form className="flex flex-col gap-3 text-left" action="#" method="POST">
+    <form
+      onSubmit={handleLogin}
+      className="flex flex-col gap-3 text-left"
+      action="#"
+      method="POST"
+    >
       <label
         htmlFor="email"
         className="ml-2 font-medium leading-6 text-gray-900 capitalize"
@@ -49,8 +73,9 @@ function SignInForm() {
         style={{ borderRadius: "50px" }}
       />
       <Button
+        type="primary" // Ant Design button type
+        htmlType="submit" // HTML attribute to specify submit button
         disabled={!isSignInFormComplete || isLoading}
-        type="primary"
         shape="round"
         size="large"
         className="bg-green hover:!bg-green/80 mx-auto mt-4"
@@ -61,7 +86,6 @@ function SignInForm() {
             <UserOutlined size={16} />
           )
         }
-        iconPosition="end"
       >
         Sign In
       </Button>

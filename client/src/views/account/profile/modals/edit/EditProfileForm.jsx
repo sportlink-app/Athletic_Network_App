@@ -89,7 +89,6 @@ function EditProfileForm() {
         status={errors.bio ? "error" : ""}
         placeholder="Write a brief biography about yourself"
         maxLength={180}
-        rows={4}
         autoSize={{
           minRows: 3,
           maxRows: 5,
@@ -136,6 +135,7 @@ function EditProfileForm() {
           label: name,
         }))}
         size="large"
+        allowClear
         onChange={handleSportsChange}
       />
     </li>
