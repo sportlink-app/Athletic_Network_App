@@ -61,14 +61,14 @@ def signup():
         token = jwt.encode({
             'id': new_user.id,
             'username': new_user.username,
+            'isProfileCompleted': new_user.isProfileCompleted,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, 'SECRET_KEY')
 
         # Return success message
         return jsonify({
             "message": "Profile created successfully!",
-            "token": token,
-            "isProfileCompleted": False
+            "token": token
         }), 201
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
@@ -86,10 +86,11 @@ def login():
         token = jwt.encode({
             'id': user.id,
             'username': user.username,
+            'isProfileCompleted': user.isProfileCompleted,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, 'SECRET_KEY')
 
-        return jsonify({"message": "Login successful", "token": token, "isProfileCompleted": user.isProfileCompleted}), 200
+        return jsonify({"message": "Login successful", "token": token}), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
