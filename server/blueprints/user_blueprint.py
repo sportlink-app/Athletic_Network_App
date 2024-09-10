@@ -117,7 +117,7 @@ def login():
 
 # Complete Profile API
 @user_blueprint.route('/complete-profile', methods=['POST'])
-@token_required(skip_profile_check=True)
+
 def complete_profile(current_user):
     try:
         user = current_user
