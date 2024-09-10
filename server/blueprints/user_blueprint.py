@@ -40,7 +40,7 @@ def token_required(skip_profile_check=False):
                 if not current_user:
                     return jsonify({"message": "User not found!"}), 404
 
-                # If the route doesn't skip profile check, verify if the profile is completed
+                # If the route skip profile check, verify if the profile is completed
                 if not skip_profile_check and not current_user.isProfileCompleted:
                     return jsonify({"message": "Profile is not completed!"}), 403
 
