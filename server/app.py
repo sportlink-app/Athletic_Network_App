@@ -13,7 +13,7 @@ app.config.from_object(Config)
 # Initialize extensions
 db.init_app(app)
 CORS(app, resources={r"/*": {
-    "origins": "http://localhost:5173",
+    "origins": ["http://localhost:5173", "https://sportlink.onrender.com"],
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"]
 }})
