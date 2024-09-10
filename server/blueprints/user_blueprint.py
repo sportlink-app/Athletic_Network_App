@@ -14,45 +14,47 @@ from flask import request, jsonify
 import jwt
 from models import Myusers  # Assuming you have this import for your user model
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization')
+def token_required(skip_profile_check=False):
+    def decorator(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            token = request.headers.get('Authorization')
 
-        # Check if the token is provided
-        if not token:
-            return jsonify({"message": "Token is missing!"}), 403
+            # Check if the token is provided
+            if not token:
+                return jsonify({"message": "Token is missing!"}), 403
 
-        try:
-            # Extract the JWT token from the 'Bearer token' format
-            token = token.split()[1]
+            try:
+                # Extract the JWT token from the 'Bearer token' format
+                token = token.split()[1]
 
-            # Decode the token, extracting both id and username
-            data = jwt.decode(token, 'SECRET_KEY', algorithms=["HS256"])
+                # Decode the token, extracting both id and username
+                data = jwt.decode(token, 'SECRET_KEY', algorithms=["HS256"])
 
-            # Log the decoded data to check its structure
-            print(f"Decoded token: {data}")
+                # Log the decoded data to check its structure
+                print(f"Decoded token: {data}")
 
-            # Use the id from the token to find the current user
-            current_user = Myusers.query.filter_by(id=data['id']).first()
+                # Use the id from the token to find the current user
+                current_user = Myusers.query.filter_by(id=data['id']).first()
 
-            if not current_user:
-                return jsonify({"message": "User not found!"}), 404
+                if not current_user:
+                    return jsonify({"message": "User not found!"}), 404
 
-            # Verify if the user's profile is completed
-            if not current_user.isProfileCompleted:
-                return jsonify({"message": "Profile is not completed!"}), 403
+                # If the route doesn't skip profile check, verify if the profile is completed
+                if not skip_profile_check and not current_user.isProfileCompleted:
+                    return jsonify({"message": "Profile is not completed!"}), 403
 
-        except jwt.ExpiredSignatureError:
-            return jsonify({"message": "Token has expired!"}), 403
-        except jwt.InvalidTokenError:
-            return jsonify({"message": "Token is invalid!"}), 403
-        except Exception as e:
-            return jsonify({"message": f"An error occurred: {str(e)}"}), 403
+            except jwt.ExpiredSignatureError:
+                return jsonify({"message": "Token has expired!"}), 403
+            except jwt.InvalidTokenError:
+                return jsonify({"message": "Token is invalid!"}), 403
+            except Exception as e:
+                return jsonify({"message": f"An error occurred: {str(e)}"}), 403
 
-        # Pass the current user to the route
-        return f(current_user, *args, **kwargs)
-    return decorated
+            # Pass the current user to the route
+            return f(current_user, *args, **kwargs)
+        return decorated
+    return decorator
 
 # Sign-Up API
 @user_blueprint.route('/signup', methods=['POST'])
@@ -115,7 +117,7 @@ def login():
 
 # Complete Profile API
 @user_blueprint.route('/complete-profile', methods=['POST'])
-@token_required
+@token_required(skip_profile_check=True)
 def complete_profile(current_user):
     try:
         # Extract data from the request body
