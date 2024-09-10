@@ -1,9 +1,9 @@
 [phases.setup]
-# Ensure that Python and pip are installed
+# Ensure Python3 and pip are installed
 apt_packages = ["python3", "python3-pip"]
 
 [phases.build]
-# Build command: Install dependencies from the 'server' folder
+# Build command to install dependencies from the 'server' folder
 command = "cd server && pip install -r requirements.txt"
 
 [phases.start]
