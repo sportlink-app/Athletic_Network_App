@@ -42,7 +42,7 @@ def token_required(skip_profile_check=False):
 
                 # If the route skip profile check, verify if the profile is completed
                 if not skip_profile_check and not current_user.isProfileCompleted:
-                    return jsonify({"message": "Profile is not completed!"}), 403
+                    return jsonify({"message": "Profile is not completed"}), 403
 
             except jwt.ExpiredSignatureError:
                 return jsonify({"message": "Token has expired!"}), 403
@@ -120,11 +120,10 @@ def login():
 @token_required(skip_profile_check=True)
 def complete_profile(current_user):
     try:
+        user = current_user
+        
         # Extract data from the request body
         data = request.get_json()
-
-        # No need to query the user again, current_user is already fetched in token_required
-        user = current_user
 
         # Update user profile fields
         user.gender = data.get('gender')
