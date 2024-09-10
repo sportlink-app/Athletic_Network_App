@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import MainButton from "../../components/Button";
 import Navbar from "../../components/navbar";
+import authStore from "../../store/user/authStore";
+import Logout from "../auth/Logout";
 
 function MainNavbar() {
+  const { isAuthenticated, isProfileCompleted } = authStore();
+
   const links = [
     { title: "discover", id: "discover" },
     { title: "testimonials", id: "testimonials" },
@@ -11,8 +15,8 @@ function MainNavbar() {
   ];
 
   const logo = (
-    <Link to={"/"}>
-      <img className="h-9 w-auto" src="/logo.svg" />
+    <Link to="/">
+      <img className="h-9 w-auto" src="/logo.svg" alt="Logo" />
     </Link>
   );
 
@@ -25,7 +29,12 @@ function MainNavbar() {
       bgColor="light"
     />
   );
-  return <Navbar startBtn={logo} items={links} endBtn={account} />;
+
+  const endBtn = (
+    <>{isAuthenticated && !isProfileCompleted ? <Logout /> : account}</>
+  );
+
+  return <Navbar startBtn={logo} items={links} endBtn={endBtn} />;
 }
 
 export default MainNavbar;

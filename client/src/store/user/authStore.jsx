@@ -88,6 +88,14 @@ const authStore = create((set, get) => ({
         expires: 7,
       });
 
+      set({
+        signUpForm: {
+          username: "",
+          email: "",
+          password: "",
+        },
+      });
+
       return response.data; // Return the data if needed
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -97,14 +105,6 @@ const authStore = create((set, get) => ({
       } else {
         throw new Error("An unexpected error occurred, please try again later");
       }
-    } finally {
-      set({
-        signUpForm: {
-          username: "",
-          email: "",
-          password: "",
-        },
-      });
     }
   },
 
@@ -144,7 +144,12 @@ const authStore = create((set, get) => ({
       Cookies.set("isProfileCompleted", response.data.isProfileCompleted, {
         expires: 7,
       });
-
+      set({
+        signInForm: {
+          email: "",
+          password: "",
+        },
+      });
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -154,13 +159,6 @@ const authStore = create((set, get) => ({
       } else {
         throw new Error("An unexpected error occurred, please try again later");
       }
-    } finally {
-      set({
-        signInForm: {
-          email: "",
-          password: "",
-        },
-      });
     }
   },
 }));
