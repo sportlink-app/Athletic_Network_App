@@ -1,0 +1,11 @@
+[phases.setup]
+# Ensure that Python and pip are installed
+apt_packages = ["python3", "python3-pip"]
+
+[phases.build]
+# Build command: Install dependencies from the 'server' folder
+command = "cd server && pip install -r requirements.txt"
+
+[phases.start]
+# Start command: Run database migrations and start the Flask app
+command = "cd server && flask db upgrade && gunicorn -w 4 -b 0.0.0.0:$PORT app:app"
