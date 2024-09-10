@@ -9,18 +9,28 @@ from config import Config  # Import Config to load SECRET_KEY
 SECRET_KEY = Config.SECRET_KEY
 user_blueprint = Blueprint('user_blueprint', __name__)
 
-# JWT Token Decorator
+from functools import wraps
+from flask import request, jsonify
+import jwt
+from models import Myusers  # Assuming you have this import for your user model
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
+
+        # Check if the token is provided
         if not token:
             return jsonify({"message": "Token is missing!"}), 403
-        try:
-            # Decode the token, extracting both id and username
-            data = jwt.decode(token.split()[1], 'SECRET_KEY', algorithms=["HS256"])
 
-            # You can log the decoded data to check its structure
+        try:
+            # Extract the JWT token from the 'Bearer token' format
+            token = token.split()[1]
+
+            # Decode the token, extracting both id and username
+            data = jwt.decode(token, 'SECRET_KEY', algorithms=["HS256"])
+
+            # Log the decoded data to check its structure
             print(f"Decoded token: {data}")
 
             # Use the id from the token to find the current user
@@ -28,10 +38,19 @@ def token_required(f):
 
             if not current_user:
                 return jsonify({"message": "User not found!"}), 404
+
+            # Verify if the user's profile is completed
+            if not current_user.isProfileCompleted:
+                return jsonify({"message": "Profile is not completed!"}), 403
+
         except jwt.ExpiredSignatureError:
             return jsonify({"message": "Token has expired!"}), 403
-        except Exception as e:
+        except jwt.InvalidTokenError:
             return jsonify({"message": "Token is invalid!"}), 403
+        except Exception as e:
+            return jsonify({"message": f"An error occurred: {str(e)}"}), 403
+
+        # Pass the current user to the route
         return f(current_user, *args, **kwargs)
     return decorated
 
@@ -95,25 +114,32 @@ def login():
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Complete Profile API
-@user_blueprint.route('/profile/<int:id>', methods=['POST'])
+@user_blueprint.route('/complete-profile', methods=['POST'])
 @token_required
-def complete_profile(current_user, id):
+def complete_profile(current_user):
     try:
+        # Extract data from the request body
         data = request.get_json()
-        user = Myusers.query.get(id)
-        if not user:
-            return jsonify({"message": "User not found!"}), 404
-        if user != current_user:
-            return jsonify({"message": "Unauthorized!"}), 403
+
+        # No need to query the user again, current_user is already fetched in token_required
+        user = current_user
+
+        # Update user profile fields
         user.gender = data.get('gender')
         user.bio = data.get('bio')
         user.sports = ','.join(data.get('sports', []))  # Join sports as comma-separated string
         user.city = data.get('city')
         user.tel = data.get('tel')
         user.isProfileCompleted = True
+
+        # Commit the changes to the database
         db.session.commit()
+
+        # Return a success response
         return jsonify({"message": "Profile completed successfully", "isProfileCompleted": True}), 200
+
     except Exception as e:
+        # Handle any unexpected errors
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get User Profile API
