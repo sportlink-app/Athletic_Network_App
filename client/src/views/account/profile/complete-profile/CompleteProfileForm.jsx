@@ -4,8 +4,14 @@ import userInfoStore from "../../../../store/user/userInfoStore";
 import TextArea from "antd/es/input/TextArea";
 import sportsNames from "../../../../components/SportsNames";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import authStore from "../../../../store/user/authStore"; // Adjust the path as needed
 
 function CompleteProfileForm() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = authStore(); // Get isAuthenticated state from authStore
+
   const {
     updateForm,
     handleUpdateFieldChange,
@@ -23,6 +29,13 @@ function CompleteProfileForm() {
     updateValidationErrors: state.updateValidationErrors,
     handleCompleteProfileForm: state.handleCompleteProfileForm,
   }));
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/"); // Redirect to login page if not authenticated
+    }
+  }, [isAuthenticated, navigate]);
 
   const errors = updateValidationErrors();
 
@@ -156,7 +169,7 @@ function CompleteProfileForm() {
         type="primary"
         shape="round"
         size="large"
-        className="bg-green hover:!bg-green/80 mx-auto mt-4"
+        className="bg-green hover:!bg-green/80 disabled:!bg-green/80  mx-auto mt-4"
         onClick={handleCompleteProfileForm}
         icon={
           isLoading ? (

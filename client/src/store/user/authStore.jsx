@@ -8,10 +8,17 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email pattern
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 characters, 1 uppercase, 1 number
 
 const authStore = create((set, get) => ({
-  isAuthenticated: true,
-  isProfileCompleted: true,
+  isAuthenticated: Cookies.get("token") || null,
+  setAuthState: (isAuthenticated) => {
+    set({ isAuthenticated });
+  },
+  isProfileCompleted: Cookies.get("isProfileCompleted") || null,
+  setProfileCompletedState: (isProfileCompleted) => {
+    set({ isProfileCompleted });
+  },
+
   dataError: false,
-  isLoading: false,
+
   signUpForm: {
     username: "",
     email: "",
@@ -61,6 +68,46 @@ const authStore = create((set, get) => ({
     return errors;
   },
 
+  signUp: async () => {
+    try {
+      const { username, email, password } = get().signUpForm;
+      const response = await axios.post(
+        "https://sportlink-z9gy.onrender.com/signup",
+        { username, email, password },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      // Set authentication state
+      set({ isAuthenticated: true });
+
+      // Store token and isProfileCompleted in cookies
+      Cookies.set("token", response.data.token, { expires: 7 });
+      Cookies.set("isProfileCompleted", response.data.isProfileCompleted, {
+        expires: 7,
+      });
+
+      return response.data; // Return the data if needed
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        throw new Error("Username or email already exists!");
+      } else if (error.response && error.response.status === 500) {
+        throw new Error("Sign up failed, please try again");
+      } else {
+        throw new Error("An unexpected error occurred, please try again later");
+      }
+    } finally {
+      set({
+        signUpForm: {
+          username: "",
+          email: "",
+          password: "",
+        },
+      });
+    }
+  },
+
   signInForm: {
     email: "",
     password: "",
@@ -84,26 +131,36 @@ const authStore = create((set, get) => ({
 
   login: async () => {
     try {
-      const {
-        signInForm: { email, password },
-      } = get();
+      const { email, password } = get().signInForm;
       const response = await axios.post(
         "https://sportlink-z9gy.onrender.com/login",
-        {
-          email,
-          password,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
       );
-      console.log(response.data);
+
+      // Set authentication state
       set({ isAuthenticated: true });
-      // Save token or perform other authentication actions if needed
+      Cookies.set("token", response.data.token, { expires: 7 });
+      Cookies.set("isProfileCompleted", response.data.isProfileCompleted, {
+        expires: 7,
+      });
+
+      return response.data;
     } catch (error) {
-      console.error("Login failed", error);
-      set({ isAuthenticated: false });
-      throw error; // Re-throw to be caught in the SignInForm
+      if (error.response && error.response.status === 401) {
+        throw new Error("Email or password is incorrect");
+      } else if (error.response && error.response.status === 500) {
+        throw new Error("Login failed, please try again");
+      } else {
+        throw new Error("An unexpected error occurred, please try again later");
+      }
+    } finally {
+      set({
+        signInForm: {
+          email: "",
+          password: "",
+        },
+      });
     }
   },
 }));

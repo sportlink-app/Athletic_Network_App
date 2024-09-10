@@ -1,30 +1,48 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import authStore from "../store/user/authStore"; // Ensure the correct import path
+import authStore from "../store/user/authStore";
+
 import { Spin } from "antd";
-
-function CheckAuth(props) {
-  const { isProfileCompleted, isAuthenticated } = authStore();
-  const [loading, setLoading] = useState(false);
-
+function CheckAuth({ children }) {
+  const {
+    isAuthenticated,
+    setAuthState,
+    isProfileCompleted,
+    setProfileCompletedState,
+  } = authStore();
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
+    const checkAuth = async () => {
+      const token = Cookies.get("token");
+      const profileCompleted = Cookies.get("isProfileCompleted");
 
+      if (token) {
+        setAuthState(true);
+        setProfileCompletedState(profileCompleted === "true");
+        setLoading(false);
+      } else {
+        setAuthState(false);
+        setLoading(false);
+        navigate("/account/login");
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
     if (!isAuthenticated) {
-      setLoading(false);
-      navigate("/account");
+      navigate("/account/login");
     } else if (!isProfileCompleted) {
-      setLoading(false);
-      navigate("/complete-profile");
-    } else {
-      setLoading(false);
+      navigate("/account/complete-profile");
     }
   }, [isAuthenticated, isProfileCompleted, navigate]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="h-[calc(100vh-59.19px)] grid place-items-center">
         <Spin size="large" className="green-spin" />
@@ -32,8 +50,7 @@ function CheckAuth(props) {
     );
   }
 
-  // Render the children only if the profile is complete
-  return <div>{props.children}</div>;
+  return isAuthenticated && isProfileCompleted ? children : null;
 }
 
 CheckAuth.propTypes = {

@@ -1,31 +1,11 @@
 import PropTypes from "prop-types";
 import NavbarToggle from "./toggle/NavbarToggle";
 import NavbarLinks from "./NavbarLinks";
-import MainButton from "../Button";
 import mainStore from "../../store/mainStore";
-import authStore from "../../store/user/authStore";
-import { Link } from "react-router-dom";
-import ProfileAvatar from "../Avatar";
 
-function Navbar({ items }) {
+function Navbar({ startBtn, items, endBtn }) {
   const { isNavbarOpen } = mainStore();
-  const { isAuthenticated } = authStore();
-  const endBtn = isAuthenticated ? "logout" : "account";
-  const startBtns = {
-    logo: (
-      <Link to={"/"}>
-        <img className="h-9 w-auto" src="/logo.svg" />
-      </Link>
-    ),
-    profile: (
-      <Link to={"/profile"}>
-        <ProfileAvatar username="seifAaza 37" gender="male" size={40} />
-      </Link>
-    ),
-  };
-  const startBtn = isAuthenticated ? startBtns.profile : startBtns.logo;
 
-  const { closeNavbar } = mainStore();
   const mobileCustom = (
     <div
       className={`${
@@ -33,15 +13,7 @@ function Navbar({ items }) {
       } absolute top-full bg-gradient-to-r from-cyan to-green left-0 w-full flex flex-col gap-14 items-center md:hidden overflow-hidden `}
     >
       <NavbarLinks links={items} className="mt-20" />
-      <MainButton
-        onClick={() => closeNavbar()}
-        href={endBtn}
-        text={endBtn}
-        type="primary"
-        shape="round"
-        bgColor="light"
-        className="md:hidden"
-      />
+      <span className=" md:hidden">{endBtn}</span>
     </div>
   );
 
@@ -54,15 +26,7 @@ function Navbar({ items }) {
         <div className="flex">{startBtn}</div>
         <NavbarLinks links={items} className="hidden md:flex" />
         <NavbarToggle />
-        <MainButton
-          onClick={() => closeNavbar()}
-          href={endBtn}
-          text={endBtn}
-          type="primary"
-          shape="round"
-          bgColor="light"
-          className="hidden md:block"
-        />
+        <span className="hidden md:block">{endBtn}</span>
       </nav>
       {mobileCustom}
     </header>

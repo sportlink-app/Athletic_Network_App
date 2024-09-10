@@ -52,7 +52,7 @@ function Header() {
   return (
     <div className="relative isolate pt-24 lg:pt-36 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden ">
       <img
-        src="/images/header-bg.jpg"
+        // src="/images/header-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full object-cover md:object-center grayscale opacity-70"
       />
