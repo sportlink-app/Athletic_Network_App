@@ -136,7 +136,7 @@ def complete_profile(current_user):
         db.session.commit()
 
         # Return a success response
-        return jsonify({"message": "Profile completed successfully", "isProfileCompleted": True}), 200
+        return jsonify({"message": "Profile completed successfully"}), 200
 
     except Exception as e:
         # Handle any unexpected errors
