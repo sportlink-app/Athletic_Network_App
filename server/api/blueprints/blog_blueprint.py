@@ -1,0 +1,134 @@
+from flask import Blueprint, request, jsonify
+from ..models import db, Myusers, Sport, Blog
+from .user_blueprint import token_required
+from ..config import Config
+
+SECRET_KEY = Config.SECRET_KEY
+blog_blueprint = Blueprint('blog_blueprint', __name__)
+
+# Create Blog API
+@blog_blueprint.route('/blogs', methods=['POST'])
+@token_required()
+def create_blog(current_user):
+    try:
+        data = request.get_json()
+        title = data.get('title')
+        content = data.get('content')
+        sport_name = data.get('sport')
+
+        # Validate data
+        if not title or not content or not sport_name:
+            return jsonify({"message": "Missing required fields"}), 400
+
+        # Ensure sport_name is a string, not a list
+        if isinstance(sport_name, list):
+            if len(sport_name) == 1:
+                sport_name = sport_name[0]
+            else:
+                return jsonify({"message": "Invalid sport_name format. It should be a single sport name."}), 400
+
+        # Check if the sport exists by name
+        sport = Sport.query.filter_by(name=sport_name).first()
+        if not sport:
+            return jsonify({"message": "Invalid sport"}), 400
+
+        # Create and add the blog
+        blog = Blog(title=title, content=content, sport=sport, author=current_user)
+        db.session.add(blog)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Blog created successfully"
+        }), 201
+    except Exception as e:
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500
+
+# Get All Blogs API
+@blog_blueprint.route('/blogs', methods=['GET'])
+@token_required()
+def get_all_blogs(current_user):
+    try:
+        # Get pagination parameters from the query string
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+
+        # Validate pagination parameters
+        if page < 1 or per_page < 1:
+            return jsonify({"message": "Page number and per_page must be positive integers"}), 400
+
+        # Base query to get all blogs, ordered by creation date
+        query = Blog.query.order_by(Blog.created_at.desc())
+
+        # Paginate the results
+        paginated_blogs = query.paginate(page=page, per_page=per_page, error_out=False)
+
+        # Prepare the response data
+        result = []
+        for blog in paginated_blogs.items:
+            result.append({
+                "id": blog.id,
+                "title": blog.title,
+                "content": blog.content,
+                "created_at": blog.created_at,
+                "sport": blog.sport.name,
+                "author": blog.author.username
+            })
+
+        # Prepare pagination metadata
+        pagination_metadata = {
+            "total_items": paginated_blogs.total,
+            "total_pages": paginated_blogs.pages,
+            "current_page": paginated_blogs.page,
+            "per_page": paginated_blogs.per_page,
+            "items": result
+        }
+
+        return jsonify(pagination_metadata), 200
+    except Exception as e:
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500
+
+# Delete Blog API
+@blog_blueprint.route('/blogs/<int:blog_id>', methods=['DELETE'])
+@token_required()
+def delete_blog(current_user, blog_id):
+    try:
+        blog = Blog.query.get(blog_id)
+
+        if not blog:
+            return jsonify({"message": "Blog not found"}), 404
+
+        if blog.author.id != current_user.id:
+            return jsonify({"message": "You are not authorized to delete this blog"}), 403
+
+        db.session.delete(blog)
+        db.session.commit()
+
+        return jsonify({"message": "Blog deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500
+
+@blog_blueprint.route('/top_creators', methods=['GET'])
+@token_required()
+def get_top_creators(current_user):
+    try:
+        # Aggregate blog counts by user
+        top_creators_query = db.session.query(
+            Myusers.username,
+            Myusers.gender,
+            db.func.count(Blog.id).label('blog_count')
+        ).join(Blog, Myusers.id == Blog.user_id).group_by(Myusers.username, Myusers.gender).order_by(db.desc('blog_count')).limit(5)
+
+        top_creators = top_creators_query.all()
+
+        # Prepare the response data
+        result = []
+        for creator in top_creators:
+            result.append({
+                "username": creator.username,
+                "gender": creator.gender,
+                "blog_count": creator.blog_count
+            })
+
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500

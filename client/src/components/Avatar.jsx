@@ -18,9 +18,9 @@ function ProfileAvatar({
   username,
   gender,
   size = 64,
-  className = "",
   dot = false,
-  dotColor,
+  count,
+  className = "",
 }) {
   const maleHair = ["dougFunny", "dannyPhantom", "fonze", "mrClean"];
   const femaleHair = ["pixie", "full"];
@@ -44,7 +44,13 @@ function ProfileAvatar({
   const avatarUrl = getAvatarUrl(username, hairStyle, mouthStyle);
 
   return (
-    <Badge dot={dot} color={dotColor} offset={[-8, 50]} className={className}>
+    <Badge
+      count={count}
+      dot={dot}
+      color="green"
+      offset={[-8, 50]}
+      className={className}
+    >
       <Avatar
         src={avatarUrl}
         size={size}
@@ -56,12 +62,12 @@ function ProfileAvatar({
 
 ProfileAvatar.propTypes = {
   username: PropTypes.string.isRequired,
-  gender: PropTypes.oneOf(["male", "female"]).isRequired,
+  gender: PropTypes.string.isRequired,
   bgColor: PropTypes.string,
   size: PropTypes.number,
-  className: PropTypes.string,
   dot: PropTypes.bool,
-  dotColor: PropTypes.string,
+  count: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default ProfileAvatar;

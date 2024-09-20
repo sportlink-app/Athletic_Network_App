@@ -1,43 +1,59 @@
 import PropTypes from "prop-types";
-import { Button, Input, Select, Spin, Tag } from "antd";
-import userInfoStore from "../../../../store/user/userInfoStore";
-import TextArea from "antd/es/input/TextArea";
-import sportsNames from "../../../../components/SportsNames";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { Alert, Button, Input, Select, Spin, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import authStore from "../../../../store/user/authStore"; // Adjust the path as needed
+import { useState } from "react";
+import TextArea from "antd/es/input/TextArea";
+import { ArrowRightOutlined } from "@ant-design/icons";
+import completeProfileStore from "../../../../store/user/completeProfileStore";
+import authStore from "../../../../store/user/authStore"; // Adjust path as needed
+import useSports from "../../../../components/SportsNames";
 
 function CompleteProfileForm() {
-  const navigate = useNavigate();
-  const { isAuthenticated } = authStore(); // Get isAuthenticated state from authStore
+  const { setProfileCompletedState } = authStore((state) => ({
+    setProfileCompletedState: state.setProfileCompletedState,
+  }));
 
   const {
     updateForm,
     handleUpdateFieldChange,
     handleSportsChange,
     isFormComplete,
-    isLoading,
     updateValidationErrors,
-    handleCompleteProfileForm,
-  } = userInfoStore((state) => ({
+    completeProfile,
+  } = completeProfileStore((state) => ({
     updateForm: state.updateForm,
     handleUpdateFieldChange: state.handleUpdateFieldChange,
     handleSportsChange: state.handleSportsChange,
     isFormComplete: state.isFormComplete,
-    isLoading: state.isLoading,
     updateValidationErrors: state.updateValidationErrors,
-    handleCompleteProfileForm: state.handleCompleteProfileForm,
+    completeProfile: state.completeProfile,
   }));
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/"); // Redirect to login page if not authenticated
-    }
-  }, [isAuthenticated, navigate]);
+  const navigate = useNavigate();
 
   const errors = updateValidationErrors();
+  const [isLoading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleCompleteProfile = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    try {
+      setLoading(true);
+      await completeProfile(); // Call completeProfile function
+
+      // Update the profile completion status in authStore
+      setProfileCompletedState(true);
+
+      navigate("/profile"); // Navigate to profile page
+    } catch (error) {
+      // Handle the error message set in the store
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false); // Stop loading spinner
+    }
+  };
 
   const bioTextArea = (
     <li className="mt-2 flex flex-col gap-1">
@@ -59,6 +75,7 @@ function CompleteProfileForm() {
     </li>
   );
 
+  const sports = useSports();
   const sportsSelect = (
     <li className="mt-2 flex flex-col gap-1 w-full">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
@@ -84,7 +101,7 @@ function CompleteProfileForm() {
         maxCount={8}
         maxTagCount={1}
         style={{ width: "100%", borderRadius: "10px" }}
-        options={sportsNames.map((name) => ({ value: name, label: name }))}
+        options={sports.map((name) => ({ value: name, label: name }))}
         size="large"
         onChange={handleSportsChange}
       />
@@ -155,7 +172,12 @@ function CompleteProfileForm() {
   );
 
   return (
-    <form className="flex flex-col gap-3 text-left" action="#" method="POST">
+    <form
+      onSubmit={handleCompleteProfile}
+      action="#"
+      method="POST"
+      className="flex flex-col gap-3 text-left"
+    >
       <ul className="sm:flex gap-6">
         {cityInput}
         {telInput}
@@ -164,13 +186,23 @@ function CompleteProfileForm() {
         {sportsSelect} {genderSelect}
       </ul>
       {bioTextArea}
+      {errorMessage && (
+        <Alert
+          message={errorMessage}
+          type="error"
+          className="rounded-xl p-3"
+          showIcon
+          closable
+          onClose={() => setErrorMessage("")}
+        />
+      )}
       <Button
+        htmlType="submit"
         disabled={!isFormComplete() || isLoading}
         type="primary"
         shape="round"
         size="large"
-        className="bg-green hover:!bg-green/80 disabled:!bg-green/80  mx-auto mt-4"
-        onClick={handleCompleteProfileForm}
+        className="bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
         icon={
           isLoading ? (
             <Spin size="small" className="white-spin" />

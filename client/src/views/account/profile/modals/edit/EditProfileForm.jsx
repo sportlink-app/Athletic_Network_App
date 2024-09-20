@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import { Form, Input, Select, Tag, Button, Spin } from "antd";
-import sportsNames from "../../../../../components/SportsNames";
+import { Input, Select, Tag, Button, Spin, Alert, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
-import editUserProfileStore from "../../../../../store/user/editUserProfile";
+import updateProfileStore from "../../../../../store/user/updateProfile";
+import useSports from "../../../../../components/SportsNames";
+import PropTypes from "prop-types";
 
-function EditProfileForm() {
+function EditProfileForm({ onSuccess }) {
   const {
     gender,
     editForm,
@@ -14,24 +14,38 @@ function EditProfileForm() {
     handleUpdateFieldChange,
     isFormComplete,
     updateValidationErrors,
-    isLoading,
-  } = editUserProfileStore((state) => ({
-    gender: state.gender,
-    editForm: state.editForm,
-    handleSportsChange: state.handleSportsChange,
-    handleUpdateFieldChange: state.handleUpdateFieldChange,
+    updateProfile,
+  } = updateProfileStore((state) => ({
+    ...state,
     isFormComplete: state.isFormComplete(),
-    isLoading: state.isLoading,
-    updateValidationErrors: state.updateValidationErrors,
   }));
 
   const errors = updateValidationErrors();
 
   const [genderValue, setGenderValue] = useState(editForm.gender || gender);
-
   const handleGenderChange = (value) => {
     setGenderValue(value);
     handleUpdateFieldChange({ target: { name: "gender", value } });
+  };
+
+  const [isLoading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    try {
+      setLoading(true);
+      await updateProfile();
+      onSuccess();
+      messageApi.success("Profile updated successfully");
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const usernameInput = (
@@ -68,8 +82,8 @@ function EditProfileForm() {
         onChange={handleGenderChange}
         style={{ borderRadius: "15px" }}
         options={[
-          { value: "Male", label: "Male" },
-          { value: "Female", label: "Female" },
+          { value: "male", label: "Male" },
+          { value: "female", label: "Female" },
         ]}
         size="large"
         className="w-full lg:w-[110%]"
@@ -101,7 +115,6 @@ function EditProfileForm() {
 
   const tagRender = (props) => {
     const { label, closable, onClose } = props;
-
     return (
       <Tag
         color="default"
@@ -113,6 +126,8 @@ function EditProfileForm() {
       </Tag>
     );
   };
+
+  const sports = useSports(); // Call the hook to get the sports array
 
   const sportsSelect = (
     <li className="mt-2 flex flex-col gap-1">
@@ -130,7 +145,7 @@ function EditProfileForm() {
           width: "100%",
           borderRadius: "10px",
         }}
-        options={sportsNames.map((name) => ({
+        options={sports.map((name) => ({
           value: name,
           label: name,
         }))}
@@ -181,48 +196,59 @@ function EditProfileForm() {
   );
 
   return (
-    <Form
-      labelCol={{
-        span: 4,
-      }}
-      wrapperCol={{
-        span: 14,
-      }}
-      layout="horizontal"
-      className="flex flex-col gap-2 lg:gap-3 max-w-sm mx-auto pt-4 text-left"
-    >
-      <ul className="sm:flex gap-8">
-        {usernameInput} {genderSelect}
-      </ul>
-      {bioTextArea}
-      {sportsSelect}
-      <ul className="sm:flex gap-8">
-        {cityInput} {telInput}
-      </ul>
-      <div className="mt-6 sm:flex sm:flex-row-reverse">
-        <Button
-          disabled={!isFormComplete || isLoading}
-          type="primary"
-          shape="round"
-          size="large"
-          className="bg-green hover:!bg-green/80"
-          icon={
-            isLoading ? (
-              <Spin size="small" className="white-spin" />
-            ) : (
-              <CheckOutlined size={16} />
-            )
-          }
-          iconPosition="end"
-        >
-          Save
-        </Button>
-      </div>
-    </Form>
+    <>
+      {contextHolder}
+      <form
+        onSubmit={handleUpdateProfile}
+        method="PUT"
+        action="#"
+        className="flex flex-col gap-2 lg:gap-3 max-w-sm mx-auto pt-4 text-left"
+      >
+        <ul className="sm:flex gap-8">
+          {usernameInput} {genderSelect}
+        </ul>
+        {bioTextArea}
+        {sportsSelect}
+        <ul className="sm:flex gap-8">
+          {cityInput} {telInput}
+        </ul>
+        {errorMessage && (
+          <Alert
+            message={errorMessage}
+            type="error"
+            className="rounded-xl p-3"
+            showIcon
+            closable
+            onClose={() => setErrorMessage("")}
+          />
+        )}
+        <div className="mt-2 sm:flex sm:flex-row-reverse">
+          <Button
+            htmlType="submit"
+            disabled={!isFormComplete || isLoading}
+            type="primary"
+            shape="round"
+            size="large"
+            className="bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+            icon={
+              isLoading ? (
+                <Spin size="small" className="white-spin" />
+              ) : (
+                <CheckOutlined size={16} />
+              )
+            }
+            iconPosition="end"
+          >
+            Save
+          </Button>
+        </div>
+      </form>
+    </>
   );
 }
 
 EditProfileForm.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
   label: PropTypes.node,
   closable: PropTypes.bool,
   onClose: PropTypes.func,

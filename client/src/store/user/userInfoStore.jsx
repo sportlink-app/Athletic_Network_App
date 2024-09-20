@@ -1,91 +1,137 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import axios from "axios";
+import authStore from "./authStore";
 
-// Minimum bio word count validation
-const bioMinWords = 10;
-// Phone number validation regex
-const telRegex = /^0\d{8,}$/;
-// Email validation regex
+const userInfoStore = create(
+  persist(
+    (set, get) => ({
+      username: "",
+      gender: "",
+      bio: "",
+      sports: [],
+      email: "",
+      city: "",
+      tel: "",
+      availability: null,
 
-const userInfoStore = create((set, get) => ({
-  username: "seifeddine",
-  gender: "male",
-  isAvailable: true,
-  bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium beatae maxime et nihil est, illo quis. Hic itaque eius molestias.",
-  sports: [
-    "football",
-    "basketball",
-    "tennis",
-    "volleyball",
-    "sport5",
-    "sport6",
-    "sport7",
-    "sport8",
-    "sport9",
-    "sport10",
-  ],
-  email: "seifeddine.aaza@gmail.com",
-  city: "casablanca",
-  tel: "0728365287",
+      // Fetch user profile
+      getProfile: async () => {
+        try {
+          if (!get().username) {
+            const response = await axios.get("http://127.0.0.1:5000/profile", {
+              headers: {
+                Authorization: `Bearer ${authStore.getState().token}`,
+                "Content-Type": "application/json",
+              },
+            });
 
-  updateForm: {
-    gender: "male",
-    bio: "",
-    sports: [],
-    city: "",
-    tel: "",
-  },
-  isLoading: false,
-
-  isFormComplete: () => {
-    const { bio, tel, sports, city } = get().updateForm;
-    const bioValid = bio.split(/\s+/).length >= bioMinWords; // Check for minimum word count
-    const telValid = telRegex.test(tel);
-    const sportsValid = sports.length > 0; // Ensure sports is not empty
-    const cityValid = city.trim() !== ""; // Ensure city is not empty
-
-    return bioValid && telValid && sportsValid && cityValid;
-  },
-
-  updateValidationErrors: () => {
-    const { bio, tel, sports, city } = get().updateForm;
-
-    const errors = {
-      bio: bio
-        ? bio.split(/\s+/).length >= bioMinWords
-          ? ""
-          : `Bio must be at least ${bioMinWords} words long.`
-        : "",
-      tel: tel
-        ? telRegex.test(tel)
-          ? ""
-          : "Phone number must start with 0 and contain at least 8 digits."
-        : "",
-      sports: sports.length > 0 ? "" : "Please select at least one sport.",
-      city: city.trim() !== "" ? "" : "City field cannot be empty.",
-    };
-
-    return errors;
-  },
-
-  handleUpdateFieldChange: (e) => {
-    const { value, name } = e.target;
-    set((state) => ({
-      updateForm: {
-        ...state.updateForm,
-        [name]: value,
+            const { username, gender, bio, sports, email, city, tel } =
+              response.data;
+            set({ username, gender, bio, sports, email, city, tel });
+          }
+        } catch (error) {
+          console.error("Error in getProfile:", error.message);
+          throw error;
+        }
       },
-    }));
-    console.log(get().updateForm);
-  },
 
-  handleSportsChange: (selectedSports) => {
-    set((state) => ({
-      updateForm: {
-        ...state.updateForm,
-        sports: selectedSports,
+      // Fetch user availability
+      getAvailability: async (username) => {
+        try {
+          const response = await axios.get(
+            `http://127.0.0.1:5000/availability/${username}`,
+            {
+              headers: {
+                Authorization: `Bearer ${authStore.getState().token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          set({ availability: response.data.availability });
+          return response.data;
+        } catch (error) {
+          console.error("Error in getAvailability:", error.message);
+          throw error;
+        }
       },
-    }));
-  },
-}));
+
+      // Update availability
+      updateAvailability: async (newAvailability) => {
+        try {
+          const response = await axios.put(
+            "http://127.0.0.1:5000/availability",
+            { availability: newAvailability },
+            {
+              headers: {
+                Authorization: `Bearer ${authStore.getState().token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          set({ availability: response.data.availability });
+        } catch (error) {
+          console.error("Error updating availability:", error.message);
+          throw error;
+        }
+      },
+
+      // Method to delete user profile
+      deleteProfile: async () => {
+        try {
+          await axios.delete("http://127.0.0.1:5000/profile", {
+            headers: {
+              Authorization: `Bearer ${authStore.getState().token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          // Clear user data after successful deletion
+          set({
+            username: "",
+            gender: "",
+            bio: "",
+            sports: [],
+            email: "",
+            city: "",
+            tel: "",
+            availability: null,
+          });
+
+          // Remove from localStorage
+          localStorage.removeItem("user-info");
+
+          console.log("Profile deleted successfully");
+        } catch (error) {
+          console.error("Error deleting profile:", error.message);
+          throw error;
+        }
+      },
+
+      // Clear user info on logout or profile deletion
+      clearUserInfo: () => {
+        set({
+          username: "",
+          gender: "",
+          bio: "",
+          sports: [],
+          email: "",
+          city: "",
+          tel: "",
+          availability: null,
+        });
+
+        // Clear the localStorage entry for user-info
+        localStorage.removeItem("user-info");
+      },
+    }),
+    {
+      name: "user-info",
+      getStorage: () => localStorage,
+    }
+  )
+);
 
 export default userInfoStore;

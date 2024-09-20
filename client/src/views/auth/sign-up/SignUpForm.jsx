@@ -16,42 +16,35 @@ function SignUpForm() {
     signUpValidationErrors,
     signUp,
   } = authStore((state) => ({
-    signUpForm: state.signUpForm,
-    handleSignUpForm: state.handleSignUpForm,
-    isSignUpFormComplete: state.isSignUpFormComplete(),
-    signUpValidationErrors: state.signUpValidationErrors,
-    signUp: state.signUp,
+    ...state,
   }));
 
   const errors = signUpValidationErrors();
-
   const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // Track error messages
-
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset error message before submitting
+    setErrorMessage("");
 
     try {
       setLoading(true);
-      await signUp(); // Call login function from authStore
+      await signUp(); // Call signUp function from authStore
       navigate("/complete-profile");
     } catch (error) {
-      // Handle the error message set in the store
-      setErrorMessage(error.message); // Set the specific error message
+      setErrorMessage(error.message || "An unexpected error occurred");
     } finally {
-      setLoading(false); // Stop loading spinner
+      setLoading(false);
     }
   };
 
   return (
     <form
       onSubmit={handleSignUp}
-      className="flex flex-col gap-3 text-left"
-      action="#"
       method="POST"
+      action="#"
+      className="flex flex-col gap-3 text-left"
     >
       <li className="flex flex-col gap-1">
         <label
@@ -125,16 +118,16 @@ function SignUpForm() {
           className="rounded-xl p-3"
           showIcon
           closable
-          onClose={() => setErrorMessage("")} // Clear the error message when alert is closed
+          onClose={() => setErrorMessage("")}
         />
       )}
       <Button
         htmlType="submit"
-        disabled={!isSignUpFormComplete || isLoading}
+        disabled={!isSignUpFormComplete() || isLoading}
         type="primary"
         shape="round"
         size="large"
-        className="bg-green hover:!bg-green/80 disabled:!bg-green/80 mx-auto mt-4"
+        className="bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mx-auto mt-4"
         icon={
           isLoading ? (
             <Spin size="small" className="white-spin" />

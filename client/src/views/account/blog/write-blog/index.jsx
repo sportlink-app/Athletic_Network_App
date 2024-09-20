@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Button, Modal } from "antd";
 import { FormOutlined } from "@ant-design/icons";
-import WriteBlogModal from "./WriteBlogModal";
+import WriteBlogForm from "./WriteBlogForm";
 
 function WriteBlog() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const showModal = () => setIsModalOpen(true);
-  const handleOk = () => setIsModalOpen(false);
   const handleCancel = () => setIsModalOpen(false);
+
+  const handleSuccess = () => {
+    setIsModalOpen(false); // Close modal on successful profile update
+  };
+
   return (
     <>
       <Button
@@ -15,7 +20,7 @@ function WriteBlog() {
         type="primary"
         shape="round"
         size="large"
-        className=" bg-cyan hover:!bg-cyan/80"
+        className=" bg-cyan hover:!bg-cyan hover:brightness-105"
         icon={<FormOutlined size={16} />}
         iconPosition="start"
       >
@@ -24,13 +29,12 @@ function WriteBlog() {
 
       <Modal
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         title="Write Blog"
         footer={null}
         style={{ borderRadius: "100px", textAlign: "center" }}
       >
-        <WriteBlogModal />
+        <WriteBlogForm onSuccess={handleSuccess} />
       </Modal>
     </>
   );

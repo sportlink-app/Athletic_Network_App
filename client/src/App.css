@@ -1,5 +1,5 @@
 html {
-    background-color: #f9fafb; /* bg-gray-50 */
+    background-color: #f5fbf7; /* bg-gray-50 */
     scroll-behavior: smooth !important;
 }
 
@@ -45,7 +45,7 @@ p{
 .ant-select-selector,
 .ant-popover .ant-popover-inner,
 .ant-select-dropdown,
-.ant-pagination .ant-pagination-item {
+.ant-pagination .ant-pagination-item, .ant-pagination-item-link {
     border-radius: 18px !important;
 }
 
@@ -69,10 +69,6 @@ p{
 }
 
 /* Badge dot */
-.ant-scroll-number {
-    height: 0.5rem !important; /* h-2 */
-    width: 0.5rem !important; /* w-2 */
-}
 
 /* Select icon */
 .anticon-down {

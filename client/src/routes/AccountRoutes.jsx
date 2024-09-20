@@ -1,3 +1,4 @@
+// In AccountRoutes.jsx
 import { Route, Routes } from "react-router-dom";
 import MyProfile from "../views/account/profile";
 import Explore from "../views/account/explore";
@@ -16,6 +17,7 @@ function AccountRoutes() {
       <Route path="notifications" element={<Notifications />} />
       <Route path="blog" element={<Blog />} />
       <Route path="profile" element={<MyProfile />} />
+      <Route path="404" element={<Error />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );

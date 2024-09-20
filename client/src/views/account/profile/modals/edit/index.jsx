@@ -5,9 +5,13 @@ import EditProfileForm from "./EditProfileForm";
 
 function EditProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const showModal = () => setIsModalOpen(true);
-  const handleOk = () => setIsModalOpen(false);
   const handleCancel = () => setIsModalOpen(false);
+
+  const handleSuccess = () => {
+    setIsModalOpen(false); // Close modal on successful profile update
+  };
 
   return (
     <>
@@ -25,13 +29,12 @@ function EditProfile() {
 
       <Modal
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         title="Edit Account"
         footer={null}
         style={{ borderRadius: "100px", textAlign: "center" }}
       >
-        <EditProfileForm />
+        <EditProfileForm onSuccess={handleSuccess} /> {/* Pass handleSuccess */}
       </Modal>
     </>
   );

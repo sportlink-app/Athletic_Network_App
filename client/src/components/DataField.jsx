@@ -10,7 +10,9 @@ const DataField = ({ content, title }) => {
         className="font-medium"
         color="text-gray-600"
       />
-      <p className="text-sm text-gray-600 mt-1">{content}</p>
+      <p className="text-sm text-gray-600 mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+        {content}
+      </p>
     </li>
   );
 };

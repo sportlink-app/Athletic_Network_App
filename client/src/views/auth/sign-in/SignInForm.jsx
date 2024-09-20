@@ -11,14 +11,12 @@ import { useNavigate } from "react-router-dom";
 function SignInForm() {
   const { signInForm, handleSignInForm, isSignInFormComplete, login } =
     authStore((state) => ({
-      signInForm: state.signInForm,
-      handleSignInForm: state.handleSignInForm,
+      ...state,
       isSignInFormComplete: state.isSignInFormComplete(),
-      login: state.login,
     }));
 
   const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // Track error messages
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -42,9 +40,9 @@ function SignInForm() {
     <>
       <form
         onSubmit={handleLogin}
-        className="flex flex-col gap-3 text-left"
-        action="#"
         method="POST"
+        action="#"
+        className="flex flex-col gap-3 text-left"
       >
         <label
           htmlFor="email"
@@ -93,7 +91,7 @@ function SignInForm() {
           type="primary"
           shape="round"
           size="large"
-          className="bg-green hover:!bg-green/80 disabled:!bg-green/80 mx-auto mt-4"
+          className="bg-green hover:!bg-green hover:brightness-105 mx-auto mt-4"
           icon={
             isLoading ? (
               <Spin size="small" className="white-spin" />

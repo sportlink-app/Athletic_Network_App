@@ -1,58 +1,60 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../../../components/Avatar";
 import { getRandomColor } from "../../../components/utils/randomColor";
 import Text from "../../../components/Text";
+import blogStore from "../../../store/blog/blogStore";
+import { message } from "antd";
 
 function TopCreators() {
-  const creators = [
-    {
-      id: 1,
-      username: "seifAaa37",
-      gender: "male",
-    },
-    {
-      id: 1,
-      username: "seiAaza37",
-      gender: "male",
-    },
-    {
-      id: 1,
-      username: "seifAa37",
-      gender: "male",
-    },
-    {
-      id: 1,
-      username: "sfAaza37",
-      gender: "male",
-    },
-    {
-      id: 1,
-      username: "ifAaza37",
-      gender: "male",
-    },
-  ];
+  const { getTopCreators, topCreators } = blogStore((state) => ({
+    getTopCreators: state.getTopCreators,
+    topCreators: state.topCreators,
+  }));
 
-  const creatorsList = creators.map((creator, index) => (
-    <Link
-      to={`/explore/${creator.username}`}
-      key={index}
-      className="rounded-full hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer"
-    >
-      <ProfileAvatar
-        username={creator.username}
-        gender={creator.gender}
-        size={64}
-        bgColor={getRandomColor(creator.username)}
-      />
-    </Link>
+  const [messageApi, contextHolder] = message.useMessage();
+  useEffect(() => {
+    const fetchCreators = async () => {
+      try {
+        await getTopCreators();
+      } catch (error) {
+        messageApi.error(error.message);
+      }
+    };
+    fetchCreators();
+  }, [getTopCreators, messageApi]);
+
+  // Render the creators list
+  const creatorsList = topCreators.map((creator, index) => (
+    <li key={index} className="flex flex-col items-center gap-2">
+      <Link
+        to={`/explore/${creator.username}`}
+        className="w-fit rounded-full hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer"
+      >
+        <ProfileAvatar
+          username={creator.username}
+          gender={creator.gender}
+          count={creator.blog_count}
+          size={64}
+          bgColor={getRandomColor(creator.username)}
+        />
+      </Link>
+      <h3 className="text-base font-medium capitalize text-slate-700">
+        {creator.username}
+      </h3>
+    </li>
   ));
+
   return (
-    <div className="text-center mt-6">
-      <Text type="title" text="top creators" className="mb-6" />
-      <div className="flex flex-wrap justify-center gap-x-10 gap-y-2">
-        {creatorsList}
+    <>
+      {contextHolder}
+      <div className="min-h-40 text-center mt-6">
+        <Text type="title" text="Top Creators" className="mb-6" />
+        <div className="flex flex-wrap justify-center gap-x-10 gap-y-2">
+          {topCreators.length > 0 && creatorsList}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

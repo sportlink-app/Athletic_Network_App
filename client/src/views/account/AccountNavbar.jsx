@@ -9,12 +9,13 @@ import Navbar from "../../components/navbar";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../../components/Avatar";
 import Logout from "../auth/Logout";
+import userInfoStore from "../../store/user/userInfoStore";
 
 function AccountNavbar() {
   const links = [
     {
       title: "explore",
-      href: "/explore",
+      href: "/explore?page=1",
       icon: <CompassOutlined />,
     },
     {
@@ -38,9 +39,11 @@ function AccountNavbar() {
     },
   ];
 
+  const { username, gender } = userInfoStore();
+
   const profile = (
     <Link to={"/profile"}>
-      <ProfileAvatar username="seifAaza 37" gender="male" size={40} />
+      <ProfileAvatar username={username} gender={gender} size={40} />
     </Link>
   );
 

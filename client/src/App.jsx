@@ -8,6 +8,7 @@ import CheckAuth from "./middlewares/checkAuth";
 import AccountNavbar from "./views/account/AccountNavbar";
 import MainNavbar from "./views/landing-page/MainNavbar";
 import authStore from "./store/user/authStore";
+
 function App() {
   const { isAuthenticated, isProfileCompleted } = authStore();
 

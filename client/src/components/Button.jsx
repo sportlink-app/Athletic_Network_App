@@ -1,6 +1,6 @@
 import { Button, ConfigProvider } from "antd";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function MainButton({
   text,

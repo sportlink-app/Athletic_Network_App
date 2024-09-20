@@ -3,10 +3,9 @@ import DeactivateAccount from "./modals/DeactivateAccount";
 import DataField from "../../../components/DataField";
 import Tags from "../../../components/Tags";
 import Text from "../../../components/Text";
-import userInfoStore from "../../../store/user/userInfoStore";
+import PropTypes from "prop-types";
 
-function ProfileContent() {
-  const { bio, sports, email, city, tel } = userInfoStore();
+function ProfileContent({ bio, sports, email, city, tel }) {
   return (
     <form className="container mx-auto flex gap-4">
       <div className="pb-12">
@@ -44,5 +43,14 @@ function ProfileContent() {
     </form>
   );
 }
+
+ProfileContent.propTypes = {
+  bio: PropTypes.bio,
+  gender: PropTypes.string,
+  sports: PropTypes.array,
+  email: PropTypes.string,
+  city: PropTypes.string,
+  tel: PropTypes.string,
+};
 
 export default ProfileContent;

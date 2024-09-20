@@ -1,11 +1,29 @@
+import { useEffect } from "react";
 import BlurShape from "../../../../components/BlurShape";
 import Container from "../../../../components/Container";
 import Text from "../../../../components/Text";
+import authStore from "../../../../store/user/authStore";
 import CompleteProfileForm from "./CompleteProfileForm";
+import { useNavigate } from "react-router-dom";
 
 function CompleteProfile() {
+  const { isAuthenticated, isProfileCompleted } = authStore((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    isProfileCompleted: state.isProfileCompleted,
+    setProfileCompletedState: state.setProfileCompletedState,
+  }));
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/account/login");
+    }
+    if (isAuthenticated && isProfileCompleted) {
+      navigate("/profile");
+    }
+  }, [isAuthenticated, navigate, isProfileCompleted]);
   return (
-    <div className="h-[calc(100vh-59.19px)] relative flex justify-center items-center overflow-hidden">
+    <div className="min-h-[calc(100vh-59.19px)] relative flex justify-center items-center overflow-hidden">
       <span className="-z-10 absolute -top-24 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-25">
         <BlurShape color="bg-green" />
       </span>

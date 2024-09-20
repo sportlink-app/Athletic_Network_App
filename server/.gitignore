@@ -1,13 +1,13 @@
-# Ignore virtual environment
-venv4/
-
-# Ignore Python bytecode files
-__pycache__/
+.vercel
+*.log
 *.pyc
+__pycache__
 
-# Ignore environment variables file
-.env
-
-# Ignore temporary script
-zozo.py
-zozo*.py
+# Environments 
+.env 
+.venv 
+env/ 
+venv/ 
+ENV/ 
+env.bak/ 
+venv.bak/ 

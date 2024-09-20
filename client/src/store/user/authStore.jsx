@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 // Regex patterns for validation
 const usernameRegex = /^[a-zA-Z0-9_]{6,16}$/; // 6 to 16 alphanumeric characters or underscores
@@ -8,11 +9,20 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email pattern
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 characters, 1 uppercase, 1 number
 
 const authStore = create((set, get) => ({
-  isAuthenticated: Cookies.get("token") || null,
+  token: Cookies.get("token") || null,
+  isAuthenticated: Cookies.get("token") ? true : false,
+  isProfileCompleted: Cookies.get("token")
+    ? jwtDecode(Cookies.get("token")).isProfileCompleted
+    : false,
+  authenticatedUserId: Cookies.get("token")
+    ? jwtDecode(Cookies.get("token")).id
+    : false,
+  // Set authentication state
   setAuthState: (isAuthenticated) => {
     set({ isAuthenticated });
   },
-  isProfileCompleted: Cookies.get("isProfileCompleted") || null,
+
+  // Set profile completion state
   setProfileCompletedState: (isProfileCompleted) => {
     set({ isProfileCompleted });
   },
@@ -25,6 +35,7 @@ const authStore = create((set, get) => ({
     password: "",
   },
 
+  // Handle form change
   handleSignUpForm: (e) => {
     const { value, name } = e.target;
     set((state) => ({
@@ -33,9 +44,9 @@ const authStore = create((set, get) => ({
         [name]: value,
       },
     }));
-    console.log(get().signUpForm);
   },
 
+  // Check if the form is complete
   isSignUpFormComplete: () => {
     const { username, email, password } = get().signUpForm;
     const usernameValid = usernameRegex.test(username);
@@ -44,6 +55,7 @@ const authStore = create((set, get) => ({
     return usernameValid && emailValid && passwordValid;
   },
 
+  // Validate sign-up form errors
   signUpValidationErrors: () => {
     const { username, email, password } = get().signUpForm;
 
@@ -68,25 +80,24 @@ const authStore = create((set, get) => ({
     return errors;
   },
 
+  // Handle sign-up process
   signUp: async () => {
     try {
       const { username, email, password } = get().signUpForm;
       const response = await axios.post(
-        "https://sportlink-z9gy.onrender.com/signup",
+        "http://127.0.0.1:5000/signup",
         { username, email, password },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
 
-      // Set authentication state
-      set({ isAuthenticated: true });
-
-      // Store token and isProfileCompleted in cookies
+      set({ token: response.data.token });
       Cookies.set("token", response.data.token, { expires: 7 });
-      Cookies.set("isProfileCompleted", response.data.isProfileCompleted, {
-        expires: 7,
-      });
+
+      set({ isAuthenticated: true });
+      const decodedToken = jwtDecode(response.data.token);
+      set({ isProfileCompleted: decodedToken.isProfileCompleted });
 
       set({
         signUpForm: {
@@ -96,7 +107,7 @@ const authStore = create((set, get) => ({
         },
       });
 
-      return response.data; // Return the data if needed
+      return response.data;
     } catch (error) {
       if (error.response && error.response.status === 400) {
         throw new Error("Username or email already exists!");
@@ -108,6 +119,7 @@ const authStore = create((set, get) => ({
     }
   },
 
+  // Sign-in form and handling
   signInForm: {
     email: "",
     password: "",
@@ -121,7 +133,6 @@ const authStore = create((set, get) => ({
         [name]: value,
       },
     }));
-    console.log(get().signInForm);
   },
 
   isSignInFormComplete: () => {
@@ -129,30 +140,34 @@ const authStore = create((set, get) => ({
     return email !== "" && password !== "";
   },
 
+  // Handle login process
   login: async () => {
     try {
       const { email, password } = get().signInForm;
       const response = await axios.post(
-        "https://sportlink-z9gy.onrender.com/login",
+        "http://127.0.0.1:5000/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
 
       // Set authentication state
-      set({ isAuthenticated: true });
+      set({ token: response.data.token });
       Cookies.set("token", response.data.token, { expires: 7 });
-      Cookies.set("isProfileCompleted", response.data.isProfileCompleted, {
-        expires: 7,
-      });
+
+      set({ isAuthenticated: true });
+      const decodedToken = jwtDecode(response.data.token);
+      set({ isProfileCompleted: decodedToken.isProfileCompleted });
+
       set({
         signInForm: {
           email: "",
           password: "",
         },
       });
+
       return response.data;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 400) {
         throw new Error("Email or password is incorrect");
       } else if (error.response && error.response.status === 500) {
         throw new Error("Login failed, please try again");

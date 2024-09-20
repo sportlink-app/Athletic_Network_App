@@ -38,10 +38,10 @@ function Header() {
     <dl className="mt-28 grid  gap-8 grid-cols-2 lg:grid-cols-4 text-center">
       {statsList.map((stat) => (
         <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
-          <dt className="text-base lg:text-lg leading-7 text-gray-600">
+          <dt className="text-base lg:text-lg leading-7 text-gray-500">
             {stat.name}
           </dt>
-          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-800">
+          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-600">
             {stat.value}
           </dd>
         </div>

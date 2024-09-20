@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import authStore from "../store/user/authStore";
-
 import { Spin } from "antd";
+
 function CheckAuth({ children }) {
   const {
     isAuthenticated,
@@ -18,13 +19,26 @@ function CheckAuth({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       const token = Cookies.get("token");
-      const profileCompleted = Cookies.get("isProfileCompleted");
 
       if (token) {
-        setAuthState(true);
-        setProfileCompletedState(profileCompleted === "true");
-        setLoading(false);
+        try {
+          // Decode the token to get user info, including isProfileCompleted
+          const decodedToken = jwtDecode(token);
+          const profileCompleted = decodedToken.isProfileCompleted;
+
+          // Set auth state and profile completion state
+          setAuthState(true);
+          setProfileCompletedState(profileCompleted);
+
+          setLoading(false);
+        } catch (error) {
+          // If token decoding fails, treat the user as not authenticated
+          setAuthState(false);
+          setLoading(false);
+          navigate("/account/login");
+        }
       } else {
+        // No token, user is not authenticated
         setAuthState(false);
         setLoading(false);
         navigate("/account/login");
@@ -34,6 +48,7 @@ function CheckAuth({ children }) {
     checkAuth();
   }, []);
 
+  // Handle navigation based on auth state and profile completion
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/account/login");
@@ -42,6 +57,7 @@ function CheckAuth({ children }) {
     }
   }, [isAuthenticated, isProfileCompleted, navigate]);
 
+  // Show a loading spinner while checking auth
   if (isLoading) {
     return (
       <div className="h-[calc(100vh-59.19px)] grid place-items-center">
@@ -50,6 +66,7 @@ function CheckAuth({ children }) {
     );
   }
 
+  // Render the children components if authenticated and profile is completed
   return isAuthenticated && isProfileCompleted ? children : null;
 }
 

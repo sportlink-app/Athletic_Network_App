@@ -1,21 +1,51 @@
 import { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Spin, message } from "antd";
 import Card from "../../../../components/Card";
 import { CloseOutlined } from "@ant-design/icons";
+import userInfoStore from "../../../../store/user/userInfoStore";
+import authStore from "../../../../store/user/authStore";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 function DeactivateAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const deleteProfile = userInfoStore((state) => state.deleteProfile); // Get the deleteProfile function from the store
+
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const [isLoading, setLoading] = useState(false);
+
+  const { setAuthState } = authStore();
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const handleDeactivate = async () => {
+    try {
+      setLoading(true);
+      // Call the deleteProfile function from the store
+      await deleteProfile();
+      // Close the modal after success
+      setIsModalOpen(false);
+
+      Cookies.remove("token");
+      // Update auth store state
+      setAuthState(false);
+      navigate("/");
+    } catch (error) {
+      messageApi.error("An error occurred while deactivating your account.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
+      {contextHolder}
       <Card>
         <div>
           <div className="text-base font-semibold leading-6 text-gray-900">
@@ -34,7 +64,6 @@ function DeactivateAccount() {
             shape="round"
             size="large"
             icon={<CloseOutlined size={16} />}
-            iconPosition="end"
           >
             Deactivate
           </Button>
@@ -42,7 +71,6 @@ function DeactivateAccount() {
       </Card>
       <Modal
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         title="Deactivate Account"
         footer={null}
@@ -55,13 +83,18 @@ function DeactivateAccount() {
 
         <div className="mt-6 sm:flex sm:flex-row-reverse">
           <Button
-            onClick={showModal}
+            onClick={handleDeactivate}
             danger
             type="primary"
             shape="round"
             size="large"
-            icon={<CloseOutlined size={16} />}
-            iconPosition="end"
+            icon={
+              isLoading ? (
+                <Spin size="small" className="white-spin" />
+              ) : (
+                <CloseOutlined size={16} />
+              )
+            }
           >
             Deactivate This Account
           </Button>
@@ -70,4 +103,5 @@ function DeactivateAccount() {
     </>
   );
 }
+
 export default DeactivateAccount;
