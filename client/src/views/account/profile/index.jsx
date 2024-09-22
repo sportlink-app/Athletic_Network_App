@@ -67,7 +67,7 @@ function MyProfile() {
               size="large"
               shape="circle"
               icon={<MenuOutlined />}
-              className="self-end md:self-start md:order-last bg-green hover:!bg-green hover:brightness-105"
+              className="self-end md:self-start md:order-last !bg-green hover:!bg-green hover:brightness-105"
             />
           </Popover>
           <ProfileAside username={username} gender={gender} />

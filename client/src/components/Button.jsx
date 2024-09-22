@@ -40,7 +40,7 @@ function MainButton({
           shape={shape}
           icon={icon}
           iconPosition={iconPosition}
-          className={`text-lg md:text-base capitalize h-fit w-fit hover:-translate-y-[.15rem] duration-500 ${bgColor}`}
+          className={`text-lg md:text-base capitalize h-fit w-fit hover:-translate-y-[.15rem] duration-500 hover:!text-white ${bgColor}`}
         >
           {text}
         </Button>

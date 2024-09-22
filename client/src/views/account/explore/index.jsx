@@ -57,32 +57,30 @@ function Explore() {
   };
 
   // Render user list or EmptyData based on loading and user data status
-  const usersList =
-    users.length > 0 ? (
-      <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-        {users.map((user, index) => (
-          <UserCard
-            key={index}
-            username={user.username}
-            gender={user.gender}
-            city={user.city}
-            sports={user.sports}
-            availability={true}
-          />
-        ))}
-      </div>
-    ) : null;
+  const usersList = users.length > 0 && (
+    <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+      {users.map((user, index) => (
+        <UserCard
+          key={index}
+          username={user.username}
+          gender={user.gender}
+          city={user.city}
+          sports={user.sports}
+          availability={true}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <>
       {contextHolder}
 
-      <div className="min-h-screen container mx-auto px-4 my-10">
+      <div className="min-h-screen container mx-auto px-4 my-10 ">
         <SportFilter
           onSportSelect={handleSportSelect}
           initialSport={sportFromParams} // Pass the sport from URL as initial value
         />
-        {/* Only show EmptyData when users are empty, loading is finished, and data has been fetched */}
         {!isLoading && isDataFetched && users.length === 0 ? (
           <EmptyData />
         ) : (
@@ -94,7 +92,7 @@ function Explore() {
             pageSize={perPage}
             total={totalUsers}
             onChange={handlePageChange}
-            className="mt-6 w-full text-center"
+            className="mt-6 mx-auto w-fit"
           />
         )}
       </div>

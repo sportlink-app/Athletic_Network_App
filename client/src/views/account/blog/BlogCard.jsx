@@ -3,6 +3,7 @@ import ProfileAvatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
 import Tags from "../../../components/Tags";
 import { getRandomColor } from "../../../components/utils/randomColor";
+import { Link } from "react-router-dom";
 
 function BlogCard({ username, gender, sport, date, title, content }) {
   const avatarBgColor = getRandomColor(username, gender).replace("#", "");
@@ -30,7 +31,11 @@ function BlogCard({ username, gender, sport, date, title, content }) {
             size={36}
             bgColor={avatarBgColor}
           />
-          <p className="text-base text-gray-700 capitalize">{username}</p>
+          <Link to={`/blogs/${username}`}>
+            <p className="text-base text-gray-700 capitalize hover:underline">
+              {username}
+            </p>
+          </Link>
         </div>
       </div>
     </Card>

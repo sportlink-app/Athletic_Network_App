@@ -61,7 +61,7 @@ const usersStore = create((set) => ({
   fetchUsers: async (page = 1, perPage = 12, sport = "") => {
     try {
       const response = await axios.get(
-        `/users?page=${page}&per_page=${perPage}&sport=${sport}`,
+        `http://localhost:5001/users?page=${page}&per_page=${perPage}&sport=${sport}`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,

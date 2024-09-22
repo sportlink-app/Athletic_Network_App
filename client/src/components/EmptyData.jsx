@@ -9,7 +9,7 @@ const EmptyData = () => {
         <Text
           text="No Results Found!"
           type="subtitle"
-          className="font-medium capitalize text-slate-500"
+          className="font-medium capitalize !text-slate-500"
         />
       </article>
     </section>

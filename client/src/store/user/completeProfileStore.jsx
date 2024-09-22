@@ -104,6 +104,8 @@ const completeProfileStore = create((set, get) => ({
 
       return response.data;
     } catch (error) {
+      console.log(error);
+
       if (error.response && error.response.status === 400) {
         throw new Error("Failed to update your profile");
       } else if (error.response && error.response.status === 500) {

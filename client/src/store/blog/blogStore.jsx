@@ -10,7 +10,7 @@ const blogStore = create((set, get) => ({
   topCreators: [],
   currentPage: 1,
   isLoading: false,
-  totalItems: 0, // Track total items
+  totalItems: 0,
 
   setTitle: (title) => set({ title }),
   setSport: (sport) => set({ sport }),
@@ -18,14 +18,14 @@ const blogStore = create((set, get) => ({
 
   clearFields: () => set({ title: "", sport: "", content: "" }),
 
-  getBlogs: async () => {
+  getBlogs: async (reset = false) => {
     const { currentPage, isLoading } = get();
     if (isLoading) return;
 
     set({ isLoading: true });
     try {
       const response = await axios.get(
-        `/blogs?page=${currentPage}&per_page=9`,
+        `/blogs?page=${reset ? 1 : currentPage}&per_page=9`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -34,13 +34,14 @@ const blogStore = create((set, get) => ({
         }
       );
 
-      set((state) => ({
-        blogs: [...state.blogs, ...response.data.items],
-        currentPage: state.currentPage + 1,
+      set({
+        blogs: reset
+          ? response.data.items
+          : [...get().blogs, ...response.data.items],
+        currentPage: reset ? 2 : currentPage + 1,
         isLoading: false,
         totalItems: response.data.total_items,
-      }));
-      console.log(response.data.items);
+      });
     } catch (error) {
       console.error(error);
       set({ isLoading: false });
@@ -48,10 +49,10 @@ const blogStore = create((set, get) => ({
   },
 
   createBlog: async () => {
-    const { title, sport, content, clearFields } = get();
+    const { title, sport, content, clearFields, getBlogs } = get();
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "/blogs",
         { title, sport, content },
         {
@@ -64,7 +65,8 @@ const blogStore = create((set, get) => ({
 
       clearFields();
 
-      return response.data;
+      // Fetch the updated blog list after creating a blog
+      await getBlogs(true); // Reset and fetch the latest blogs
     } catch (error) {
       console.error(error);
       throw new Error("Failed to create blog");

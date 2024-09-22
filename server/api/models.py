@@ -55,3 +55,14 @@ class Blog(db.Model):
 
     def __repr__(self):
         return f'<Blog {self.title}>'
+
+# Function to insert default sports
+def create_default_sports():
+    default_sports = ['Soccer', 'Basketball', 'Tennis', 'Baseball', 'Swimming']
+    
+    for sport_name in default_sports:
+        if not Sport.query.filter_by(name=sport_name).first():  # Check if sport already exists
+            sport = Sport(name=sport_name)
+            db.session.add(sport)
+    
+    db.session.commit()

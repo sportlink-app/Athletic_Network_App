@@ -2,15 +2,18 @@ import { useState } from "react";
 import { Button, Modal } from "antd";
 import { FormOutlined } from "@ant-design/icons";
 import WriteBlogForm from "./WriteBlogForm";
+import blogStore from "../../../../store/blog/blogStore"; // Import your blog store
 
 function WriteBlog() {
+  const { getBlogs } = blogStore(); // Destructure getBlogs from the blog store
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 
-  const handleSuccess = () => {
-    setIsModalOpen(false); // Close modal on successful profile update
+  const handleSuccess = async () => {
+    setIsModalOpen(false); // Close modal on successful blog creation
+    await getBlogs(); // Refetch blogs after successfully writing a blog
   };
 
   return (
@@ -20,7 +23,7 @@ function WriteBlog() {
         type="primary"
         shape="round"
         size="large"
-        className=" bg-cyan hover:!bg-cyan hover:brightness-105"
+        className="!bg-cyan hover:!bg-cyan hover:brightness-105"
         icon={<FormOutlined size={16} />}
         iconPosition="start"
       >

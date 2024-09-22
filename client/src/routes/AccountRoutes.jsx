@@ -6,7 +6,7 @@ import Matches from "../views/account/matches";
 import Notifications from "../views/account/notifications";
 import Error from "../components/Error";
 import UserProfile from "../views/account/explore/profile";
-import Blog from "../views/account/blog";
+import Blogs from "../views/account/blog";
 
 function AccountRoutes() {
   return (
@@ -15,7 +15,7 @@ function AccountRoutes() {
       <Route path="explore/:username" element={<UserProfile />} />
       <Route path="matches" element={<Matches />} />
       <Route path="notifications" element={<Notifications />} />
-      <Route path="blog" element={<Blog />} />
+      <Route path="blog" element={<Blogs />} />
       <Route path="profile" element={<MyProfile />} />
       <Route path="404" element={<Error />} />
       <Route path="*" element={<Error />} />
