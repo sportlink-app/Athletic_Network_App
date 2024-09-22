@@ -87,6 +87,54 @@ def get_all_blogs(current_user):
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
+# Get User Blogs API
+@blog_blueprint.route('/blogs/<username>', methods=['GET'])
+@token_required()
+def get_user_blogs(current_user, username):
+    try:
+        # Get pagination parameters from the query string
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+
+        # Validate pagination parameters
+        if page < 1 or per_page < 1:
+            return jsonify({"message": "Page number and per_page must be positive integers"}), 400
+
+        # Query to get blogs by the specified username
+        user = Myusers.query.filter_by(username=username).first()
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+
+        query = Blog.query.filter_by(author=user).order_by(Blog.created_at.desc())
+
+        # Paginate the results
+        paginated_blogs = query.paginate(page=page, per_page=per_page, error_out=False)
+
+        # Prepare the response data
+        result = []
+        for blog in paginated_blogs.items:
+            result.append({
+                "id": blog.id,
+                "title": blog.title,
+                "content": blog.content,
+                "created_at": blog.created_at,
+                "sport": blog.sport.name,
+                "author": blog.author.username
+            })
+
+        # Prepare pagination metadata
+        pagination_metadata = {
+            "total_items": paginated_blogs.total,
+            "total_pages": paginated_blogs.pages,
+            "current_page": paginated_blogs.page,
+            "per_page": paginated_blogs.per_page,
+            "items": result
+        }
+
+        return jsonify(pagination_metadata), 200
+    except Exception as e:
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500
+
 # Delete Blog API
 @blog_blueprint.route('/blogs/<int:blog_id>', methods=['DELETE'])
 @token_required()

@@ -1,4 +1,4 @@
-import { AutoComplete, Button, Form, Input, Spin, message } from "antd";
+import { AutoComplete, Button, Input, Spin, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import useSports from "../../../../components/SportsNames";
@@ -14,37 +14,23 @@ function WriteBlogForm({ onSuccess }) {
   const { title, sport, content, setTitle, setSport, setContent, createBlog } =
     blogStore();
 
-  // Filter the sports based on search text
-  const getPanelValue = (searchText) =>
-    sports
-      .filter((name) => name.toLowerCase().includes(searchText.toLowerCase()))
-      .map((name) => ({ value: name }));
-
-  // Update options as user types in the AutoComplete input
-  const handleSearch = (text) => {
-    setOptions(getPanelValue(text));
-  };
-
-  // Handle the event when a sport is selected
-  const handleSportSelect = (value) => {
-    setSport(value); // Update sport in Zustand store
-  };
-
   // Disable button if any of the inputs are empty
   const isButtonDisabled = !title || !sport || !content;
 
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const handleSubmit = async () => {
-    setLoading(true); // Set loading state
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      await createBlog(); // Call the store's createBlog function
-      onSuccess();
-      messageApi.success("Blog post posted successfully!"); // Show success message
+      await createBlog(); // This will now update the state
+      messageApi.success("Blog post posted successfully!");
+      onSuccess(); // Call to handle any UI updates after success
     } catch (error) {
-      messageApi.error(error.message); // Show error message
+      messageApi.error(error.message);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -64,6 +50,26 @@ function WriteBlogForm({ onSuccess }) {
     </li>
   );
 
+  const handleSportClear = () => {
+    setSport(""); // Clear selected sport in Zustand store
+  };
+
+  // Filter the sports based on search text
+  const getPanelValue = (searchText) =>
+    sports
+      .filter((name) => name.toLowerCase().includes(searchText.toLowerCase()))
+      .map((name) => ({ value: name }));
+
+  // Update options as user types in the AutoComplete input
+  const handleSearch = (text) => {
+    setOptions(getPanelValue(text));
+  };
+
+  // Handle the event when a sport is selected
+  const handleSportSelect = (value) => {
+    setSport(value); // Update sport in Zustand store
+  };
+
   const sportsSelect = (
     <li className="mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
@@ -74,6 +80,13 @@ function WriteBlogForm({ onSuccess }) {
         value={sport} // Bind selected value from Zustand store
         onSearch={handleSearch}
         onSelect={handleSportSelect} // Update store on select
+        onChange={(text) => {
+          if (text === "") {
+            handleSportClear();
+          } else {
+            setSport(text); // Keep local state updated with user input
+          }
+        }}
         placeholder="Start typing to search for a sport"
         size="large"
         className="min-w-36 max-w-36 text-left"
@@ -103,14 +116,10 @@ function WriteBlogForm({ onSuccess }) {
   return (
     <>
       {contextHolder}
-      <Form
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        layout="horizontal"
+      <form
+        onSubmit={handleSubmit}
+        method="POST"
+        action="#"
         className="flex flex-col gap-2 lg:gap-3 max-w-sm mx-auto pt-4 text-left"
       >
         <ul className="flex justify-between items-center gap-4">
@@ -119,7 +128,7 @@ function WriteBlogForm({ onSuccess }) {
         </ul>
         {contentTextArea}
         <Button
-          onClick={handleSubmit} // Handle form submission
+          htmlType="submit"
           disabled={isButtonDisabled || isLoading} // Disable button when inputs are empty or loading
           type="primary"
           shape="round"
@@ -135,7 +144,7 @@ function WriteBlogForm({ onSuccess }) {
         >
           Post
         </Button>
-      </Form>
+      </form>
     </>
   );
 }

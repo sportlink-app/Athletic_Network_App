@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from .config import Config
@@ -18,8 +17,12 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    CORS(app, origins=["http://localhost:5173"])
+    # Allow CORS for all origins (consider restricting in production)
+    CORS(app, origins=["http://localhost:5173"], supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["Content-Type"])
 
+
+
+    # Register your blueprints here
     app.register_blueprint(user_blueprint)
     app.register_blueprint(home_blueprint)
     app.register_blueprint(sports_blueprint)

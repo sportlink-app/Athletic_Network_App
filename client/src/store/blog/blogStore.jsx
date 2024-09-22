@@ -8,6 +8,9 @@ const blogStore = create((set, get) => ({
   content: "",
   blogs: [],
   topCreators: [],
+  currentPage: 1,
+  isLoading: false,
+  totalItems: 0, // Track total items
 
   setTitle: (title) => set({ title }),
   setSport: (sport) => set({ sport }),
@@ -15,12 +18,41 @@ const blogStore = create((set, get) => ({
 
   clearFields: () => set({ title: "", sport: "", content: "" }),
 
+  getBlogs: async () => {
+    const { currentPage, isLoading } = get();
+    if (isLoading) return;
+
+    set({ isLoading: true });
+    try {
+      const response = await axios.get(
+        `/blogs?page=${currentPage}&per_page=9`,
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.getState().token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      set((state) => ({
+        blogs: [...state.blogs, ...response.data.items],
+        currentPage: state.currentPage + 1,
+        isLoading: false,
+        totalItems: response.data.total_items,
+      }));
+      console.log(response.data.items);
+    } catch (error) {
+      console.error(error);
+      set({ isLoading: false });
+    }
+  },
+
   createBlog: async () => {
     const { title, sport, content, clearFields } = get();
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/blogs",
+        "/blogs",
         { title, sport, content },
         {
           headers: {
@@ -30,7 +62,8 @@ const blogStore = create((set, get) => ({
         }
       );
 
-      clearFields(); // Clear fields after creating
+      clearFields();
+
       return response.data;
     } catch (error) {
       console.error(error);
@@ -38,29 +71,9 @@ const blogStore = create((set, get) => ({
     }
   },
 
-  getBlogs: async (page = 1, perPage = 9) => {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:5000/blogs?page=${page}&per_page=${perPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authStore.getState().token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      set({ blogs: response.data.items });
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Failed to fetch blogs");
-    }
-  },
-
   getTopCreators: async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/top_creators", {
+      const response = await axios.get("/top_creators", {
         headers: {
           Authorization: `Bearer ${authStore.getState().token}`,
           "Content-Type": "application/json",

@@ -6,38 +6,44 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import userInfoStore from "../../../store/user/userInfoStore";
 
-function ProfileAside({ username, gender }) {
+const ProfileAside = ({ username, gender }) => {
   const {
     getAvailability,
     availability: storeAvailability,
     updateAvailability,
   } = userInfoStore();
+
   const [availability, setAvailability] = useState(storeAvailability);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAvailability = async () => {
-      try {
-        const response = await getAvailability(username);
-        setAvailability(response.availability);
-      } catch (error) {
-        console.error("Error fetching availability:", error.message);
-      } finally {
+      if (storeAvailability === null) {
+        // Prevent unnecessary calls
+        setLoading(true);
+        try {
+          const response = await getAvailability(username);
+          setAvailability(response.availability);
+        } catch (error) {
+          console.error("Error fetching availability:", error.message);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setAvailability(storeAvailability); // Use existing availability
         setLoading(false);
       }
     };
 
     fetchAvailability();
-  }, [getAvailability]);
+  }, [getAvailability, storeAvailability, username]);
 
   const handleAvailabilityChange = async (checked) => {
-    try {
+    if (!loading) {
+      // Prevent unnecessary updates while loading
       setLoading(true);
       await updateAvailability(checked);
       setAvailability(checked);
-    } catch (error) {
-      console.error("Error updating availability:", error.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -54,7 +60,7 @@ function ProfileAside({ username, gender }) {
           type="subtitle"
           className={`${
             !availability && "!text-red-400"
-          }  "font-medium capitalize "`}
+          } "font-medium capitalize"`}
         />
         <Switch
           checkedChildren={<CheckOutlined />}
@@ -66,11 +72,11 @@ function ProfileAside({ username, gender }) {
       </li>
     </div>
   );
-}
+};
 
 ProfileAside.propTypes = {
-  username: PropTypes.string,
-  gender: PropTypes.string,
+  username: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
 };
 
 export default ProfileAside;

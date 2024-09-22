@@ -85,7 +85,7 @@ const authStore = create((set, get) => ({
     try {
       const { username, email, password } = get().signUpForm;
       const response = await axios.post(
-        "http://127.0.0.1:5000/signup",
+        "/signup",
         { username, email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -109,6 +109,8 @@ const authStore = create((set, get) => ({
 
       return response.data;
     } catch (error) {
+      console.log(error);
+
       if (error.response && error.response.status === 400) {
         throw new Error("Username or email already exists!");
       } else if (error.response && error.response.status === 500) {
@@ -145,7 +147,7 @@ const authStore = create((set, get) => ({
     try {
       const { email, password } = get().signInForm;
       const response = await axios.post(
-        "http://127.0.0.1:5000/login",
+        "/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );

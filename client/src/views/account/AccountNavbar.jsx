@@ -19,14 +19,14 @@ function AccountNavbar() {
       icon: <CompassOutlined />,
     },
     {
-      title: "my matches",
-      href: "/matches",
-      icon: <TeamOutlined />,
-    },
-    {
       title: "blog",
       href: "/blog",
       icon: <MessageOutlined />,
+    },
+    {
+      title: "my team",
+      href: "/team",
+      icon: <TeamOutlined />,
     },
     {
       title: "notifications",

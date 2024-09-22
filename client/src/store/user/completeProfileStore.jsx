@@ -74,7 +74,7 @@ const completeProfileStore = create((set, get) => ({
       const { updateForm } = get();
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/complete-profile",
+        "/complete-profile",
         {
           gender: updateForm.gender,
           bio: updateForm.bio,

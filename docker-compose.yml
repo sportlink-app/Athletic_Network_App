@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    container_name: flask-server
+    environment:
+      - FLASK_APP=run.py
+      - FLASK_DEBUG=1
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=postgresql://myuser:seifeddine@db/sportlink  # Use db service name
+    volumes:
+      - ./server:/app
+    ports:
+      - "5001:5000"  # Map host port 5001 to container port 5000
+    depends_on:
+      - db
+
+  client:
+    build: ./client
+    container_name: react-client
+    environment:
+      - VITE_API_URL=http://localhost:5001  # Update to point to Flask server
+    volumes:
+      - ./client:/app
+    ports:
+      - "5173:3000"  # Map host port 5173 to container port 3000
+
+  db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: seifeddine
+      POSTGRES_DB: sportlink
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

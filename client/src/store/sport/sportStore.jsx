@@ -6,7 +6,7 @@ const sportStore = create((set) => ({
 
   getSports: async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/sports");
+      const response = await axios.get("/sports");
       set({ sports: response.data });
 
       return response.data;

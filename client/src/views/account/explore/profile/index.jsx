@@ -8,6 +8,7 @@ import userInfoStore from "../../../../store/user/userInfoStore";
 import ProfileHeader from "./ProfileHeader";
 import ProfileContent from "./ProfileContent";
 import Footer from "../../../../components/Footer";
+import Blogs from "./Blogs";
 
 function UserProfile() {
   const { username } = useParams();
@@ -67,6 +68,7 @@ function UserProfile() {
             availability={availability}
           />
           <ProfileContent bio={bio} sports={sports} city={city} />
+          <Blogs />
         </div>
       </section>
       <Footer />

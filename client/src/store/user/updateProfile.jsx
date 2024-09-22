@@ -98,7 +98,7 @@ const updateProfileStore = create((set, get) => {
       try {
         const { username, gender, bio, sports, city, tel } = get().editForm;
         const response = await axios.put(
-          "http://127.0.0.1:5000/profile",
+          "/profile",
           { username, gender, bio, sports, city, tel },
           {
             headers: {

@@ -15,15 +15,12 @@ const usersStore = create((set) => ({
   // Fetch user data based on username
   getUser: async (username) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:5000/users/${username}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authStore.getState().token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`/users/${username}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.getState().token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       const {
         id,
@@ -64,7 +61,7 @@ const usersStore = create((set) => ({
   fetchUsers: async (page = 1, perPage = 12, sport = "") => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:5000/users?page=${page}&per_page=${perPage}&sport=${sport}`,
+        `/users?page=${page}&per_page=${perPage}&sport=${sport}`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
