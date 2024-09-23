@@ -3,7 +3,7 @@ import Card from "../../../components/static/Card";
 import Tags from "../../../components/static/Tags";
 import { getRandomColor } from "../../../components/utils/randomColor";
 import { Link } from "react-router-dom";
-import { SendOutlined } from "@ant-design/icons";
+import { SendOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 
@@ -48,7 +48,10 @@ function UserCard({ username, gender, availability, city, sports }) {
         <div className="mt-10 p-5 pt-0">
           <div className="flex justify-between">
             <h3 className="text-sm font-medium text-gray-900">{username}</h3>
-            <p className="text-sm text-gray-500">{city}</p>
+            <span className="flex justify-center items-center gap-1">
+              <EnvironmentOutlined className="text-xs" />
+              <p className="text-sm text-gray-500">{city}</p>
+            </span>
           </div>
           <div className="flex flex-wrap gap-y-2 mt-4">
             <Tags list={sports} />
