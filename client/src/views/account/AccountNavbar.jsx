@@ -5,9 +5,9 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { Badge } from "antd";
-import Navbar from "../../components/navbar";
+import Navbar from "../../components/static/navbar";
 import { Link } from "react-router-dom";
-import ProfileAvatar from "../../components/Avatar";
+import ProfileAvatar from "../../components/dynamic/Avatar";
 import Logout from "../auth/Logout";
 import userInfoStore from "../../store/user/userInfoStore";
 

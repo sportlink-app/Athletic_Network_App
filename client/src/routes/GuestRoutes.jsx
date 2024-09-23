@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "../views/auth/sign-in";
-import Error from "../components/Error";
+import Error from "../components/static/Error";
 import SignUp from "../views/auth/sign-up";
 import CompleteProfile from "../views/account/profile/complete-profile";
 

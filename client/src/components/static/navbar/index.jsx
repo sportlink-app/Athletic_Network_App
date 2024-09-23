@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import NavbarToggle from "./toggle/NavbarToggle";
 import NavbarLinks from "./NavbarLinks";
-import mainStore from "../../store/mainStore";
+import mainStore from "../../../store/mainStore";
 
 function Navbar({ startBtn, items, endBtn }) {
   const { isNavbarOpen } = mainStore();

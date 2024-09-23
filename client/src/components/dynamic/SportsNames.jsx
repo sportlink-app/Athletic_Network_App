@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import sportStore from "../store/sport/sportStore";
+import sportStore from "../../store/sport/sportStore";
 
 const useSports = () => {
   const [sports, setSports] = useState([]);

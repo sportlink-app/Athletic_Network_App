@@ -1,5 +1,5 @@
 import "./NavbarToggle.css";
-import mainStore from "../../../store/mainStore";
+import mainStore from "../../../../store/mainStore";
 function NavbarToggle() {
   const { isNavbarOpen, setIsNavbarOpen } = mainStore();
   return (

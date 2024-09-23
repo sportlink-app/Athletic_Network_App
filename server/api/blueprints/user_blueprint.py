@@ -195,7 +195,18 @@ def update_profile(current_user):
         user.tel = data.get('tel')
         db.session.commit()
 
-        return jsonify({"message": "Profile updated successfully"}), 200
+        token = jwt.encode({
+            'id': user.id,
+            'username': user.username,
+            'isProfileCompleted': user.isProfileCompleted,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+        }, SECRET_KEY)
+
+        return jsonify({
+            "message": "Profile updated successfully",
+            "token": token
+        }), 200
+    
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 

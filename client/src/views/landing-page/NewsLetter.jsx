@@ -1,11 +1,10 @@
 import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
-import Container from "../../components/Container";
-import Text from "../../components/Text";
-import { Input } from "antd";
-import BlurShape from "../../components/BlurShape";
-import MainButton from "../../components/Button";
+import Container from "../../components/static/Container";
+import Text from "../../components/static/Text";
+import { Button, Input } from "antd";
+import BlurShape from "../../components/static/BlurShape";
 import { SendOutlined } from "@ant-design/icons";
-import Star from "../../components/Star";
+import Star from "../../components/static/Star";
 
 function Newsletter() {
   return (
@@ -40,7 +39,16 @@ function Newsletter() {
                 size="middle"
                 style={{ borderRadius: "50px" }}
               />
-              <MainButton text="subscribe" icon={<SendOutlined />} />
+              <Button
+                type="primary"
+                shape="round"
+                size="large"
+                icon={<SendOutlined />}
+                iconPosition="end"
+                className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105  duration-300"
+              >
+                Subscribe
+              </Button>
             </div>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 text-left">

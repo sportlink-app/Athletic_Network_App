@@ -7,10 +7,9 @@ const blogStore = create((set, get) => ({
   sport: "",
   content: "",
   blogs: [],
-  topCreators: [],
   currentPage: 1,
-  isLoading: false,
   totalItems: 0,
+  topCreators: [],
 
   setTitle: (title) => set({ title }),
   setSport: (sport) => set({ sport }),
@@ -19,13 +18,10 @@ const blogStore = create((set, get) => ({
   clearFields: () => set({ title: "", sport: "", content: "" }),
 
   getBlogs: async (reset = false) => {
-    const { currentPage, isLoading } = get();
-    if (isLoading) return;
-
-    set({ isLoading: true });
+    const { currentPage } = get();
     try {
       const response = await axios.get(
-        `/blogs?page=${reset ? 1 : currentPage}&per_page=9`,
+        `/blog?page=${reset ? 1 : currentPage}&per_page=9`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -39,22 +35,24 @@ const blogStore = create((set, get) => ({
           ? response.data.items
           : [...get().blogs, ...response.data.items],
         currentPage: reset ? 2 : currentPage + 1,
-        isLoading: false,
         totalItems: response.data.total_items,
       });
     } catch (error) {
-      console.error(error);
-      set({ isLoading: false });
+      throw new Error("Failed to get blogs");
     }
   },
 
-  createBlog: async () => {
-    const { title, sport, content, clearFields, getBlogs } = get();
+  userGender: 1,
+  userBlogs: [],
+  userBlogsCurrentPage: 1,
+  userBlogsTotalItems: 0,
 
+  getUserBlogs: async (username, reset = false) => {
     try {
-      await axios.post(
-        "/blogs",
-        { title, sport, content },
+      const response = await axios.get(
+        `/blog/${username}?page=${
+          reset ? 1 : get().userBlogsCurrentPage
+        }&per_page=9`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -63,13 +61,55 @@ const blogStore = create((set, get) => ({
         }
       );
 
-      clearFields();
+      set({
+        userGender: response.data.gender,
+        userBlogs: reset
+          ? response.data.items
+          : [...get().userBlogs, ...response.data.items],
+        userBlogsTotalItems: response.data.total_items,
+        userBlogsCurrentPage: reset ? 2 : get().userBlogsCurrentPage + 1,
+      });
+    } catch (error) {
+      throw new Error("Failed to get blogs");
+    }
+  },
 
-      // Fetch the updated blog list after creating a blog
+  createBlog: async () => {
+    const { title, sport, content, clearFields, getBlogs } = get();
+    try {
+      await axios.post(
+        "/blog",
+        { title, sport, content },
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.getState().token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      clearFields();
       await getBlogs(true); // Reset and fetch the latest blogs
     } catch (error) {
-      console.error(error);
       throw new Error("Failed to create blog");
+    }
+  },
+
+  deleteBlog: async (id) => {
+    try {
+      await axios.delete(`/blog/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.getState().token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      set((state) => ({
+        userBlogs: state.userBlogs.filter((blog) => blog.id !== id),
+        // Decrease the total number of items after deletion
+        userBlogsTotalItems: state.userBlogsTotalItems - 1,
+      }));
+    } catch (error) {
+      throw new Error("Failed to delete blog");
     }
   },
 
@@ -82,9 +122,7 @@ const blogStore = create((set, get) => ({
         },
       });
       set({ topCreators: response.data });
-      return response.data;
     } catch (error) {
-      console.error(error);
       throw new Error("Failed to fetch top creators");
     }
   },

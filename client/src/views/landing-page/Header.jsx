@@ -1,8 +1,9 @@
-import MainButton from "../../components/Button";
-import Text from "../../components/Text";
-import BlurShape from "../../components/BlurShape";
+import Text from "../../components/static/Text";
+import BlurShape from "../../components/static/BlurShape";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import Star from "../../components/Star";
+import Star from "../../components/static/Star";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 function Header() {
   const hero = (
@@ -21,11 +22,18 @@ function Header() {
           color="text-gray-600"
         />
       </div>
-      <MainButton
-        href="/account/sign-up"
-        text="get started"
-        icon={<ArrowRightOutlined />}
-      />
+      <Link to="/account/sign-up">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          icon={<ArrowRightOutlined />}
+          iconPosition="end"
+          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105  duration-300"
+        >
+          Get Started
+        </Button>
+      </Link>
     </>
   );
   const statsList = [

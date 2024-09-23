@@ -1,21 +1,25 @@
-import DataField from "../../../../components/DataField";
+import DataField from "../../../../components/dynamic/DataField";
 import { Divider } from "antd";
-import Text from "../../../../components/Text";
-import Tags from "../../../../components/Tags";
+import Tags from "../../../../components/static/Tags";
+import { BulbOutlined, HeartOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
-function ProfileContent({ bio, sports, city }) {
+function ProfileContent({ bio, sports }) {
   return (
     <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 mt-32 mb-8">
-      <DataField title="Bio" content={bio || "No bio available"} />
+      <DataField
+        title="Bio"
+        content={bio}
+        icon={<BulbOutlined className="text-sm" />}
+      />
       <Divider type="horizontal" className="w-full border-gray-200 my-4" />
       <li>
-        <Text
-          text="Sports"
-          type="subtitle"
-          className="font-medium"
-          color="text-gray-600"
-        />
+        <span className="w-fit flex justify-center items-center gap-[.35rem]">
+          <HeartOutlined className="text-sm" />
+          <p className="text-sm text-gray-600 mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+            Sports
+          </p>
+        </span>
         <div className="flex flex-wrap gap-x-1 gap-y-3 mt-2">
           <Tags
             list={sports.length > 0 ? sports : ["No sports available"]}
@@ -23,8 +27,8 @@ function ProfileContent({ bio, sports, city }) {
           />
         </div>
       </li>
+
       <Divider type="horizontal" className="w-full border-gray-200 my-4" />
-      <DataField title="City" content={city || "No city available"} />
     </div>
   );
 }
@@ -32,7 +36,6 @@ function ProfileContent({ bio, sports, city }) {
 ProfileContent.propTypes = {
   bio: PropTypes.string,
   sports: PropTypes.array,
-  city: PropTypes.string,
 };
 
 export default ProfileContent;

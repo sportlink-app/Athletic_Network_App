@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import MainButton from "../../components/Button";
-import Navbar from "../../components/navbar";
+import Navbar from "../../components/static/navbar";
 import authStore from "../../store/user/authStore";
 import Logout from "../auth/Logout";
 import { UserOutlined } from "@ant-design/icons";
 import mainStore from "../../store/mainStore";
+import { Button } from "antd";
 
 function MainNavbar() {
   const { isAuthenticated, isProfileCompleted } = authStore();
@@ -24,16 +24,19 @@ function MainNavbar() {
 
   const { closeNavbar } = mainStore();
   const account = (
-    <MainButton
-      onClick={() => closeNavbar()}
-      href="/account"
-      text="account"
-      type="primary"
-      shape="round"
-      bgColor="light"
-      icon={<UserOutlined />}
-      iconPosition="end"
-    />
+    <Link to="/account">
+      <Button
+        onClick={() => closeNavbar()}
+        type="primary"
+        shape="round"
+        size="large"
+        icon={<UserOutlined />}
+        iconPosition="end"
+        className="!bg-white !text-green hover:!bg-white/90 duration-300"
+      >
+        Account
+      </Button>
+    </Link>
   );
 
   const endBtn = (

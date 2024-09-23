@@ -14,8 +14,8 @@ const authStore = create((set, get) => ({
   isProfileCompleted: Cookies.get("token")
     ? jwtDecode(Cookies.get("token")).isProfileCompleted
     : false,
-  authenticatedUserId: Cookies.get("token")
-    ? jwtDecode(Cookies.get("token")).id
+  authenticatedUsername: Cookies.get("token")
+    ? jwtDecode(Cookies.get("token")).username
     : false,
   // Set authentication state
   setAuthState: (isAuthenticated) => {

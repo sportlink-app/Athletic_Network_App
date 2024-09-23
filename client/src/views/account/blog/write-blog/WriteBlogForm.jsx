@@ -1,7 +1,7 @@
 import { AutoComplete, Button, Input, Spin, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
-import useSports from "../../../../components/SportsNames";
+import useSports from "../../../../components/dynamic/SportsNames";
 import { CheckOutlined } from "@ant-design/icons";
 import blogStore from "../../../../store/blog/blogStore";
 import PropTypes from "prop-types";
@@ -25,8 +25,8 @@ function WriteBlogForm({ onSuccess }) {
     setLoading(true);
     try {
       await createBlog(); // This will now update the state
+      onSuccess();
       messageApi.success("Blog post posted successfully!");
-      onSuccess(); // Call to handle any UI updates after success
     } catch (error) {
       messageApi.error(error.message);
     } finally {

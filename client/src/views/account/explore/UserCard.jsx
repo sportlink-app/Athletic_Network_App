@@ -1,6 +1,6 @@
-import ProfileAvatar from "../../../components/Avatar";
-import Card from "../../../components/Card";
-import Tags from "../../../components/Tags";
+import ProfileAvatar from "../../../components/dynamic/Avatar";
+import Card from "../../../components/static/Card";
+import Tags from "../../../components/static/Tags";
 import { getRandomColor } from "../../../components/utils/randomColor";
 import { Link } from "react-router-dom";
 import { SendOutlined } from "@ant-design/icons";
@@ -39,7 +39,7 @@ function UserCard({ username, gender, availability, city, sports }) {
             type="primary"
             shape="round"
             size="middle"
-            className="absolute -bottom-4 right-5 bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
+            className="absolute -bottom-4 right-5 !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
             icon={<SendOutlined size={16} />}
           >
             Invite

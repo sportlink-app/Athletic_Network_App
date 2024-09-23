@@ -7,7 +7,7 @@ SECRET_KEY = Config.SECRET_KEY
 blog_blueprint = Blueprint('blog_blueprint', __name__)
 
 # Create Blog API
-@blog_blueprint.route('/blogs', methods=['POST'])
+@blog_blueprint.route('/blog', methods=['POST'])
 @token_required()
 def create_blog(current_user):
     try:
@@ -44,7 +44,7 @@ def create_blog(current_user):
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get All Blogs API
-@blog_blueprint.route('/blogs', methods=['GET'])
+@blog_blueprint.route('/blog', methods=['GET'])
 @token_required()
 def get_all_blogs(current_user):
     try:
@@ -71,7 +71,8 @@ def get_all_blogs(current_user):
                 "content": blog.content,
                 "created_at": blog.created_at,
                 "sport": blog.sport.name,
-                "author": blog.author.username
+                "author": blog.author.username,
+                "gender": blog.author.gender  # Include gender from the author's details
             })
 
         # Prepare pagination metadata
@@ -88,7 +89,7 @@ def get_all_blogs(current_user):
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get User Blogs API
-@blog_blueprint.route('/blogs/<username>', methods=['GET'])
+@blog_blueprint.route('/blog/<username>', methods=['GET'])
 @token_required()
 def get_user_blogs(current_user, username):
     try:
@@ -100,20 +101,21 @@ def get_user_blogs(current_user, username):
         if page < 1 or per_page < 1:
             return jsonify({"message": "Page number and per_page must be positive integers"}), 400
 
-        # Query to get blogs by the specified username
+        # Query to get the user by the specified username
         user = Myusers.query.filter_by(username=username).first()
         if not user:
             return jsonify({"message": "User not found"}), 404
 
+        # Query to get blogs by the user and order them by created_at
         query = Blog.query.filter_by(author=user).order_by(Blog.created_at.desc())
 
         # Paginate the results
         paginated_blogs = query.paginate(page=page, per_page=per_page, error_out=False)
 
         # Prepare the response data
-        result = []
+        blogs = []
         for blog in paginated_blogs.items:
-            result.append({
+            blogs.append({
                 "id": blog.id,
                 "title": blog.title,
                 "content": blog.content,
@@ -121,22 +123,24 @@ def get_user_blogs(current_user, username):
                 "sport": blog.sport.name,
                 "author": blog.author.username
             })
-
-        # Prepare pagination metadata
-        pagination_metadata = {
-            "total_items": paginated_blogs.total,
+        # Return the response including gender and blogs
+        response = {
+            "username": user.username,
+            "gender": user.gender,  # Add the gender here
+            "items": blogs,
+             "total_items": paginated_blogs.total,
             "total_pages": paginated_blogs.pages,
             "current_page": paginated_blogs.page,
             "per_page": paginated_blogs.per_page,
-            "items": result
         }
 
-        return jsonify(pagination_metadata), 200
+        return jsonify(response), 200
+
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Delete Blog API
-@blog_blueprint.route('/blogs/<int:blog_id>', methods=['DELETE'])
+@blog_blueprint.route('/blog/<int:blog_id>', methods=['DELETE'])
 @token_required()
 def delete_blog(current_user, blog_id):
     try:

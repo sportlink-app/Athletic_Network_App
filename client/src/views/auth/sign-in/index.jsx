@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "./SignInForm";
-import Container from "../../../components/Container";
-import Text from "../../../components/Text";
-import BlurShape from "../../../components/BlurShape";
+import Container from "../../../components/static/Container";
+import Text from "../../../components/static/Text";
+import BlurShape from "../../../components/static/BlurShape";
 import authStore from "../../../store/user/authStore";
 import { useEffect } from "react";
 

@@ -3,7 +3,7 @@ import Features from "./Features";
 import Testimonials from "./Testimonials";
 import Discover from "./Discover";
 import Newsletter from "./NewsLetter";
-import Footer from "../../components/Footer";
+import Footer from "../../components/static/Footer";
 import { FloatButton } from "antd";
 
 function LandingPage() {

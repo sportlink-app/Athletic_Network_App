@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import authStore from "../../store/user/authStore";
 import userInfoStore from "../../store/user/userInfoStore"; // Import userInfoStore
-import MainButton from "../../components/Button";
 import { useEffect } from "react";
 import mainStore from "../../store/mainStore";
 import { LogoutOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 function Logout() {
   const navigate = useNavigate();
@@ -39,15 +39,17 @@ function Logout() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <MainButton
+    <Button
       onClick={handleLogout}
-      text="logout"
       type="primary"
       shape="round"
-      bgColor="light"
+      size="large"
       icon={<LogoutOutlined />}
       iconPosition="end"
-    />
+      className="!bg-white !text-green hover:!bg-white/90 duration-300"
+    >
+      Logout
+    </Button>
   );
 }
 

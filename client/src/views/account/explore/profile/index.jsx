@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ReadOutlined } from "@ant-design/icons";
 import { getRandomColor } from "../../../../components/utils/randomColor";
 import usersStore from "../../../../store/user/usersStore";
 import userInfoStore from "../../../../store/user/userInfoStore";
-import ProfileHeader from "./ProfileHeader";
+import ProfileHeader from "../../../../components/dynamic/ProfileHeader";
 import ProfileContent from "./ProfileContent";
-import Footer from "../../../../components/Footer";
-import Blogs from "./Blogs";
+import Footer from "../../../../components/static/Footer";
+import BackButton from "../../../../components/static/BackButton";
 
 function UserProfile() {
   const { username } = useParams();
@@ -49,26 +49,28 @@ function UserProfile() {
           className="w-full h-28 md:h-32 xl:h-40 flex justify-center items-end"
         >
           <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative">
-            <Button
-              type="default"
-              shape="round"
-              size="large"
-              onClick={() => navigate(-1)}
-              icon={<ArrowLeftOutlined size={16} />}
-              className="absolute top-5 left-2 sm:left-4 "
-            >
-              Back
-            </Button>
+            <BackButton />
+            <Link to={`/blog/${username}`}>
+              <Button
+                type="primary"
+                shape="round"
+                size="large"
+                className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green absolute top-5 right-2 sm:tight-4 "
+                icon={<ReadOutlined size={16} />}
+              >
+                Blogs
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="container mx-auto px-4 mt-10 lg:mt-14 xl:mt-16 w-full flex items-center flex-col">
           <ProfileHeader
             username={username}
             gender={gender}
+            city={city}
             availability={availability}
           />
           <ProfileContent bio={bio} sports={sports} city={city} />
-          <Blogs />
         </div>
       </section>
       <Footer />

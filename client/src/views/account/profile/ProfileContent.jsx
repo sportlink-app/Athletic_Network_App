@@ -1,26 +1,36 @@
 import { Divider } from "antd";
-import DeactivateAccount from "./modals/DeactivateAccount";
-import DataField from "../../../components/DataField";
-import Tags from "../../../components/Tags";
-import Text from "../../../components/Text";
+import DeactivateAccount from "./DeactivateAccount";
+import DataField from "../../../components/dynamic/DataField";
+import Tags from "../../../components/static/Tags";
+import {
+  BulbOutlined,
+  EnvironmentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 
 function ProfileContent({ bio, sports, email, city, tel }) {
   return (
     <form className="container mx-auto flex gap-4">
       <div className="pb-12">
-        <DataField title="Bio" content={bio} />
+        <DataField
+          title="Bio"
+          content={bio}
+          icon={<BulbOutlined className="text-sm" />}
+        />
         <Divider
           type="horizontal"
           className="w-full border-gray-200 my-6 xl:my-8"
         />
         <li>
-          <Text
-            text="Sports"
-            type="subtitle"
-            className="font-medium"
-            color="text-gray-600"
-          />
+          <span className="w-fit flex justify-center items-center gap-[.35rem]">
+            <HeartOutlined className="text-sm" />
+            <p className="text-sm text-gray-600 mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+              Sports
+            </p>
+          </span>
           <div className="flex flex-wrap gap-x-1 gap-y-3 mt-2">
             <Tags list={sports} className="py-1 px-4 text-sm" />
           </div>
@@ -30,9 +40,21 @@ function ProfileContent({ bio, sports, email, city, tel }) {
           className="w-full border-gray-200 my-6 xl:my-8"
         />
         <ul className="flex flex-wrap gap-8 md:gap-16 sm:gap-20 lg:gap-24 xl:gap-32">
-          <DataField title="Email" content={email} />
-          <DataField title="City" content={city} />
-          <DataField title="Tel" content={tel} />
+          <DataField
+            title="Email"
+            content={email}
+            icon={<MailOutlined className="text-sm" />}
+          />
+          <DataField
+            title="City"
+            content={city}
+            icon={<EnvironmentOutlined className="text-sm" />}
+          />
+          <DataField
+            title="Tel"
+            content={tel}
+            icon={<PhoneOutlined className="text-sm" />}
+          />
         </ul>
         <Divider
           type="horizontal"

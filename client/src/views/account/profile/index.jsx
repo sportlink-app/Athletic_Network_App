@@ -2,7 +2,7 @@ import { Button, Divider, Popover, Spin, message } from "antd";
 import ProfileContent from "./ProfileContent";
 import { MenuOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import EditProfile from "./modals/edit";
+import EditProfile from "./edit";
 import userInfoStore from "../../../store/user/userInfoStore";
 import { useEffect, useState } from "react";
 import ProfileAside from "./ProfileAside";
@@ -33,10 +33,10 @@ function MyProfile() {
       <EditProfile />
       <Link to={`/explore/${username}`}>
         <Button
-          type="text"
+          type="link"
           shape="round"
           size="large"
-          className="text-gray-700"
+          className="!text-gray-700 hover:!bg-slate-100"
           icon={<EyeOutlined size={16} />}
           iconPosition="start"
         >

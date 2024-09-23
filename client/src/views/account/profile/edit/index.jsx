@@ -17,10 +17,10 @@ function EditProfile() {
     <>
       <Button
         onClick={showModal}
-        type="text"
+        type="link"
         shape="round"
         size="large"
-        className=" text-gray-700"
+        className="!text-gray-700 hover:!bg-slate-100"
         icon={<EditOutlined size={16} />}
         iconPosition="start"
       >

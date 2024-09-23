@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Avatar, Badge } from "antd";
-import { getRandomColor } from "./utils/randomColor";
+import { getRandomColor } from "../utils/randomColor";
 
 // Simple hash function to generate a number from a string
 const hashCode = (str) => {

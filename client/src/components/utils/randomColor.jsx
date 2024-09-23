@@ -1,4 +1,4 @@
-import colors from "../Colors";
+import colors from "../static/Colors";
 
 function hashString(str) {
   let hash = 0;

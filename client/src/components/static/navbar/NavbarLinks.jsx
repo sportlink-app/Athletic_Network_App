@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import MainButton from "../../components/Button";
-import mainStore from "../../store/mainStore";
+import mainStore from "../../../store/mainStore";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 function NavbarLinks(props) {
   const { closeNavbar } = mainStore();
@@ -20,14 +21,18 @@ function NavbarLinks(props) {
     >
       {props.links.map((link, index) => (
         <li key={index}>
-          <MainButton
-            text={link.title}
-            href={link.href || "/"}
-            icon={link.icon}
-            onClick={() => scrollToSection(link.id)}
-            type="text"
-            shape="round"
-          />
+          <Link to={link.href || "/"}>
+            <Button
+              onClick={() => scrollToSection(link.id)}
+              type="primary"
+              shape="round"
+              size="large"
+              icon={link.icon}
+              className="!bg-transparent hover:!bg-white/20 duration-300"
+            >
+              {link.title}
+            </Button>
+          </Link>
         </li>
       ))}
     </ul>

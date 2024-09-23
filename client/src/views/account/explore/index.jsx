@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
-import Footer from "../../../components/Footer";
+import Footer from "../../../components/static/Footer";
 import { Pagination, message } from "antd";
 import SportFilter from "./filter/SportFilter";
 import UserCard from "./UserCard";
 import usersStore from "../../../store/user/usersStore";
-import EmptyData from "../../../components/EmptyData";
+import EmptyData from "../../../components/static/EmptyData";
 
 function Explore() {
   const { users, totalUsers, currentPage, perPage, fetchUsers } = usersStore();
@@ -82,7 +82,7 @@ function Explore() {
           initialSport={sportFromParams} // Pass the sport from URL as initial value
         />
         {!isLoading && isDataFetched && users.length === 0 ? (
-          <EmptyData />
+          <EmptyData text="No users Found!" />
         ) : (
           usersList
         )}

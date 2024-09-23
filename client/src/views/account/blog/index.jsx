@@ -1,12 +1,11 @@
-import Footer from "../../../components/Footer";
+import Footer from "../../../components/static/Footer";
 import TopCreators from "./TopCreator";
-import WriteBlog from "./write-blog"; // Adjusted the import for consistency
-import { useCallback, useEffect, useState } from "react";
+import WriteBlog from "./write-blog";
+import { useEffect, useState } from "react";
 import blogStore from "../../../store/blog/blogStore";
 import { FloatButton, message, Button, Spin } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
-import EmptyData from "../../../components/EmptyData";
-import BlogCard from "./BlogCard";
+import BlogCard from "../../../components/dynamic/BlogCard";
 
 function Blogs() {
   const { blogs, getBlogs, totalItems } = blogStore();
@@ -14,88 +13,84 @@ function Blogs() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  // Fetch blogs data
-  const fetchBlogsData = useCallback(async () => {
-    try {
-      setLoading(true);
-      await getBlogs();
-      setIsDataFetched(true); // Mark data as fetched once complete
-    } catch (error) {
-      messageApi.error("An error occurred while fetching blogs data.");
-    } finally {
-      setLoading(false);
-    }
-  }, [getBlogs, messageApi]);
-
   useEffect(() => {
+    const fetchBlogsData = async () => {
+      if (!isDataFetched) {
+        try {
+          setLoading(true);
+          await getBlogs(true); // Reset to fetch fresh data
+          setIsDataFetched(true); // Mark data as fetched
+        } catch (error) {
+          messageApi.error("An error occurred while fetching blogs data.");
+          console.error("Error fetching blogs:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
     fetchBlogsData();
-  }, [fetchBlogsData]);
+  }, [getBlogs, messageApi, isDataFetched]);
 
   // Load more blogs
   const handleLoadMore = async () => {
+    if (isLoading) return; // Prevent further clicks
     setLoading(true);
     try {
-      await getBlogs();
+      await getBlogs(); // Fetch next page of blogs
     } catch (error) {
       messageApi.error("Failed to load more blogs.");
+      console.error("Error loading more blogs:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const hasMoreBlogs = blogs.length < totalItems;
-
   // Render blog list or EmptyData based on data status
   const blogsList = blogs.length > 0 && (
-    <div className="mt-6 lg:mt-10 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
-      {blogs.map((blog, index) => (
+    <section className="mt-6 lg:mt-10 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
+      {blogs.map((blog) => (
         <BlogCard
-          key={index}
+          key={blog.id} // Ensure each blog has a unique id
           username={blog.author}
+          gender={blog.gender}
           date={blog.created_at}
           sport={blog.sport}
           title={blog.title}
           content={blog.content}
         />
       ))}
-    </div>
+    </section>
   );
 
   return (
     <>
       {contextHolder}
-      <div className="min-h-screen container mx-auto px-4 my-10">
+      <section className="min-h-screen container mx-auto px-4 my-10">
         <WriteBlog />
         {isDataFetched && blogs.length !== 0 && <TopCreators />}
-        <section>
-          {!isLoading && isDataFetched && blogs.length === 0 ? (
-            <EmptyData />
-          ) : (
-            blogsList
+        {isDataFetched && blogs.length !== 0 && blogsList}
+        <div className="flex justify-center mt-4">
+          {!isLoading && blogs.length < totalItems && (
+            <Button
+              onClick={handleLoadMore}
+              type="primary"
+              shape="round"
+              size="large"
+              className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
+              icon={
+                isLoading ? (
+                  <Spin size="small" className="white-spin" />
+                ) : (
+                  <ArrowDownOutlined />
+                )
+              }
+            >
+              {isLoading ? "Loading..." : "Load More"}
+            </Button>
           )}
-
-          <div className="flex justify-center mt-4">
-            {!isLoading && hasMoreBlogs && (
-              <Button
-                onClick={handleLoadMore}
-                type="primary"
-                shape="round"
-                size="large"
-                className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
-                icon={
-                  isLoading ? (
-                    <Spin size="small" className="white-spin" />
-                  ) : (
-                    <ArrowDownOutlined />
-                  )
-                }
-              >
-                {isLoading ? "Loading..." : "Load More"}
-              </Button>
-            )}
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
       <Footer />
       <FloatButton.BackTop duration={100} />
     </>

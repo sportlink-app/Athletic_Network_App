@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AutoComplete } from "antd";
-import useSports from "../../../../components/SportsNames";
+import useSports from "../../../../components/dynamic/SportsNames";
 import PropTypes from "prop-types";
 
 function SportFilter({ onSportSelect, initialSport }) {

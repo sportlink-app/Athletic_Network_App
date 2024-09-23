@@ -1,6 +1,6 @@
-import Container from "../../components/Container";
-import Star from "../../components/Star";
-import Text from "../../components/Text";
+import Container from "../../components/static/Container";
+import Star from "../../components/static/Star";
+import Text from "../../components/static/Text";
 
 function Testimonials() {
   const postsList = [

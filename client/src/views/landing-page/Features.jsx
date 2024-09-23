@@ -1,13 +1,13 @@
-import Text from "../../components/Text";
-import Container from "../../components/Container";
-import BlurShape from "../../components/BlurShape";
+import Text from "../../components/static/Text";
+import Container from "../../components/static/Container";
+import BlurShape from "../../components/static/BlurShape";
 import {
   UserOutlined,
   NodeIndexOutlined,
   SafetyOutlined,
   ThunderboltOutlined,
 } from "@ant-design/icons";
-import Star from "../../components/Star";
+import Star from "../../components/static/Star";
 
 function Features() {
   const featuresList = [

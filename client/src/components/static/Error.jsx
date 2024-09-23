@@ -1,7 +1,8 @@
 import BlurShape from "./BlurShape";
-import MainButton from "./Button";
 import Container from "./Container";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 function Error() {
   return (
@@ -18,22 +19,25 @@ function Error() {
       <p className="text-7xl md:text-8xl lg:text-9xl font-semibold  bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green">
         404
       </p>
-      <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-800 ">
+      <h1 className="mt-4 text-3xl font-semibold tracking-tight text-gray-600 ">
         Page not found
       </h1>
       <p className="mt-3 text-lg leading-7 text-gray-600">
         Sorry, we couldn&apos;t find the page you&apos;re looking for.
       </p>
 
-      <MainButton
-        href={"/"}
-        text="back home"
-        type="primary"
-        shape="round"
-        icon={<ArrowLeftOutlined />}
-        iconPosition="start"
-        className="mt-6"
-      />
+      <Link to="/">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          icon={<ArrowLeftOutlined />}
+          iconPosition="start"
+          className="mt-6 !bg-gradient-to-r !from-cyan !to-green hover:brightness-105  duration-300"
+        >
+          Back Home
+        </Button>
+      </Link>
     </Container>
   );
 }

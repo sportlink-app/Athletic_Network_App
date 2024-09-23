@@ -6,7 +6,7 @@ import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import completeProfileStore from "../../../../store/user/completeProfileStore";
 import authStore from "../../../../store/user/authStore"; // Adjust path as needed
-import useSports from "../../../../components/SportsNames";
+import useSports from "../../../../components/dynamic/SportsNames";
 
 function CompleteProfileForm() {
   const { setProfileCompletedState } = authStore((state) => ({
@@ -162,8 +162,8 @@ function CompleteProfileForm() {
         }
         style={{ borderRadius: "15px" }}
         options={[
-          { value: "Male", label: "Male" },
-          { value: "Female", label: "Female" },
+          { value: "male", label: "Male" },
+          { value: "female", label: "Female" },
         ]}
         size="large"
         className="w-32"
@@ -202,7 +202,7 @@ function CompleteProfileForm() {
         type="primary"
         shape="round"
         size="large"
-        className="bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
+        className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
         icon={
           isLoading ? (
             <Spin size="small" className="white-spin" />

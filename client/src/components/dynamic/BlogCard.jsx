@@ -1,16 +1,18 @@
 import PropTypes from "prop-types";
-import ProfileAvatar from "../../../components/Avatar";
-import Card from "../../../components/Card";
-import Tags from "../../../components/Tags";
-import { getRandomColor } from "../../../components/utils/randomColor";
+import ProfileAvatar from "./Avatar";
+import Card from "../static/Card";
+import Tags from "../static/Tags";
+import { getRandomColor } from "../utils/randomColor";
 import { Link } from "react-router-dom";
+import authStore from "../../store/user/authStore";
 
-function BlogCard({ username, gender, sport, date, title, content }) {
+function BlogCard({ username, gender, sport, date, title, content, btn }) {
   const avatarBgColor = getRandomColor(username, gender).replace("#", "");
 
   // Remove time from the date string
   const formattedDate = date.split(" ").slice(0, 4).join(" ");
 
+  const { authenticatedUsername } = authStore();
   return (
     <Card className="break-inside-avoid mb-[1em] h-fit p-4 rounded-2xl overflow-hidden ">
       <div className=" w-full flex flex-col gap-2 rounded-t-2xl border-4 border-white">
@@ -24,19 +26,23 @@ function BlogCard({ username, gender, sport, date, title, content }) {
           {title}
         </h3>
         <p className="text-sm text-gray-600 capitalize">{content}</p>
-        <div className="flex items-center justify-start gap-2 mt-1">
-          <ProfileAvatar
-            username={username}
-            gender={gender}
-            size={36}
-            bgColor={avatarBgColor}
-          />
-          <Link to={`/blogs/${username}`}>
-            <p className="text-base text-gray-700 capitalize hover:underline">
-              {username}
-            </p>
-          </Link>
-        </div>
+        {!btn && (
+          <div className="flex items-center justify-start gap-2 mt-1">
+            <ProfileAvatar
+              username={username}
+              gender={gender}
+              size={36}
+              bgColor={avatarBgColor}
+            />
+            <Link to={`/explore/${username}`}>
+              <p className="text-base text-gray-700 capitalize hover:underline">
+                {username}
+              </p>
+            </Link>
+          </div>
+        )}
+
+        {btn && authenticatedUsername === username && btn}
       </div>
     </Card>
   );
@@ -49,6 +55,7 @@ BlogCard.propTypes = {
   date: PropTypes.string,
   title: PropTypes.string,
   content: PropTypes.string,
+  btn: PropTypes.node,
   key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

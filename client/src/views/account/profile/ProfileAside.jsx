@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ProfileAvatar from "../../../components/Avatar";
-import Text from "../../../components/Text";
+import ProfileAvatar from "../../../components/dynamic/Avatar";
+import Text from "../../../components/static/Text";
 import { Switch } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -51,7 +51,7 @@ const ProfileAside = ({ username, gender }) => {
   return (
     <div className="md:w-40 lg:w-48 lg:sticky top-20 self-center md:self-start flex flex-col items-center gap-3 mt-4 md:mt-0">
       <ProfileAvatar username={username} gender={gender} size={140} />
-      <h2 className="text-gray-600 text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden mt-4">
+      <h2 className="text-gray-600 text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden">
         {username}
       </h2>
       <li className="self-end flex gap-3 items-center mr-6">

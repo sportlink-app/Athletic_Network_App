@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, Modal, Spin, message } from "antd";
-import Card from "../../../../components/Card";
+import Card from "../../../components/static/Card";
 import { CloseOutlined } from "@ant-design/icons";
-import userInfoStore from "../../../../store/user/userInfoStore";
-import authStore from "../../../../store/user/authStore";
+import userInfoStore from "../../../store/user/userInfoStore";
+import authStore from "../../../store/user/authStore";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -51,7 +51,7 @@ function DeactivateAccount() {
           <div className="text-base font-semibold leading-6 text-gray-900">
             Deactivate Account
           </div>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500">
             Once you deactivate your account, there is no going back. Please be
             certain.
           </p>
@@ -76,7 +76,7 @@ function DeactivateAccount() {
         footer={null}
         style={{ borderRadius: "100px" }}
       >
-        <p className="text-sm text-gray-500 mt-8">
+        <p className="text-sm text-gray-500">
           Are you sure you want to deactivate your account? This action cannot
           be undone. Once you deactivate your account, there is no going back.
         </p>

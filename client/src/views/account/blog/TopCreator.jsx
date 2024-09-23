@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import ProfileAvatar from "../../../components/Avatar";
+import ProfileAvatar from "../../../components/dynamic/Avatar";
 import { getRandomColor } from "../../../components/utils/randomColor";
-import Text from "../../../components/Text";
+import Text from "../../../components/static/Text";
 import blogStore from "../../../store/blog/blogStore";
 import { message } from "antd";
 
@@ -28,7 +28,7 @@ function TopCreators() {
   const creatorsList = topCreators.map((creator, index) => (
     <li key={index} className="flex flex-col items-center gap-2">
       <Link
-        to={`/explore/${creator.username}`}
+        to={`/blog/${creator.username}`}
         className="w-fit rounded-full hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer"
       >
         <ProfileAvatar

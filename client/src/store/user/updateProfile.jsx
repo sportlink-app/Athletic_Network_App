@@ -2,6 +2,7 @@ import { create } from "zustand";
 import userInfoStore from "./userInfoStore";
 import axios from "axios";
 import authStore from "./authStore";
+import Cookies from "js-cookie";
 
 // Regex patterns for validation
 const usernameRegex = /^[a-zA-Z0-9_]{6,16}$/; // 6 to 16 alphanumeric characters or underscores
@@ -107,7 +108,9 @@ const updateProfileStore = create((set, get) => {
             },
           }
         );
-
+        // Update authenticated username in authStore
+        authStore.setState({ authenticatedUsername: username });
+        Cookies.set("token", response.data.token, { expires: 7 });
         // Update the userInfoStore after a successful update
         userInfoStore.setState({
           username,

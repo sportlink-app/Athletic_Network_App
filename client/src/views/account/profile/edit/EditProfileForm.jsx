@@ -2,8 +2,8 @@ import { Input, Select, Tag, Button, Spin, Alert, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
-import updateProfileStore from "../../../../../store/user/updateProfile";
-import useSports from "../../../../../components/SportsNames";
+import updateProfileStore from "../../../../store/user/updateProfile";
+import useSports from "../../../../components/dynamic/SportsNames";
 import PropTypes from "prop-types";
 
 function EditProfileForm({ onSuccess }) {
@@ -229,7 +229,7 @@ function EditProfileForm({ onSuccess }) {
             type="primary"
             shape="round"
             size="large"
-            className="bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+            className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
             icon={
               isLoading ? (
                 <Spin size="small" className="white-spin" />
