@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { ReadOutlined } from "@ant-design/icons";
 import { getRandomColor } from "../../../../components/utils/randomColor";
 import usersStore from "../../../../store/user/usersStore";
@@ -21,10 +21,11 @@ function UserProfile() {
   }));
   const { getAvailability, availability } = userInfoStore();
   const navigate = useNavigate();
-
+  const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        setLoading(true);
         if (username) {
           await getUser(username);
           await getAvailability(username);
@@ -33,6 +34,8 @@ function UserProfile() {
         }
       } catch (error) {
         navigate("/404");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -63,14 +66,20 @@ function UserProfile() {
             </Link>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-10 lg:mt-14 xl:mt-16 w-full flex items-center flex-col">
-          <ProfileHeader
-            username={username}
-            gender={gender}
-            city={city}
-            availability={availability}
-          />
-          <ProfileContent bio={bio} sports={sports} city={city} />
+        <div className="min-h-screen container mx-auto px-4 mt-10 lg:mt-14 xl:mt-16 w-full flex items-center flex-col">
+          {isLoading ? (
+            <Spin size="small" className="white-spin" />
+          ) : (
+            <>
+              <ProfileHeader
+                username={username}
+                gender={gender}
+                city={city}
+                availability={availability}
+              />
+              <ProfileContent bio={bio} sports={sports} city={city} />
+            </>
+          )}
         </div>
       </section>
       <Footer />

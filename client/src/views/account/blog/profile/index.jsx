@@ -87,6 +87,7 @@ function UserBlogs() {
           <div className="w-full flex items-center flex-col">
             <ProfileHeader username={username} gender={userGender} />
           </div>
+          {isLoading && <Spin size="small" className="white-spin" />}
           {isDataFetched && userBlogs.length !== 0 && userBlogsList}
           {!isLoading && isDataFetched && userBlogs.length === 0 && (
             <EmptyData text="No Blog Posts Found!" />

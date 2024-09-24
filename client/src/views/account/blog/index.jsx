@@ -68,6 +68,7 @@ function Blogs() {
       {contextHolder}
       <section className="min-h-screen container mx-auto px-4 my-10">
         <WriteBlog />
+        {isLoading && <Spin size="small" className="white-spin" />}
         {isDataFetched && blogs.length !== 0 && <TopCreators />}
         {isDataFetched && blogs.length !== 0 && blogsList}
         <div className="flex justify-center mt-4">

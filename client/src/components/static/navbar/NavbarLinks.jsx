@@ -28,7 +28,7 @@ function NavbarLinks(props) {
               shape="round"
               size="large"
               icon={link.icon}
-              className="!bg-transparent hover:!bg-white/20 duration-300"
+              className="!bg-transparent hover:!bg-white/20 duration-300 capitalize"
             >
               {link.title}
             </Button>

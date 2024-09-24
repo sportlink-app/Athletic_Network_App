@@ -42,7 +42,7 @@ function AccountNavbar() {
   const { username, gender } = userInfoStore();
 
   const profile = (
-    <Link to={"/profile"}>
+    <Link to={"/profile"} className="leading-[.5rem]">
       <ProfileAvatar username={username} gender={gender} size={40} />
     </Link>
   );

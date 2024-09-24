@@ -19,13 +19,14 @@ function DeleteBlog({ id }) {
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleBlogDelete = async () => {
+  const handleBlogDelete = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       // Call the deleteProfile function from the store
       await deleteBlog(id);
-      // Close the modal after success
       messageApi.success("Blog post delete successfully!");
+      // Close the modal after success
       setIsModalOpen(false);
     } catch (error) {
       messageApi.error("Failed to delete blog post!");

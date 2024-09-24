@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { Avatar, Badge } from "antd";
 import { getRandomColor } from "../utils/randomColor";
+import { useState, useEffect } from "react";
+import SkeletonAvatar from "antd/es/skeleton/Avatar";
 
 // Simple hash function to generate a number from a string
 const hashCode = (str) => {
@@ -22,6 +24,9 @@ function ProfileAvatar({
   count,
   className = "",
 }) {
+  const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState("");
+
   const maleHair = ["dougFunny", "dannyPhantom", "fonze", "mrClean"];
   const femaleHair = ["pixie", "full"];
   const mouth = ["laughing", "pucker", "smile", "smirk"];
@@ -41,7 +46,14 @@ function ProfileAvatar({
     return `https://api.dicebear.com/9.x/micah/svg?seed=${username}&hair=${hairStyle}&backgroundColor=${bgColor}&mouth=${mouthStyle}&facialHairProbability=0`;
   };
 
-  const avatarUrl = getAvatarUrl(username, hairStyle, mouthStyle);
+  useEffect(() => {
+    // Simulate a loading delay for fetching avatar URL
+    const url = getAvatarUrl(username, hairStyle, mouthStyle);
+    setTimeout(() => {
+      setAvatarUrl(url);
+      setLoading(false);
+    }, 1000); // Simulate a 1-second loading delay
+  }, [username, hairStyle, mouthStyle]);
 
   return (
     <Badge
@@ -51,11 +63,20 @@ function ProfileAvatar({
       offset={[-8, 50]}
       className={className}
     >
-      <Avatar
-        src={avatarUrl}
-        size={size}
-        className="border-[1px] border-white"
-      />
+      {loading ? (
+        <SkeletonAvatar
+          size={size}
+          active
+          shape="circle"
+          className="bg-white rounded-full overflow-hidden"
+        />
+      ) : (
+        <Avatar
+          src={avatarUrl}
+          size={size}
+          className=" border-[1px] border-white"
+        />
+      )}
     </Badge>
   );
 }
@@ -63,7 +84,6 @@ function ProfileAvatar({
 ProfileAvatar.propTypes = {
   username: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
-  bgColor: PropTypes.string,
   size: PropTypes.number,
   dot: PropTypes.bool,
   count: PropTypes.number,

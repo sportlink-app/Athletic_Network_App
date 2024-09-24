@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import Footer from "../../../components/static/Footer";
-import { Pagination, message } from "antd";
+import { Pagination, Spin, message } from "antd";
 import SportFilter from "./filter/SportFilter";
 import UserCard from "./UserCard";
 import usersStore from "../../../store/user/usersStore";
@@ -81,6 +81,7 @@ function Explore() {
           onSportSelect={handleSportSelect}
           initialSport={sportFromParams} // Pass the sport from URL as initial value
         />
+        {isLoading && <Spin size="small" className="white-spin" />}
         {!isLoading && isDataFetched && users.length === 0 ? (
           <EmptyData text="No users Found!" />
         ) : (
