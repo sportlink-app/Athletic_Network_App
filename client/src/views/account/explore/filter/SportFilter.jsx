@@ -45,7 +45,7 @@ function SportFilter({ onSportSelect, initialSport }) {
           setSelectedSport(text); // Update the selectedSport state with the input text
         }
       }}
-      placeholder="Start typing to search for a sport"
+      placeholder="Type to search for a sport"
       size="large"
       className="w-48 text-left"
       allowClear

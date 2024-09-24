@@ -30,23 +30,23 @@ function ProfileHeader({ username, gender, city, availability }) {
   };
   return (
     <div className="!w-1/2 lg:!w-1/3 xl:!w-1/5 self-center mt-4 md:mt-0 relative">
-      <div
-        className={`absolute left-1/2 ${
-          city && availability ? "-top-4" : "-top-[2.85rem]"
-        }  flex -translate-x-1/2 -translate-y-1/2 flex-col items-center`}
-      >
+      <div className="absolute left-1/2 flex -translate-x-1/2 -translate-y-[65%] flex-col items-center">
         <ProfileAvatar username={username} gender={gender} size={120} />
         <ul className="flex flex-col justify-center items-center mt-2">
           <h2 className="text-gray-600 text-4xl font-medium capitalize">
             {username}
           </h2>
-          {city && (
-            <span className="w-fit flex justify-center items-center gap-[.35rem]">
-              <EnvironmentOutlined className="text-sm" />
-              <p className="text-slate-500">{city}</p>
-            </span>
-          )}
-          {availability && availabilityStatus(availability)}
+          <span className="w-fit flex justify-center items-center gap-[.35rem] h-6">
+            {city && (
+              <>
+                <EnvironmentOutlined className="text-sm" />
+                <p className="text-slate-500"> {city}</p>
+              </>
+            )}
+          </span>
+          <span className="h-6">
+            {city && availabilityStatus(availability)}
+          </span>
         </ul>
       </div>
     </div>
