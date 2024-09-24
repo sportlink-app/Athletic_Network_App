@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import authStore from "../../store/user/authStore";
-import userInfoStore from "../../store/user/userInfoStore"; // Import userInfoStore
+import userInfoStore from "../../store/user/userInfoStore";
 import { useEffect } from "react";
 import mainStore from "../../store/mainStore";
 import { LogoutOutlined } from "@ant-design/icons";
@@ -9,8 +9,7 @@ import { Button } from "antd";
 
 function Logout() {
   const navigate = useNavigate();
-  const { isAuthenticated, setAuthState, setProfileCompletedState } =
-    authStore();
+  const { setAuthState, setProfileCompletedState } = authStore();
   const { clearUserInfo } = userInfoStore(); // Get the clearUserInfo method
   const { closeNavbar } = mainStore();
 
@@ -23,20 +22,23 @@ function Logout() {
 
     // Update auth store state
     setAuthState(false);
-    setProfileCompletedState(null);
+    setProfileCompletedState(false); // Reset profile completion
 
     closeNavbar();
+
+    // Clear any other relevant cookies or local storage
+    localStorage.clear();
 
     // Redirect to login
     navigate("/account/login");
   };
 
-  // Effect to handle redirection after logout
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/"); // Redirect to landing page after logout
+    // Redirect to landing page if not authenticated
+    if (!authStore.getState().isAuthenticated) {
+      navigate("/");
     }
-  }, [isAuthenticated, navigate]);
+  }, [navigate]);
 
   return (
     <Button
@@ -45,7 +47,6 @@ function Logout() {
       shape="round"
       size="large"
       icon={<LogoutOutlined />}
-      iconPosition="end"
       className="!bg-white !text-green hover:!bg-white/90 duration-300"
     >
       Logout

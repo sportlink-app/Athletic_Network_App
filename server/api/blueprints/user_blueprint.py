@@ -69,6 +69,7 @@ def signup():
 
         return jsonify({
             "message": "Profile created successfully!",
+            'username': new_user.username,
             "token": token
         }), 200
     except Exception as e:
@@ -90,7 +91,7 @@ def login():
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, SECRET_KEY)
 
-        return jsonify({"message": "Login successful", "token": token}), 200
+        return jsonify({"message": "Login successful",'username': user.username, "token": token}), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 

@@ -92,7 +92,10 @@ const authStore = create((set, get) => ({
         }
       );
 
-      set({ token: response.data.token });
+      set({
+        token: response.data.token,
+        authenticatedUsername: response.data.username,
+      });
       Cookies.set("token", response.data.token, { expires: 7 });
 
       set({ isAuthenticated: true });
@@ -153,7 +156,10 @@ const authStore = create((set, get) => ({
       );
 
       // Set authentication state
-      set({ token: response.data.token });
+      set({
+        token: response.data.token,
+        authenticatedUsername: response.data.username,
+      });
       Cookies.set("token", response.data.token, { expires: 7 });
 
       set({ isAuthenticated: true });
