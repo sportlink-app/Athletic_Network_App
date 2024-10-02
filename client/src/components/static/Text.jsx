@@ -13,7 +13,7 @@ const Text = ({
     style = " text-lg leading-8 ";
   }
 
-  return <h1 className={`${style} ${color} ${className}`}>{text}</h1>;
+  return <h2 className={`${style} ${color} ${className}`}>{text}</h2>;
 };
 
 Text.propTypes = {

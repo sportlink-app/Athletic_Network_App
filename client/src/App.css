@@ -1,10 +1,10 @@
 html {
-    background-color: #f5fbf7; /* bg-gray-50 */
+    @apply bg-light-green;
     scroll-behavior: smooth !important;
 }
 
-* {
-    @apply !font-main ;
+* :not(h1, h1 span){
+    @apply font-main ;
 }
 
 input::placeholder, textarea::placeholder, .ant-select-selection-placeholder {
@@ -26,7 +26,7 @@ p{
 
 /* Scroll to top button */
 .ant-float-btn-body {
-    background: linear-gradient(to right, #00E0B5, #31e528) !important; /* from cyan to green */
+    @apply bg-green !important; /* from cyan to green */
 }
 
 .anticon-vertical-align-top {
@@ -112,4 +112,6 @@ p{
     line-height: .5rem !important;
 }
 
-
+:where(.css-dev-only-do-not-override-14qglws).ant-btn-primary {
+    @apply shadow-none !important; 
+}

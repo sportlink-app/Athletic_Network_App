@@ -9,6 +9,7 @@ export default {
       colors: {
         'yellow': '#FFD500',
         'green': "#31E528",
+        'light-green': "#eefff3",
         'cyan': "#00E0B5",
       },
       fontFamily: {

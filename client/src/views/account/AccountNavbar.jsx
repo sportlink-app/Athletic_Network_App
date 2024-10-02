@@ -2,7 +2,7 @@ import {
   CompassOutlined,
   TeamOutlined,
   BellOutlined,
-  MessageOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import { Badge } from "antd";
 import Navbar from "../../components/static/navbar";
@@ -21,7 +21,7 @@ function AccountNavbar() {
     {
       title: "blog",
       href: "/blog",
-      icon: <MessageOutlined />,
+      icon: <FormOutlined />,
     },
     {
       title: "my team",

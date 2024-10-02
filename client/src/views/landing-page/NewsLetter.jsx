@@ -8,9 +8,9 @@ import Star from "../../components/static/Star";
 
 function Newsletter() {
   return (
-    <Container>
+    <Container className="bg-gradient-to-b from-white to-light-green">
       <span
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20"
+        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-15"
         aria-hidden="true"
       >
         <BlurShape color="bg-green" />

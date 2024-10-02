@@ -4,40 +4,40 @@ import BlurShape from "../../components/static/BlurShape";
 import {
   UserOutlined,
   NodeIndexOutlined,
-  SafetyOutlined,
-  ThunderboltOutlined,
+  FormOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 import Star from "../../components/static/Star";
 
 function Features() {
   const featuresList = [
     {
-      title: "smart matchmaking",
+      title: "Team Creation",
       description:
-        "Our advanced algorithm connects you with sports partners who share your interests, skill level, ensuring a perfect match for every game.",
+        "Easily form and manage sports teams, invite friends to join, and coordinate practice sessions and matches.",
+      icon: (
+        <UsergroupAddOutlined style={{ fontSize: "20px", color: "#ffffff" }} />
+      ),
+    },
+    {
+      title: "Smart Matchmaking",
+      description:
+        "Automatically connect users with compatible sports partners based on their interests, city, and availability.",
       icon: (
         <NodeIndexOutlined style={{ fontSize: "20px", color: "#ffffff" }} />
       ),
     },
     {
-      title: "real-time availability",
+      title: "Personalized Profiles",
       description:
-        "Check the availability of potential partners in real-time, and schedule your sports activities instantly.",
-      icon: (
-        <ThunderboltOutlined style={{ fontSize: "20px", color: "#ffffff" }} />
-      ),
-    },
-    {
-      title: "comprehensive profiles",
-      description:
-        "View detailed profiles of potential partners, including their sports interests, experience level, and past reviews from other users",
+        "Users create profiles highlighting their sports interests and skills to connect with like-minded partners and teams.",
       icon: <UserOutlined style={{ fontSize: "20px", color: "#ffffff" }} />,
     },
     {
-      title: "enhanced security",
+      title: "Blogging Platform",
       description:
-        "Our platform prioritizes your safety with verified profiles, secure communication channels, and user reporting features.",
-      icon: <SafetyOutlined style={{ fontSize: "20px", color: "#ffffff" }} />,
+        "Users can share sports experiences and insights through blogs while reading and commenting on others posts.",
+      icon: <FormOutlined style={{ fontSize: "20px", color: "#ffffff" }} />,
     },
   ];
   const features = (
@@ -58,15 +58,15 @@ function Features() {
     </dl>
   );
   return (
-    <Container>
+    <Container className="bg-gradient-to-b from-light-green to-white">
       <span
-        className="absolute top-6 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-15"
+        className="absolute top-6 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-10"
         aria-hidden="true"
       >
         <BlurShape color="bg-cyan" />
       </span>
       <span
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-20"
+        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-15"
         aria-hidden="true"
       >
         <BlurShape color="bg-green" />

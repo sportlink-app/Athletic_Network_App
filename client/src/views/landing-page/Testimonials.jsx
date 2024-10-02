@@ -1,70 +1,74 @@
+import ProfileAvatar from "../../components/dynamic/Avatar";
 import Container from "../../components/static/Container";
 import Star from "../../components/static/Star";
+import Tags from "../../components/static/Tags";
 import Text from "../../components/static/Text";
 
 function Testimonials() {
   const postsList = [
     {
-      id: 1,
       review:
-        "I've been using this app to find tennis partners, and it's been amazing. The community is friendly, and I always find someone who matches my skill level. It's a game-changer for my practice sessions",
-      name: "seifeddine aaza",
-      sport: "Tennis",
-      imageUrl:
-        "https://s3-eu-west-1.amazonaws.com/files2.fd.nl/Erwin/Slider+Daan/stefan-bron-2.jpg",
+        "Finding a football team is now a breeze! The app connects me with local players and makes weekend matches enjoyable.",
+      name: "Seifeddine Aaza",
+      gender: "male",
+      sports: ["Football"],
     },
     {
-      id: 2,
       review:
-        "Finding basketball partners was always a hassle until I discovered this app. Now, I can easily join games and even organize my own matches. The app is user-friendly and incredibly helpful!",
-      name: "mohamed mahla",
-      sport: "basketball",
-      imageUrl:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "This app made finding tennis partners easy! I can join and create teams, and the community is super supportive.",
+
+      name: "Salma Khaled",
+      gender: "female",
+      sports: ["Tennis"],
     },
     {
-      id: 3,
       review:
-        "This app is fantastic! I found a great team to play with every weekend. It's made finding local football matches so easy and enjoyable. Highly recommend it!",
-      name: "ahmed khaled",
-      sport: "football",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        "Finding a football team is now a breeze! The app connects me with local players and makes weekend matches enjoyable.",
+      name: "Mohamed Mahla",
+      gender: "male",
+      sports: ["Basketball"],
     },
   ];
+
   const posts = (
-    <div className="mx-auto grid items-start grid-cols-1 gap-6 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
-      {postsList.map((post) => (
-        <article
-          key={post.id}
-          className="flex flex-col items-start justify-between "
-        >
-          <div className="relative flex items-center gap-x-4 text-left">
-            <img
-              loading="lazy"
-              src={post.imageUrl}
-              alt=""
-              className="h-14 w-14 rounded-full object-cover bg-gray-50"
-            />
-            <div className="text-base leading-6 capitalize">
-              <p className="font-semibold text-gray-900 ">
-                <span className="absolute inset-0" />
-                {post.name}
-              </p>
-              <p className="text-sm text-gray-600 ">{post.sport}</p>
+    <div className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
+      {postsList.map((post, index) => {
+        const rotationDegree = index % 2 === 0 ? -1 : 1;
+        return (
+          <article
+            key={index}
+            className={`flex flex-col items-start justify-between bg-white p-4 sm:p-6 rounded-2xl border-gray-200 border-[1px]`}
+            style={{ transform: `rotate(${rotationDegree}deg)` }}
+          >
+            <div className="relative flex items-center gap-x-4 text-left">
+              <ProfileAvatar
+                username={post.name}
+                gender={post.gender}
+                size={54}
+              />
+              <div className="text-base leading-6">
+                <p className="font-semibold text-gray-900 capitalize">
+                  <span className="absolute inset-0" />
+                  {post.name}
+                </p>
+                <Tags
+                  list={post.sports}
+                  className="py-[.1rem] px-[.6rem] text-xs"
+                />
+              </div>
             </div>
-          </div>
-          <div className="group relative">
-            <p className="mt-5 text-left text-base leading-6 text-gray-600">
-              {post.review}
-            </p>
-          </div>
-        </article>
-      ))}
+            <div className="group relative">
+              <p className="mt-5 text-left text-base leading-6 text-gray-600">
+                {post.review}
+              </p>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
   return (
-    <Container className="relative">
+    <Container className="relative bg-gradient-to-b from-white to-light-green">
       <Star
         type="outlined"
         color="#00e0b5"
