@@ -250,18 +250,30 @@ def get_specific_user(current_user, username):
 @token_required()
 def get_all_users(current_user):
     try:
+        # Get pagination parameters
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
-        sport_name = request.args.get('sport', None)  # Query parameter for sport search
 
-        # Extract the current user's ID
+        # Get optional sport filter
+        sport_name = request.args.get('sport', None)
+
+        # Extract the current user's ID from the token
         current_user_id = current_user.id
+
+        # Retrieve the current user's city from the database
+        current_user_db = Myusers.query.filter_by(id=current_user_id).first()
+
+        if not current_user_db:
+            return jsonify({"message": "User not found"}), 404
+
+        current_user_city = current_user_db.city  # Get the city from the user's data
 
         # Base query to filter out the current user and ensure profile completion
         query = Myusers.query.filter(
             Myusers.id != current_user_id,               # Exclude the current user
             Myusers.isProfileCompleted == True,          # Ensure profile is completed
-            Myusers.availability == True                 # Ensure the user is available
+            Myusers.availability == True,                # Ensure the user is available
+            Myusers.city == current_user_city            # Filter users by the same city
         )
 
         # If a sport name is provided, filter users by sport
@@ -271,6 +283,7 @@ def get_all_users(current_user):
         # Paginate the results
         users_query = query.paginate(page=page, per_page=per_page, error_out=False)
 
+        # Prepare the response
         output = []
         for user in users_query.items:
             sports_list = [sport.name for sport in user.sports]
@@ -282,6 +295,7 @@ def get_all_users(current_user):
             }
             output.append(user_data)
 
+        # Pagination metadata
         pagination_metadata = {
             "total_items": users_query.total,
             "total_pages": users_query.pages,
@@ -291,6 +305,7 @@ def get_all_users(current_user):
         }
 
         return jsonify(pagination_metadata), 200
+
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 

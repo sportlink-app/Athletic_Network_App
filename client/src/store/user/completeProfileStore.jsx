@@ -73,13 +73,18 @@ const completeProfileStore = create((set, get) => ({
     try {
       const { updateForm } = get();
 
+      // Ensure city is not null or undefined before applying toLowerCase()
+      const cityLowerCase = updateForm.city
+        ? updateForm.city.trim().toLowerCase()
+        : "";
+
       const response = await axios.post(
         "/complete-profile",
         {
           gender: updateForm.gender,
           bio: updateForm.bio,
           sports: updateForm.sports,
-          city: updateForm.city,
+          city: cityLowerCase, // Apply the correction here
           tel: updateForm.tel,
         },
         {
@@ -90,8 +95,10 @@ const completeProfileStore = create((set, get) => ({
         }
       );
 
+      // Save token in a cookie with expiration of 7 days
       Cookies.set("token", response.data.token, { expires: 7 });
 
+      // Reset updateForm state after profile completion
       set({
         updateForm: {
           gender: "",
@@ -106,6 +113,7 @@ const completeProfileStore = create((set, get) => ({
     } catch (error) {
       console.log(error);
 
+      // Handle different error statuses
       if (error.response && error.response.status === 400) {
         throw new Error("Failed to update your profile");
       } else if (error.response && error.response.status === 500) {

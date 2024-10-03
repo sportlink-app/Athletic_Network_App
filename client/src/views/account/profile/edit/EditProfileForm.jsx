@@ -158,9 +158,7 @@ function EditProfileForm({ onSuccess }) {
 
   const cityInput = (
     <li className="mt-2 flex flex-col gap-1">
-      <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
-        City
-      </label>
+      <label className="ml-2 font-medium leading-6 text-gray-900">City</label>
       <Input
         name="city"
         value={editForm.city}
@@ -175,9 +173,7 @@ function EditProfileForm({ onSuccess }) {
 
   const telInput = (
     <li className="mt-2 flex flex-col gap-1">
-      <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
-        Tel
-      </label>
+      <label className="ml-2 font-medium leading-6 text-gray-900">Tel</label>
       <Input
         name="tel"
         value={editForm.tel}
@@ -202,7 +198,7 @@ function EditProfileForm({ onSuccess }) {
         onSubmit={handleUpdateProfile}
         method="PUT"
         action="#"
-        className="flex flex-col gap-2 lg:gap-3 max-w-sm mx-auto pt-4 text-left"
+        className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
       >
         <ul className="sm:flex gap-8">
           {usernameInput} {genderSelect}

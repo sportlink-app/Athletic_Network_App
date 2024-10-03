@@ -70,7 +70,7 @@ function WriteBlogForm({ onSuccess }) {
     setSport(value); // Update sport in Zustand store
   };
 
-  const sportsSelect = (
+  const sportSelect = (
     <li className="mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Sport
@@ -87,9 +87,9 @@ function WriteBlogForm({ onSuccess }) {
             setSport(text); // Keep local state updated with user input
           }
         }}
-        placeholder="Start typing to search for a sport"
+        placeholder="Type to search for a sport"
         size="large"
-        className="min-w-36 max-w-36 text-left"
+        className="min-w-36 max-w-44 text-left"
       />
     </li>
   );
@@ -120,11 +120,11 @@ function WriteBlogForm({ onSuccess }) {
         onSubmit={handleSubmit}
         method="POST"
         action="#"
-        className="flex flex-col gap-2 lg:gap-3 max-w-sm mx-auto pt-4 text-left"
+        className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
       >
         <ul className="flex justify-between items-center gap-4">
           {titleInput}
-          {sportsSelect}
+          {sportSelect}
         </ul>
         {contentTextArea}
         <Button

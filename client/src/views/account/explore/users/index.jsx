@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
-import Footer from "../../../components/static/Footer";
+import Footer from "../../../../components/static/Footer";
 import { Pagination, Spin, message } from "antd";
 import SportFilter from "./filter/SportFilter";
 import UserCard from "./UserCard";
-import usersStore from "../../../store/user/usersStore";
-import EmptyData from "../../../components/static/EmptyData";
+import usersStore from "../../../../store/user/usersStore";
+import EmptyData from "../../../../components/static/EmptyData";
 
-function Explore() {
+function Users() {
   const { users, totalUsers, currentPage, perPage, fetchUsers } = usersStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -103,4 +103,4 @@ function Explore() {
   );
 }
 
-export default Explore;
+export default Users;

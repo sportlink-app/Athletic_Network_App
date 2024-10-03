@@ -1,6 +1,6 @@
-import DataField from "../../../../components/dynamic/DataField";
+import DataField from "../../../../../components/dynamic/DataField";
 import { Divider } from "antd";
-import Tags from "../../../../components/static/Tags";
+import Tags from "../../../../../components/static/Tags";
 import { BulbOutlined, HeartOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 

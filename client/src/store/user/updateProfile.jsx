@@ -98,9 +98,13 @@ const updateProfileStore = create((set, get) => {
     updateProfile: async () => {
       try {
         const { username, gender, bio, sports, city, tel } = get().editForm;
+
+        // Ensure city is not null or undefined, then trim spaces and convert to lowercase
+        const cityFormatted = city ? city.trim().toLowerCase() : "";
+
         const response = await axios.put(
           "/profile",
-          { username, gender, bio, sports, city, tel },
+          { username, gender, bio, sports, city: cityFormatted, tel }, // Use the formatted city here
           {
             headers: {
               Authorization: `Bearer ${authStore.getState().token}`,
@@ -108,16 +112,18 @@ const updateProfileStore = create((set, get) => {
             },
           }
         );
+
         // Update authenticated username in authStore
         authStore.setState({ authenticatedUsername: username });
         Cookies.set("token", response.data.token, { expires: 7 });
+
         // Update the userInfoStore after a successful update
         userInfoStore.setState({
           username,
           gender,
           bio,
           sports,
-          city,
+          city: cityFormatted, // Update city in userInfoStore with formatted value
           tel,
         });
 

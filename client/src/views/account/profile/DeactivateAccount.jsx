@@ -74,30 +74,31 @@ function DeactivateAccount() {
         onCancel={handleCancel}
         title="Deactivate Account"
         footer={null}
-        style={{ borderRadius: "100px" }}
       >
-        <p className="text-sm text-gray-500">
-          Are you sure you want to deactivate your account? This action cannot
-          be undone. Once you deactivate your account, there is no going back.
-        </p>
+        <div className="p-2">
+          <p className="text-sm text-gray-500">
+            Are you sure you want to deactivate your account? This action cannot
+            be undone. Once you deactivate your account, there is no going back.
+          </p>
 
-        <div className="mt-6 sm:flex sm:flex-row-reverse">
-          <Button
-            onClick={handleDeactivate}
-            danger
-            type="primary"
-            shape="round"
-            size="large"
-            icon={
-              isLoading ? (
-                <Spin size="small" className="white-spin" />
-              ) : (
-                <CloseOutlined size={16} />
-              )
-            }
-          >
-            Deactivate This Account
-          </Button>
+          <div className="mt-6 sm:flex sm:flex-row-reverse">
+            <Button
+              onClick={handleDeactivate}
+              danger
+              type="primary"
+              shape="round"
+              size="large"
+              icon={
+                isLoading ? (
+                  <Spin size="small" className="white-spin" />
+                ) : (
+                  <CloseOutlined size={16} />
+                )
+              }
+            >
+              Deactivate This Account
+            </Button>
+          </div>
         </div>
       </Modal>
     </>

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Spin } from "antd";
 import { ReadOutlined } from "@ant-design/icons";
-import { getRandomColor } from "../../../../components/utils/randomColor";
-import usersStore from "../../../../store/user/usersStore";
-import userInfoStore from "../../../../store/user/userInfoStore";
-import ProfileHeader from "../../../../components/dynamic/ProfileHeader";
+import { getRandomColor } from "../../../../../components/utils/randomColor";
+import usersStore from "../../../../../store/user/usersStore";
+import userInfoStore from "../../../../../store/user/userInfoStore";
+import ProfileHeader from "../../../../../components/dynamic/ProfileHeader";
 import ProfileContent from "./ProfileContent";
-import Footer from "../../../../components/static/Footer";
-import BackButton from "../../../../components/static/BackButton";
+import Footer from "../../../../../components/static/Footer";
+import BackButton from "../../../../../components/static/BackButton";
 
 function UserProfile() {
   const { username } = useParams();
