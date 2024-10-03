@@ -76,3 +76,54 @@ def create_default_sports():
             db.session.add(sport)
     
     db.session.commit()
+
+class Team(db.Model):
+    __tablename__ = 'teams'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    sport_id = db.Column(db.Integer, db.ForeignKey('sports.id'), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    members_count = db.Column(db.Integer, default=0)
+    isCompleted = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    owner_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+
+    # Relationships
+    sport = db.relationship('Sport', backref='teams')
+    owner = db.relationship('Myusers', backref='owned_teams')
+    members = db.relationship('Myusers', secondary='team_members', backref='teams')
+
+# Many-to-Many relationship table for team members
+team_members = db.Table('team_members',
+    db.Column('team_id', db.Integer, db.ForeignKey('teams.id'), primary_key=True),
+    db.Column('user_id', db.Integer, db.ForeignKey('myusers.id'), primary_key=True)
+)
+
+class TeamInvite(db.Model):
+    __tablename__ = 'team_invites'
+    id = db.Column(db.Integer, primary_key=True)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+    invited_by_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+    status = db.Column(db.String(20), default='Pending')  # 'Pending', 'Accepted', 'Rejected'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    team = db.relationship('Team', backref='invites')
+    user = db.relationship('Myusers', backref='team_invites', foreign_keys=[user_id])
+    invited_by = db.relationship('Myusers', backref='invited_teams', foreign_keys=[invited_by_id])
+
+
+
+class JoinRequest(db.Model):
+    __tablename__ = 'join_requests'
+    id = db.Column(db.Integer, primary_key=True)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+    status = db.Column(db.String(20), default='Pending')  # 'Pending', 'Accepted', 'Rejected'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    team = db.relationship('Team', backref='join_requests')
+    user = db.relationship('Myusers', backref='join_requests')

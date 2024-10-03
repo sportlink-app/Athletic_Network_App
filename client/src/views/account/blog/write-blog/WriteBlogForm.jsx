@@ -89,7 +89,7 @@ function WriteBlogForm({ onSuccess }) {
         }}
         placeholder="Type to search for a sport"
         size="large"
-        className="min-w-36 max-w-44 text-left"
+        className="w-44 text-left"
       />
     </li>
   );
