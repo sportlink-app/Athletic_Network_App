@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { AutoComplete, Button, DatePicker, Input, Spin, message } from "antd";
+import {
+  AutoComplete,
+  Button,
+  DatePicker,
+  Input,
+  InputNumber,
+  Spin,
+  message,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import useSports from "../../../../../components/dynamic/SportsNames";
 import { UserAddOutlined } from "@ant-design/icons";
@@ -8,7 +16,7 @@ import PropTypes from "prop-types";
 
 function CreateTeamForm({ onSuccess }) {
   const nameInput = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 ">Name</label>
       <Input
         name="title"
@@ -44,7 +52,7 @@ function CreateTeamForm({ onSuccess }) {
   };
 
   const sportSelect = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className=" sm:col-span-2 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 ">Sport</label>
       <AutoComplete
         // options={options}
@@ -64,8 +72,41 @@ function CreateTeamForm({ onSuccess }) {
     </li>
   );
 
+  const membersCountInput = (
+    <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
+      <label className="ml-2 font-medium leading-6 text-gray-900 ">
+        Members Count
+      </label>
+      <InputNumber
+        min={2}
+        max={10}
+        name="members-count"
+        placeholder="Number of members"
+        size="large"
+        className="rounded-full overflow-hidden w-full"
+      />
+    </li>
+  );
+
+  const descriptionInput = (
+    <li className="sm:col-span-6 mt-2 flex flex-col gap-1">
+      <label className="ml-2 font-medium leading-6 text-gray-900 ">
+        Description
+      </label>
+      <TextArea
+        name="description"
+        placeholder="Enter the description"
+        maxLength={350}
+        autoSize={{
+          minRows: 2,
+        }}
+        style={{ borderRadius: "15px" }}
+      />
+    </li>
+  );
+
   const dateInput = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 ">
         Date & Time
       </label>
@@ -82,7 +123,7 @@ function CreateTeamForm({ onSuccess }) {
   );
 
   const cityInput = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 ">City</label>
       <Input
         name="city"
@@ -104,9 +145,11 @@ function CreateTeamForm({ onSuccess }) {
         action="#"
         className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
       >
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
           {nameInput}
           {sportSelect}
+          {membersCountInput}
+          {descriptionInput}
           {cityInput}
           {dateInput}
         </ul>
