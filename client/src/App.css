@@ -103,8 +103,8 @@ p{
     @apply bg-green !important;
 } 
 
-.ant-badge{
-    @apply leading-[.5rem] !important;
+.ant-badge, .ant-avatar-group a{
+    @apply leading-[.5rem] h-fit !important;
 }
 
 :where(.css-dev-only-do-not-override-14qglws).ant-btn-primary {

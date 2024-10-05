@@ -127,7 +127,7 @@ function SignUpForm() {
         type="primary"
         shape="round"
         size="large"
-        className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
+        className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green  mx-auto mt-4"
         icon={
           isLoading ? (
             <Spin size="small" className="white-spin" />

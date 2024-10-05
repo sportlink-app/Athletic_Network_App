@@ -22,7 +22,7 @@ function Tags({ list, className }) {
           <Tag
             key={sport}
             color={color.name}
-            className={`${className} rounded-full capitalize`}
+            className={`${className} rounded-full h-fit capitalize`}
           >
             {sport}
           </Tag>

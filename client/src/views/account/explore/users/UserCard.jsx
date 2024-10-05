@@ -1,15 +1,18 @@
 import ProfileAvatar from "../../../../components/dynamic/Avatar";
 import Card from "../../../../components/static/Card";
 import Tags from "../../../../components/static/Tags";
-import { getRandomColor } from "../../../../components/utils/randomColor";
+import {
+  getRandomColor,
+  lightenColor,
+} from "../../../../components/utils/randomColor";
 import { Link } from "react-router-dom";
 import { UserAddOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 
 function UserCard({ username, gender, availability, city, sports }) {
-  const avatarBgColor = getRandomColor(username, gender).replace("#", "");
-  const coverBgColor = getRandomColor(username);
+  const avatarBgColor = getRandomColor(username, gender);
+  const coverBgColor = lightenColor(avatarBgColor, 10);
 
   // Handle button click without triggering the link navigation
   const handleInviteClick = (e) => {
@@ -30,7 +33,7 @@ function UserCard({ username, gender, availability, city, sports }) {
             gender={gender}
             size={58}
             bgColor={avatarBgColor}
-            dot={true}
+            dot
             dotColor={`${availability ? "green" : "red"}`}
             className="absolute -bottom-[29px] left-[8%]"
           />
@@ -47,10 +50,12 @@ function UserCard({ username, gender, availability, city, sports }) {
         </div>
         <div className="mt-10 p-5 pt-0">
           <div className="flex justify-between">
-            <h3 className="text-sm font-medium text-gray-900">{username}</h3>
+            <h3 className="text-sm font-medium text-gray-900 capitalize">
+              {username}
+            </h3>
             <span className="flex justify-center items-center gap-1">
               <EnvironmentOutlined className="text-xs" />
-              <p className="text-sm text-gray-500">{city}</p>
+              <p className="text-sm text-gray-500 capitalize">{city}</p>
             </span>
           </div>
           <div className="flex flex-wrap gap-y-2 mt-4">

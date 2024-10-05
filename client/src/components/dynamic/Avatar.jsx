@@ -74,7 +74,7 @@ function ProfileAvatar({
         <Avatar
           src={avatarUrl}
           size={size}
-          className=" border-[1px] border-white"
+          className=" border-[2px] border-white"
         />
       )}
     </Badge>

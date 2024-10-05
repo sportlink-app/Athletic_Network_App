@@ -22,7 +22,6 @@ function Blogs() {
           setIsDataFetched(true); // Mark data as fetched
         } catch (error) {
           messageApi.error("An error occurred while fetching blogs data.");
-          console.error("Error fetching blogs:", error);
         } finally {
           setLoading(false);
         }
@@ -40,7 +39,6 @@ function Blogs() {
       await getBlogs(); // Fetch next page of blogs
     } catch (error) {
       messageApi.error("Failed to load more blogs.");
-      console.error("Error loading more blogs:", error);
     } finally {
       setLoading(false);
     }

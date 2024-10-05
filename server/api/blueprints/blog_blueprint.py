@@ -1,9 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import db, Myusers, Sport, Blog
 from .user_blueprint import token_required
-from ..config import Config
 
-SECRET_KEY = Config.SECRET_KEY
 blog_blueprint = Blueprint('blog_blueprint', __name__)
 
 # Create Blog API
@@ -44,7 +42,7 @@ def create_blog(current_user):
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get All Blogs API
-@blog_blueprint.route('/blog', methods=['GET'])
+@blog_blueprint.route('/blogs', methods=['GET'])
 @token_required()
 def get_all_blogs(current_user):
     try:
@@ -89,7 +87,7 @@ def get_all_blogs(current_user):
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get User Blogs API
-@blog_blueprint.route('/blog/<username>', methods=['GET'])
+@blog_blueprint.route('/blogs/<username>', methods=['GET'])
 @token_required()
 def get_user_blogs(current_user, username):
     try:

@@ -2,11 +2,13 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_cors import CORS
 from .config import Config
-from .models import db, create_default_sports  # Import the function
+from .models import db, create_default_sports  
 from .blueprints.home_blueprint import home_blueprint
+from .blueprints.newsletter_blueprint import newsletter_blueprint
 from .blueprints.user_blueprint import user_blueprint
 from .blueprints.sports_blueprint import sports_blueprint
 from .blueprints.blog_blueprint import blog_blueprint  
+from .blueprints.team_blueprint import team_blueprint  
 
 migrate = Migrate()
 
@@ -21,10 +23,12 @@ def create_app():
     CORS(app, origins=["http://localhost:5173"], supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
     # Register your blueprints here
-    app.register_blueprint(user_blueprint)
     app.register_blueprint(home_blueprint)
+    app.register_blueprint(newsletter_blueprint)
+    app.register_blueprint(user_blueprint)
     app.register_blueprint(sports_blueprint)
     app.register_blueprint(blog_blueprint)  
+    app.register_blueprint(team_blueprint)  
 
     @app.before_first_request
     def create_tables_and_insert_data():

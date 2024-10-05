@@ -117,7 +117,7 @@ function CreateTeamForm({ onSuccess }) {
           type="primary"
           shape="round"
           size="large"
-          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80  mt-4"
           //   icon={
           //     isLoading ? (
           //       <Spin size="small" className="white-spin" />

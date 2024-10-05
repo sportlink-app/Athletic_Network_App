@@ -41,11 +41,11 @@ function Features() {
     },
   ];
   const features = (
-    <dl className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-y-16 lg:gap-x-28">
+    <dl className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-y-16 lg:gap-x-48 mx-4 lg:mx-8 xl:mx-12">
       {featuresList.map((feature) => (
         <div key={feature.title} className="relative pl-16 text-left">
           <dt className="text-base font-semibold leading-7 text-gray-900 capitalize">
-            <div className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-green to-cyan ">
+            <div className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-cyan to-green ">
               {feature.icon}
             </div>
             {feature.title}

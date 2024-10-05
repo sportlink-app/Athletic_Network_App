@@ -76,7 +76,7 @@ function Users() {
     <>
       {contextHolder}
 
-      <div className="min-h-screen container mx-auto px-4 my-10 ">
+      <section className="min-h-screen container mx-auto px-4 my-10 ">
         <SportFilter
           onSportSelect={handleSportSelect}
           initialSport={sportFromParams} // Pass the sport from URL as initial value
@@ -96,7 +96,7 @@ function Users() {
             className="mt-6 mx-auto w-fit"
           />
         )}
-      </div>
+      </section>
 
       <Footer />
     </>

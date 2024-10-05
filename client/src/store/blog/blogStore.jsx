@@ -21,7 +21,7 @@ const blogStore = create((set, get) => ({
     const { currentPage } = get();
     try {
       const response = await axios.get(
-        `/blog?page=${reset ? 1 : currentPage}&per_page=9`,
+        `/blogs?page=${reset ? 1 : currentPage}&per_page=9`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -50,7 +50,7 @@ const blogStore = create((set, get) => ({
   getUserBlogs: async (username, reset = false) => {
     try {
       const response = await axios.get(
-        `/blog/${username}?page=${
+        `/blogs/${username}?page=${
           reset ? 1 : get().userBlogsCurrentPage
         }&per_page=9`,
         {

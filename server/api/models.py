@@ -9,6 +9,16 @@ user_sports = db.Table('user_sports',
     db.Column('sport_id', db.Integer, db.ForeignKey('sports.id'), primary_key=True)
 )
 
+class NewsletterSubscriber(db.Model):
+    __tablename__ = 'newsletter_subscribers'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    subscribed_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Subscriber {self.email}>'
+
+
 class Myusers(db.Model):
     __tablename__ = 'myusers'
     id = db.Column(db.Integer, primary_key=True)

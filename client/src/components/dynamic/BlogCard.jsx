@@ -25,7 +25,7 @@ function BlogCard({ username, gender, sport, date, title, content, btn }) {
         <h3 className="text-base xl:text-lg font-medium text-gray-900">
           {title}
         </h3>
-        <p className="text-sm text-gray-600 capitalize">{content}</p>
+        <p className="text-sm text-gray-600">{content}</p>
         {!btn && (
           <div className="flex items-center justify-start gap-2 mt-1">
             <ProfileAvatar

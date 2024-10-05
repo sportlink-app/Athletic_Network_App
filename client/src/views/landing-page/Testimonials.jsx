@@ -31,9 +31,9 @@ function Testimonials() {
   ];
 
   const posts = (
-    <div className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 xl:gap-16 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
+    <div className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
       {postsList.map((post, index) => {
-        const rotationDegree = index % 2 === 0 ? -1 : 1;
+        const rotationDegree = index % 2 === 0 ? -1.2 : 1.2;
         return (
           <article
             key={index}
