@@ -175,12 +175,12 @@ function EditProfileForm({ onSuccess }) {
     <li className="mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Tel</label>
       <Input
+        type="number"
         name="tel"
         value={editForm.tel}
         onChange={handleUpdateFieldChange}
         status={errors.tel ? "error" : ""}
         maxLength={12}
-        type="number"
         placeholder="Your phone number"
         size="large"
         style={{ borderRadius: "50px" }}

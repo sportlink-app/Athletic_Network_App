@@ -111,14 +111,7 @@ p{
     @apply shadow-none !important; 
 }
 
-:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before, :where(.css-dev-only-do-not-override-14qglws).ant-input-number-outlined:hover , :where(.css-dev-only-do-not-override-14qglws).ant-input-number-outlined:focus-within  {
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
     @apply border-green rounded-full !important;
 }
 
-.anticon-down{
-    @apply w-fit !important;
-}
-
-.anticon-down, .anticon-up{
-    @apply text-green !important;
-}

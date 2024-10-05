@@ -1,16 +1,8 @@
 import { useState } from "react";
-import {
-  AutoComplete,
-  Button,
-  DatePicker,
-  Input,
-  InputNumber,
-  Spin,
-  message,
-} from "antd";
+import { AutoComplete, Button, DatePicker, Input, Spin, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import useSports from "../../../../../components/dynamic/SportsNames";
-import { UserAddOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 import PropTypes from "prop-types";
 
@@ -77,10 +69,15 @@ function CreateTeamForm({ onSuccess }) {
       <label className="ml-2 font-medium leading-6 text-gray-900 ">
         Members Count
       </label>
-      <InputNumber
+      <Input
+        type="number"
+        name="members-count"
+        // value={editForm.tel}
+        // onChange={handleUpdateFieldChange}
+        // status={errors.tel ? "error" : ""}
         min={2}
         max={10}
-        name="members-count"
+        maxLength={1}
         placeholder="Number of members"
         size="large"
         className="rounded-full overflow-hidden w-full"
@@ -161,15 +158,17 @@ function CreateTeamForm({ onSuccess }) {
           shape="round"
           size="large"
           className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80  mt-4"
-          //   icon={
-          //     isLoading ? (
-          //       <Spin size="small" className="white-spin" />
-          //     ) : (
-          //       <UserAddOutlined size={16} />
-          //     )
-          //   }
+          icon={
+            // isLoading ? (
+            //   <Spin size="small" className="white-spin" />
+            // ) : (
+
+            <ArrowRightOutlined size={16} />
+            // )
+          }
+          iconPosition="end"
         >
-          Invite Members
+          Create & Invite
         </Button>
       </form>
     </>
