@@ -83,17 +83,25 @@ function WriteBlogForm({ onSuccess }) {
     setSelectedSport(text);
 
     if (text === "") {
-      handleSportClear();
+      handleSportClear(); // Clear the sport when input is empty
     } else {
-      const selectedOption = sports.find(
-        (sport) => sport.name.toLowerCase() === text.toLowerCase()
+      // Check if there is any sport that matches the typed text (partially or fully)
+      const matchingSports = sports.filter((sport) =>
+        sport.name.toLowerCase().startsWith(text.toLowerCase())
       );
-      if (!selectedOption) {
+
+      if (matchingSports.length === 0) {
+        // If no sports match the typed text, show an error
         setSportError("Please select a valid sport from the list.");
-        setBlogForm({ sportId: "" }); // Ensure the sport ID is cleared if invalid
+        setBlogForm({ sportId: "" }); // Clear sportId if input is invalid
       } else {
-        setBlogForm({ sportId: selectedOption.id }); // Set sport ID if valid
-        setSportError(""); // Clear error if valid option exists
+        // If there is a valid match, clear the error
+        setSportError("");
+        // Optionally, you could set the sportId if there is an exact match
+        const exactMatch = matchingSports.find(
+          (sport) => sport.name.toLowerCase() === text.toLowerCase()
+        );
+        setBlogForm({ sportId: exactMatch ? exactMatch.id : "" });
       }
     }
   };

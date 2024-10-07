@@ -17,7 +17,7 @@ function Logout() {
     // Clear authentication and profile completion cookies
     Cookies.remove("token");
 
-    // Clear user info from userInfoStore
+    localStorage.clear();
     clearUserInfo();
 
     // Update auth store state
@@ -25,9 +25,6 @@ function Logout() {
     setProfileCompletedState(false); // Reset profile completion
 
     closeNavbar();
-
-    // Clear any other relevant cookies or local storage
-    localStorage.clear();
 
     // Redirect to login
     navigate("/account/login");

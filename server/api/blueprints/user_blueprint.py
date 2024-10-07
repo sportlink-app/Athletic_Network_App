@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers, Sport, user_sports  # Import Sport for handling many-to-many relationship
+from ..models import db, Myusers, Sport, user_sports
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
@@ -219,16 +219,24 @@ def update_profile(current_user):
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
-# Delete User API
+# api.py
 @user_blueprint.route('/profile', methods=['DELETE'])
 @token_required()
 def delete_user(current_user):
     try:
         user = Myusers.query.get(current_user.id)
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+        
+      
+        
+        # Now delete the user
         db.session.delete(user)
         db.session.commit()
+
         return jsonify({"message": "Account deleted successfully"}), 200
     except Exception as e:
+        db.session.rollback()  # Ensure session rollback on error
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get Specific User API

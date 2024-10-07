@@ -222,7 +222,7 @@ function CompleteProfileForm() {
         }
         iconPosition="end"
       >
-        Done
+        Next
       </Button>
     </form>
   );

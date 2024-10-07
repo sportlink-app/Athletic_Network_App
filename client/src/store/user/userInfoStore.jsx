@@ -75,6 +75,7 @@ const userInfoStore = create(
             },
           });
 
+          // Clear state
           set({
             username: "",
             gender: "",
@@ -86,7 +87,8 @@ const userInfoStore = create(
             availability: null,
           });
 
-          localStorage.removeItem("user-info");
+          // Properly clear zustand-persist localStorage
+          userInfoStore.persist.clearStorage();
         } catch (error) {
           console.error("Error deleting profile:", error.message);
         }

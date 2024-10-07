@@ -20,17 +20,18 @@ const completeProfileStore = create((set, get) => ({
   },
 
   isFormComplete: () => {
-    const { bio, tel, sports, city } = get().updateForm;
+    const { bio, tel, sports, city, gender } = get().updateForm;
     const bioValid = bio.split(/\s+/).length >= bioMinWords; // Check for minimum word count
     const telValid = telRegex.test(tel);
     const sportsValid = sports.length > 0; // Ensure sports is not empty
     const cityValid = city.trim() !== ""; // Ensure city is not empty
+    const genderValid = gender !== ""; // Ensure gender is selected
 
-    return bioValid && telValid && sportsValid && cityValid;
+    return bioValid && telValid && sportsValid && cityValid && genderValid;
   },
 
   updateValidationErrors: () => {
-    const { bio, tel, sports, city } = get().updateForm;
+    const { bio, tel, sports, city, gender } = get().updateForm;
 
     const errors = {
       bio: bio
@@ -45,6 +46,7 @@ const completeProfileStore = create((set, get) => ({
         : "",
       sports: sports.length > 0 ? "" : "Please select at least one sport.",
       city: city.trim() !== "" ? "" : "City field cannot be empty.",
+      gender: gender !== "" ? "" : "Gender field cannot be empty.", // Gender validation
     };
 
     return errors;
