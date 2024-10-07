@@ -54,20 +54,20 @@ const ProfileAside = ({ username, gender }) => {
       <h2 className="text-gray-600 text-3xl font-medium capitalize text-center md:w-40 lg:w-48 text-ellipsis overflow-hidden">
         {username}
       </h2>
-      <li className="self-end flex gap-3 items-center mr-6">
-        <Text
-          text={`${availability ? "Available" : "Unavailable"}`}
-          type="subtitle"
-          className={`${
-            !availability && "!text-red-400"
-          } "font-medium capitalize"`}
-        />
+      <li className="self-start flex gap-3 items-center ml-6">
         <Switch
           checkedChildren={<CheckOutlined />}
           unCheckedChildren={<CloseOutlined />}
           checked={availability}
           onChange={handleAvailabilityChange}
           disabled={loading}
+        />
+        <Text
+          text={`${availability ? "Available" : "Unavailable"}`}
+          type="subtitle"
+          className={`${
+            !availability && "!text-red-400"
+          } "font-medium capitalize"`}
         />
       </li>
     </div>

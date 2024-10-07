@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AutoComplete, Button, DatePicker, Input, Spin } from "antd";
+import { AutoComplete, Button, DatePicker, Input, message, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
@@ -13,7 +13,6 @@ function CreateTeamForm({ onSuccess }) {
     errors,
     setTeamForm,
     handleInputChange,
-    handleSearch,
     createTeam,
     isFormInvalid,
   } = createTeamStore((state) => ({
@@ -21,37 +20,27 @@ function CreateTeamForm({ onSuccess }) {
     errors: state.errors,
     setTeamForm: state.setTeamForm,
     handleInputChange: state.handleInputChange,
-    handleSearch: state.handleSearch,
     createTeam: state.createTeam,
     isFormInvalid: state.isFormInvalid,
   }));
 
-  const [options, setOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const sports = useSports();
-
-  const handleSportSearch = (text) => {
-    const filteredOptions = handleSearch(text, sports);
-    setOptions(filteredOptions);
-  };
-
+  const [selectedSport, setSelectedSport] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       await createTeam();
+      setSelectedSport("");
       onSuccess();
+      messageApi.success("Your team created successfully!");
     } catch (error) {
-      console.error("Error creating team:", error);
+      messageApi.error(error.message);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDateChange = (value) => {
-    setTeamForm({ date: value ? value.toISOString() : "" });
   };
 
   const nameInput = (
@@ -68,23 +57,98 @@ function CreateTeamForm({ onSuccess }) {
     </li>
   );
 
+  const sports = useSports();
+  const [options, setOptions] = useState([]);
+
+  const handleSportSearch = (text) => {
+    setSelectedSport(text); // Update the selected sport text
+    if (text) {
+      const filteredOptions = sports
+        .filter((sport) =>
+          sport.name.toLowerCase().includes(text.toLowerCase())
+        )
+        .map((sport) => ({
+          value: sport.name, // Display the sport's name in the dropdown
+          id: sport.id, // Attach the sport's ID to the option
+        }));
+
+      setOptions(filteredOptions);
+
+      // Check if typed text exactly matches any sport
+      const exactMatch = filteredOptions.find(
+        (option) => option.value.toLowerCase() === text.toLowerCase()
+      );
+
+      if (exactMatch) {
+        // If there's an exact match, set the sportId automatically
+        setTeamForm({ ...teamForm, sportId: exactMatch.id });
+        createTeamStore.setState({
+          errors: {
+            ...errors,
+            sportError: "",
+          },
+        });
+      } else if (filteredOptions.length === 0) {
+        setTeamForm({ ...teamForm, sportId: "" }); // Clear sportId if no valid options
+        createTeamStore.setState({
+          errors: {
+            ...errors,
+            sportError: "Please select a valid sport from the list.",
+          },
+        });
+      } else {
+        createTeamStore.setState({
+          errors: {
+            ...errors,
+            sportError: "",
+          },
+        });
+      }
+    } else {
+      setOptions([]);
+      setTeamForm({ ...teamForm, sportId: "" }); // Clear sportId when input is empty
+      createTeamStore.setState({
+        errors: {
+          ...errors,
+          sportError: "", // Clear the error when input is empty
+        },
+      });
+    }
+  };
+
+  const handleSportSelect = (value, option) => {
+    setSelectedSport(value); // Set selected sport name for display
+    setTeamForm({ ...teamForm, sportId: option.id }); // Update form with selected sport ID
+    setOptions([]); // Clear options after selection
+
+    // Clear sport error when a valid option is selected
+    createTeamStore.setState((state) => ({
+      errors: {
+        ...state.errors,
+        sportError: "",
+      },
+    }));
+  };
+
   const sportSelect = (
     <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Sport</label>
       <AutoComplete
         options={options}
-        value={teamForm.sport} // Ensure this reflects the input value
-        onSearch={handleSportSearch}
-        onSelect={(value) => {
-          setTeamForm({ sport: value }); // Update state on selection
-          setOptions([]); // Clear options after selection
+        value={selectedSport} // Ensure the selected sport name is displayed
+        onSearch={handleSportSearch} // Update the text being typed
+        onSelect={handleSportSelect}
+        onChange={(text) => {
+          setSelectedSport(text);
+          handleSportSearch(text); // Update options based on input
         }}
-        onChange={(value) => setTeamForm({ sport: value })} // Update state on input change
         placeholder="Type to search for a sport"
         size="large"
       />
       {errors.sportError && (
-        <p className="text-sm text-red-500 !leading-5">{errors.sportError}</p>
+        <p className="text-sm text-red-500 !leading-5 mt-1">
+          {errors.sportError}
+        </p>
       )}
     </li>
   );
@@ -106,7 +170,7 @@ function CreateTeamForm({ onSuccess }) {
         className="rounded-full"
       />
       {errors.membersCountError && (
-        <p className="text-sm text-red-500 !leading-5">
+        <p className="text-sm text-red-500 !leading-5 mt-1">
           {errors.membersCountError}
         </p>
       )}
@@ -129,6 +193,10 @@ function CreateTeamForm({ onSuccess }) {
       />
     </li>
   );
+
+  const handleDateChange = (value) => {
+    setTeamForm({ date: value ? value.toISOString() : "" });
+  };
 
   const dateInput = (
     <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
@@ -161,38 +229,41 @@ function CreateTeamForm({ onSuccess }) {
   );
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
-    >
-      <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
-        {nameInput}
-        {sportSelect}
-        {membersCountInput}
-        {descriptionInput}
-        {cityInput}
-        {dateInput}
-      </ul>
-
-      <Button
-        htmlType="submit"
-        disabled={isLoading || isFormInvalid()}
-        type="primary"
-        shape="round"
-        size="large"
-        className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
-        icon={
-          isLoading ? (
-            <Spin size="small" className="white-spin" />
-          ) : (
-            <ArrowRightOutlined size={16} />
-          )
-        }
-        iconPosition="end"
+    <>
+      {contextHolder}
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
       >
-        Create & Invite
-      </Button>
-    </form>
+        <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
+          {nameInput}
+          {sportSelect}
+          {membersCountInput}
+          {descriptionInput}
+          {cityInput}
+          {dateInput}
+        </ul>
+
+        <Button
+          htmlType="submit"
+          disabled={isLoading || isFormInvalid()}
+          type="primary"
+          shape="round"
+          size="large"
+          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+          icon={
+            isLoading ? (
+              <Spin size="small" className="white-spin" />
+            ) : (
+              <ArrowRightOutlined size={16} />
+            )
+          }
+          iconPosition="end"
+        >
+          Create & Invite Members
+        </Button>
+      </form>
+    </>
   );
 }
 

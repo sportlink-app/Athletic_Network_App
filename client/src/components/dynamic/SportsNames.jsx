@@ -3,22 +3,22 @@ import sportStore from "../../store/sport/sportStore";
 
 const useSports = () => {
   const [sports, setSports] = useState([]);
-  const { getSports } = sportStore(); // Correct reference to 'getSports'
+  const { getSports } = sportStore();
 
   useEffect(() => {
     const fetchSports = async () => {
       try {
-        const sportsData = await getSports(); // Fetch sports from the store
-        setSports(sportsData); // Update state with fetched sports
+        const sportsData = await getSports();
+        setSports(sportsData);
       } catch (error) {
-        console.error("Failed to fetch sports:", error.message); // Handle error
+        console.error("Failed to fetch sports:", error.message);
       }
     };
 
-    fetchSports(); // Call the async function
-  }, [getSports]); // Proper dependency array
+    fetchSports();
+  }, [getSports]);
 
-  return sports; // Return the sports array
+  return sports;
 };
 
 export default useSports;

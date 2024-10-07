@@ -9,7 +9,7 @@ const usernameRegex = /^[a-zA-Z0-9_]{6,16}$/; // 6 to 16 alphanumeric characters
 const bioMinWords = 10; // Minimum number of words for bio
 const telRegex = /^0\d{8,}$/; // Starts with 0 and at least 8 digits
 
-const updateProfileStore = create((set, get) => {
+const editProfileStore = create((set, get) => {
   // Subscribe to changes in userInfoStore
   userInfoStore.subscribe((newState) => {
     set({
@@ -104,7 +104,14 @@ const updateProfileStore = create((set, get) => {
 
         const response = await axios.put(
           "/profile",
-          { username, gender, bio, sports, city: cityFormatted, tel }, // Use the formatted city here
+          {
+            username,
+            gender,
+            bio,
+            sports: sports.map((sport) => sport.id),
+            city: cityFormatted,
+            tel,
+          }, // Use the formatted city here
           {
             headers: {
               Authorization: `Bearer ${authStore.getState().token}`,
@@ -141,4 +148,4 @@ const updateProfileStore = create((set, get) => {
   };
 });
 
-export default updateProfileStore;
+export default editProfileStore;

@@ -2,7 +2,7 @@ import { Button, Divider, Popover, Spin, message } from "antd";
 import ProfileContent from "./ProfileContent";
 import { MenuOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import EditProfile from "./edit";
+import EditProfile from "./edit-profile";
 import userInfoStore from "../../../store/user/userInfoStore";
 import { useEffect, useState } from "react";
 import ProfileAside from "./ProfileAside";

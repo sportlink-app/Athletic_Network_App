@@ -5,7 +5,7 @@ import authStore from "../user/authStore";
 const createTeamStore = create((set, get) => ({
   teamForm: {
     name: "",
-    sport: "",
+    sportId: "",
     membersCount: "",
     description: "",
     city: "",
@@ -28,7 +28,7 @@ const createTeamStore = create((set, get) => ({
     set({
       teamForm: {
         name: "",
-        sport: "",
+        sportId: "",
         membersCount: "",
         description: "",
         city: "",
@@ -46,33 +46,31 @@ const createTeamStore = create((set, get) => ({
 
     setTeamForm({ [name]: value });
 
-    // Validate members count
-    if (
-      (name === "membersCount" && parseInt(value, 10) > 22) ||
-      parseInt(value, 10) < 2
-    ) {
-      set({
-        errors: {
-          ...errors,
-          membersCountError: "Members count between 2 and 22",
-        },
-      });
-    } else if (name === "membersCount") {
-      set({
-        errors: {
-          ...errors,
-          membersCountError: "",
-        },
-      });
+    if (name === "membersCount") {
+      const membersCount = parseInt(value, 10);
+      if (membersCount > 22 || membersCount < 2) {
+        set({
+          errors: {
+            ...errors,
+            membersCountError: "Members count must be between 2 and 22",
+          },
+        });
+      } else {
+        set({
+          errors: {
+            ...errors,
+            membersCountError: "",
+          },
+        });
+      }
     }
   },
 
   handleSearch: (text, sports) => {
     const filteredOptions = sports
-      .filter((name) => name.toLowerCase().includes(text.toLowerCase()))
-      .map((name) => ({ value: name }));
+      .filter((sport) => sport.name.toLowerCase().includes(text.toLowerCase()))
+      .map((sport) => ({ value: sport.name, id: sport.id }));
 
-    // Validate sport input
     if (!filteredOptions.length) {
       set({
         errors: {
@@ -94,10 +92,10 @@ const createTeamStore = create((set, get) => ({
 
   isFormInvalid: () => {
     const { teamForm, errors } = get();
-    const { name, sport, membersCount, description, city, date } = teamForm;
+    const { name, sportId, membersCount, description, city, date } = teamForm;
 
     const isFieldEmpty =
-      !name || !sport || !membersCount || !description || !city || !date;
+      !name || !sportId || !membersCount || !description || !city || !date;
 
     const hasErrors =
       errors.sportError !== "" || errors.membersCountError !== "";
@@ -106,7 +104,7 @@ const createTeamStore = create((set, get) => ({
   },
 
   createTeam: async () => {
-    const { name, sport, membersCount, description, city, date } =
+    const { name, sportId, membersCount, description, city, date } =
       get().teamForm;
 
     try {
@@ -114,8 +112,8 @@ const createTeamStore = create((set, get) => ({
         "/team",
         {
           name,
-          sport_id: 1,
-          members_count: membersCount,
+          sport_id: sportId,
+          members_count: Number(membersCount),
           description,
           city,
           date,
@@ -127,7 +125,6 @@ const createTeamStore = create((set, get) => ({
           },
         }
       );
-      console.log(get().teamForm);
 
       get().clearFields();
     } catch (error) {

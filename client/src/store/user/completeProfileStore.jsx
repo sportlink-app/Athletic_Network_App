@@ -14,7 +14,7 @@ const completeProfileStore = create((set, get) => ({
   updateForm: {
     gender: "",
     bio: "",
-    sports: [],
+    sports: [], // Store as array of { id, name } objects
     city: "",
     tel: "",
   },
@@ -83,7 +83,7 @@ const completeProfileStore = create((set, get) => ({
         {
           gender: updateForm.gender,
           bio: updateForm.bio,
-          sports: updateForm.sports,
+          sports: updateForm.sports.map((sport) => sport.id), // Send only the sport IDs
           city: cityLowerCase, // Apply the correction here
           tel: updateForm.tel,
         },

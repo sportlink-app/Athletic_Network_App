@@ -82,7 +82,7 @@ function CompleteProfileForm() {
         Sports
       </label>
       <Select
-        value={updateForm.sports}
+        value={updateForm.sports.map((sport) => sport.id)} // Set selected sports by their IDs
         placeholder="Select your favorite sports"
         mode="multiple"
         tagRender={(props) => {
@@ -101,9 +101,19 @@ function CompleteProfileForm() {
         maxCount={8}
         maxTagCount={1}
         style={{ width: "100%", borderRadius: "10px" }}
-        options={sports.map((name) => ({ value: name, label: name }))}
+        options={sports.map(({ id, name }) => ({ value: id, label: name }))} // Map sports array to Select options
         size="large"
-        onChange={handleSportsChange}
+        onChange={(selectedIds) => {
+          // Find the selected sports by their IDs and update the state with their full objects
+          const selectedSports = sports.filter((sport) =>
+            selectedIds.includes(sport.id)
+          );
+          handleSportsChange(selectedSports); // Update the store with selected sports
+        }}
+        filterOption={(input, option) =>
+          option?.label.toLowerCase().includes(input.toLowerCase())
+        }
+        allowClear
       />
     </li>
   );

@@ -15,7 +15,7 @@ const usersStore = create((set) => ({
   // Fetch user data based on username
   getUser: async (username) => {
     try {
-      const response = await axios.get(`/users/${username}`, {
+      const response = await axios.get(`/user/${username}`, {
         headers: {
           Authorization: `Bearer ${authStore.getState().token}`,
           "Content-Type": "application/json",

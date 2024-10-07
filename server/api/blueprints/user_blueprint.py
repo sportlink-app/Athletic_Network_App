@@ -102,11 +102,13 @@ def complete_profile(current_user):
     try:
         user = current_user
 
+        # Check if profile is already completed
         if user.isProfileCompleted:
             return jsonify({"message": "Profile is already completed"}), 400
 
         data = request.get_json()
 
+        # Validate required fields
         required_fields = ['gender', 'bio', 'sports', 'city', 'tel']
         missing_fields = [field for field in required_fields if not data.get(field)]
 
@@ -116,23 +118,28 @@ def complete_profile(current_user):
                 "missing_fields": missing_fields
             }), 400
 
+        # Set basic profile details
         user.gender = data.get('gender')
         user.bio = data.get('bio')
-
-        # Handle many-to-many relationship for sports
-        sports = data.get('sports', [])
-        user.sports = []
-        for sport_name in sports:
-            sport = Sport.query.filter_by(name=sport_name).first()
-            if sport:
-                user.sports.append(sport)
-
         user.city = data.get('city')
         user.tel = data.get('tel')
-        user.isProfileCompleted = True
 
+        # Handle many-to-many relationship for sports, now using sport IDs
+        sports_ids = data.get('sports', [])
+        user.sports = []
+
+        for sport_id in sports_ids:
+            sport = Sport.query.filter_by(id=sport_id).first()
+            if sport:
+                user.sports.append(sport)
+            else:
+                return jsonify({"message": f"Sport with ID {sport_id} not found"}), 404
+
+        # Mark the profile as completed
+        user.isProfileCompleted = True
         db.session.commit()
 
+        # Generate a new token
         token = jwt.encode({
             'id': user.id,
             'username': user.username,
@@ -140,6 +147,7 @@ def complete_profile(current_user):
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, SECRET_KEY)
 
+        # Return success response with token
         return jsonify({
             "message": "Profile completed successfully!",
             "token": token
@@ -154,7 +162,7 @@ def complete_profile(current_user):
 def get_profile(current_user):
     try:
         user = Myusers.query.get(current_user.id)
-        sports_list = [sport.name for sport in user.sports]
+        sports_list = [{"id": sport.id, "name": sport.name} for sport in user.sports]
 
         return jsonify({
             "username": user.username,
@@ -184,11 +192,11 @@ def update_profile(current_user):
         user.bio = data.get('bio')
         user.gender = data.get('gender')
 
-        # Handle many-to-many relationship for sports
-        sports = data.get('sports', [])
+        # Handle many-to-many relationship for sports using IDs
+        sport_ids = data.get('sports', [])
         user.sports = []
-        for sport_name in sports:
-            sport = Sport.query.filter_by(name=sport_name).first()
+        for sport_id in sport_ids:
+            sport = Sport.query.get(sport_id)
             if sport:
                 user.sports.append(sport)
 
@@ -224,7 +232,7 @@ def delete_user(current_user):
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
 # Get Specific User API
-@user_blueprint.route('/users/<string:username>', methods=['GET'])
+@user_blueprint.route('/user/<string:username>', methods=['GET'])
 @token_required()
 def get_specific_user(current_user, username):
     try:

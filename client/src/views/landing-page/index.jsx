@@ -2,9 +2,9 @@ import Header from "./Header";
 import Features from "./Features";
 import Testimonials from "./Testimonials";
 import Discover from "./Discover";
-import Newsletter from "./Newsletter";
 import Footer from "../../components/static/Footer";
 import { FloatButton } from "antd";
+import Newsletter from "./NewsLetter";
 
 function LandingPage() {
   return (

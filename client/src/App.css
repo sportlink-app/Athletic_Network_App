@@ -50,7 +50,7 @@ p{
     border-radius: 18px !important;
 }
 
-.ant-pagination .ant-pagination-item-active a, .ant-picker-dropdown {
+.ant-pagination .ant-pagination-item-active a, .ant-picker-dropdown, .ant-select-item-option-state {
     @apply text-green !important;
 }
 

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 function ProfileContent({ bio, sports }) {
   return (
-    <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 mt-32 mb-8">
+    <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 mt-36 mb-8">
       <DataField
         title="Bio"
         content={bio}

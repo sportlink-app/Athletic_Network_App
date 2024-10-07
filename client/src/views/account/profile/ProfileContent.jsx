@@ -32,7 +32,10 @@ function ProfileContent({ bio, sports, email, city, tel }) {
             </p>
           </span>
           <div className="flex flex-wrap gap-x-1 gap-y-3 mt-2">
-            <Tags list={sports} className="py-1 px-4 text-sm" />
+            <Tags
+              list={sports.map((sport) => sport.name)}
+              className="py-1 px-4 text-sm"
+            />
           </div>
         </li>
         <Divider

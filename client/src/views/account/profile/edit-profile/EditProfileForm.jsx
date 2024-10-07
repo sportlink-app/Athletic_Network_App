@@ -2,7 +2,7 @@ import { Input, Select, Tag, Button, Spin, Alert, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
-import updateProfileStore from "../../../../store/user/updateProfile";
+import editProfileStore from "../../../../store/user/editProfileStore";
 import useSports from "../../../../components/dynamic/SportsNames";
 import PropTypes from "prop-types";
 
@@ -15,7 +15,7 @@ function EditProfileForm({ onSuccess }) {
     isFormComplete,
     updateValidationErrors,
     updateProfile,
-  } = updateProfileStore((state) => ({
+  } = editProfileStore((state) => ({
     ...state,
     isFormComplete: state.isFormComplete(),
   }));
@@ -129,29 +129,59 @@ function EditProfileForm({ onSuccess }) {
 
   const sports = useSports(); // Call the hook to get the sports array
 
+  // const sportsSelect = (
+  //   <li className="mt-2 flex flex-col gap-1">
+  //     <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
+  //       Sports
+  //     </label>
+  //     <Select
+  //       value={editForm.sports}
+  //       placeholder="Select your favorite sports"
+  //       mode="multiple"
+  //       tagRender={tagRender}
+  //       maxCount={8}
+  //       maxTagCount={2}
+  //       style={{
+  //         width: "100%",
+  //         borderRadius: "10px",
+  //       }}
+  //       options={sports.map((name) => ({
+  //         value: name,
+  //         label: name,
+  //       }))}
+  //       size="large"
+  //       allowClear
+  //       onChange={handleSportsChange}
+  //     />
+  //   </li>
+  // );
+
   const sportsSelect = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="mt-2 flex flex-col gap-1 w-full">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Sports
       </label>
       <Select
-        value={editForm.sports}
+        value={editForm.sports.map((sport) => sport.id)} // Set selected sports by their IDs
         placeholder="Select your favorite sports"
         mode="multiple"
         tagRender={tagRender}
         maxCount={8}
-        maxTagCount={2}
-        style={{
-          width: "100%",
-          borderRadius: "10px",
-        }}
-        options={sports.map((name) => ({
-          value: name,
-          label: name,
-        }))}
+        maxTagCount={1}
+        style={{ width: "100%", borderRadius: "10px" }}
+        options={sports.map(({ id, name }) => ({ value: id, label: name }))} // Map sports array to Select options
         size="large"
+        onChange={(selectedIds) => {
+          // Find the selected sports by their IDs and update the state with their full objects
+          const selectedSports = sports.filter((sport) =>
+            selectedIds.includes(sport.id)
+          );
+          handleSportsChange(selectedSports); // Update the store with selected sports
+        }}
+        filterOption={(input, option) =>
+          option?.label.toLowerCase().includes(input.toLowerCase())
+        }
         allowClear
-        onChange={handleSportsChange}
       />
     </li>
   );

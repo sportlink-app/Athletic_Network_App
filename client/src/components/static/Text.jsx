@@ -8,7 +8,8 @@ const Text = ({
 }) => {
   let style = "";
   if (type === "title") {
-    style = "text-3xl md:text-4xl font-bold capitalize tracking-tight";
+    style =
+      "text-3xl md:text-4xl xl:text-[2.5rem] font-bold capitalize tracking-tight";
   } else if (type === "subtitle") {
     style = " text-lg leading-8 ";
   }
