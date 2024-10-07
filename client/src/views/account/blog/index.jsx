@@ -2,7 +2,7 @@ import Footer from "../../../components/static/Footer";
 import TopCreators from "./TopCreator";
 import WriteBlog from "./write-blog";
 import { useEffect, useState } from "react";
-import blogStore from "../../../store/blog/blogStore";
+import blogStore from "../../../store/blogStore";
 import { FloatButton, message, Button, Spin } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import BlogCard from "../../../components/dynamic/BlogCard";

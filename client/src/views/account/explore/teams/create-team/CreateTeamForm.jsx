@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { AutoComplete, Button, DatePicker, Input, message, Spin } from "antd";
+import {
+  Alert,
+  AutoComplete,
+  Button,
+  DatePicker,
+  Input,
+  message,
+  Spin,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
@@ -24,6 +32,7 @@ function CreateTeamForm({ onSuccess }) {
     isFormInvalid: state.isFormInvalid,
   }));
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSport, setSelectedSport] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
@@ -37,7 +46,7 @@ function CreateTeamForm({ onSuccess }) {
       onSuccess();
       messageApi.success("Your team created successfully!");
     } catch (error) {
-      messageApi.error(error.message);
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -243,7 +252,16 @@ function CreateTeamForm({ onSuccess }) {
           {cityInput}
           {dateInput}
         </ul>
-
+        {errorMessage && (
+          <Alert
+            message={errorMessage}
+            type="error"
+            className="rounded-xl p-3"
+            showIcon
+            closable
+            onClose={() => setErrorMessage("")} // Clear the error on close
+          />
+        )}
         <Button
           htmlType="submit"
           disabled={isLoading || isFormInvalid()}

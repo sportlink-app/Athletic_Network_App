@@ -12,21 +12,18 @@ def create_blog(current_user):
         data = request.get_json()
         title = data.get('title')
         content = data.get('content')
-        sport_name = data.get('sport')
+        sport_id = data.get('sport_id')  # Change to sport_id
 
         # Validate data
-        if not title or not content or not sport_name:
+        if not title or not content or not sport_id:
             return jsonify({"message": "Missing required fields"}), 400
 
-        # Ensure sport_name is a string, not a list
-        if isinstance(sport_name, list):
-            if len(sport_name) == 1:
-                sport_name = sport_name[0]
-            else:
-                return jsonify({"message": "Invalid sport_name format. It should be a single sport name."}), 400
+        # Ensure sport_id is an integer
+        if not isinstance(sport_id, int):
+            return jsonify({"message": "Invalid sport_id format. It should be an integer."}), 400
 
-        # Check if the sport exists by name
-        sport = Sport.query.filter_by(name=sport_name).first()
+        # Check if the sport exists by ID
+        sport = Sport.query.get(sport_id)  # Query by ID instead of name
         if not sport:
             return jsonify({"message": "Invalid sport"}), 400
 
@@ -157,7 +154,7 @@ def delete_blog(current_user, blog_id):
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
-@blog_blueprint.route('/top_creators', methods=['GET'])
+@blog_blueprint.route('/top-creators', methods=['GET'])
 @token_required()
 def get_top_creators(current_user):
     try:

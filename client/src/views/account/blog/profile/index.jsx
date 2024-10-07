@@ -6,7 +6,7 @@ import BackButton from "../../../../components/static/BackButton";
 import { useCallback, useEffect, useState } from "react";
 import BlogCard from "../../../../components/dynamic/BlogCard";
 import DeleteBlog from "./DeleteBlog";
-import blogStore from "../../../../store/blog/blogStore";
+import blogStore from "../../../../store/blogStore";
 import { Button, message, Spin } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import EmptyData from "../../../../components/static/EmptyData";
@@ -47,7 +47,6 @@ function UserBlogs() {
       await getUserBlogs(username); // Load more for the specific user
     } catch (error) {
       messageApi.error("Failed to load more blogs.");
-      console.error("Error loading more user blogs:", error);
     } finally {
       setLoading(false);
     }

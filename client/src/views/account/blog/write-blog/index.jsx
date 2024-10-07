@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Modal } from "antd";
 import { FormOutlined } from "@ant-design/icons";
 import WriteBlogForm from "./WriteBlogForm";
-import blogStore from "../../../../store/blog/blogStore"; // Import your blog store
+import blogStore from "../../../../store/blogStore";
 
 function WriteBlog() {
   const { getBlogs } = blogStore(); // Destructure getBlogs from the blog store

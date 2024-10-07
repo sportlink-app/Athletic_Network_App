@@ -1,21 +1,34 @@
 import { create } from "zustand";
 import axios from "axios";
-import authStore from "../user/authStore";
+import authStore from "./user/authStore";
 
 const blogStore = create((set, get) => ({
-  title: "",
-  sport: "",
-  content: "",
+  blogForm: {
+    title: "",
+    sportId: "",
+    content: "",
+  },
   blogs: [],
   currentPage: 1,
   totalItems: 0,
   topCreators: [],
 
-  setTitle: (title) => set({ title }),
-  setSport: (sport) => set({ sport }),
-  setContent: (content) => set({ content }),
+  setBlogForm: (formData) =>
+    set((state) => ({
+      blogForm: {
+        ...state.blogForm,
+        ...formData,
+      },
+    })),
 
-  clearFields: () => set({ title: "", sport: "", content: "" }),
+  clearFields: () =>
+    set({
+      blogForm: {
+        title: "",
+        sportId: "",
+        content: "",
+      },
+    }),
 
   getBlogs: async (reset = false) => {
     const { currentPage } = get();
@@ -75,11 +88,15 @@ const blogStore = create((set, get) => ({
   },
 
   createBlog: async () => {
-    const { title, sport, content, clearFields, getBlogs } = get();
+    const { blogForm, clearFields, getBlogs } = get();
     try {
       await axios.post(
         "/blog",
-        { title, sport, content },
+        {
+          title: blogForm.title,
+          sport_id: blogForm.sportId,
+          content: blogForm.content,
+        },
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -115,7 +132,7 @@ const blogStore = create((set, get) => ({
 
   getTopCreators: async () => {
     try {
-      const response = await axios.get("/top_creators", {
+      const response = await axios.get("/top-creators", {
         headers: {
           Authorization: `Bearer ${authStore.getState().token}`,
           "Content-Type": "application/json",

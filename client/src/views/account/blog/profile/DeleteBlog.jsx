@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Modal, Spin, message } from "antd";
 import { DeleteOutlined, CloseOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import blogStore from "../../../../store/blog/blogStore";
+import blogStore from "../../../../store/blogStore";
 
 function DeleteBlog({ id }) {
   const [isModalOpen, setIsModalOpen] = useState(false);

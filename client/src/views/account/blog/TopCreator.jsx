@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ProfileAvatar from "../../../components/dynamic/Avatar";
 import { getRandomColor } from "../../../components/utils/randomColor";
 import Text from "../../../components/static/Text";
-import blogStore from "../../../store/blog/blogStore";
+import blogStore from "../../../store/blogStore";
 import { message } from "antd";
 
 function TopCreators() {

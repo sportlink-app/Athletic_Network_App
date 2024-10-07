@@ -1,34 +1,38 @@
-import { AutoComplete, Button, Input, Spin, message } from "antd";
+import { Alert, AutoComplete, Button, Input, Spin, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import useSports from "../../../../components/dynamic/SportsNames";
 import { CheckOutlined } from "@ant-design/icons";
-import blogStore from "../../../../store/blog/blogStore";
+import blogStore from "../../../../store/blogStore";
 import PropTypes from "prop-types";
 
 function WriteBlogForm({ onSuccess }) {
-  const [options, setOptions] = useState([]);
-  const sports = useSports();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [selectedSport, setSelectedSport] = useState("");
+  const [sportError, setSportError] = useState("");
 
   // Zustand store state
-  const { title, sport, content, setTitle, setSport, setContent, createBlog } =
-    blogStore();
+  const { blogForm, setBlogForm, createBlog } = blogStore();
 
-  // Disable button if any of the inputs are empty
-  const isButtonDisabled = !title || !sport || !content;
+  // Disable button if any of the inputs are empty or there is a sport error
+  const isButtonDisabled =
+    !blogForm.title || !blogForm.sportId || !blogForm.content || sportError;
 
-  const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage(""); // Clear any previous error before submitting
+
     try {
-      await createBlog(); // This will now update the state
+      await createBlog();
+      setSelectedSport("");
       onSuccess();
       messageApi.success("Blog post posted successfully!");
     } catch (error) {
-      messageApi.error(error.message);
+      setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
@@ -41,8 +45,8 @@ function WriteBlogForm({ onSuccess }) {
       </label>
       <Input
         name="title"
-        value={title} // Bind title from Zustand store
-        onChange={(e) => setTitle(e.target.value)} // Update store on change
+        value={blogForm.title}
+        onChange={(e) => setBlogForm({ title: e.target.value })}
         placeholder="Enter a title for your post"
         size="large"
         style={{ borderRadius: "50px" }}
@@ -51,23 +55,47 @@ function WriteBlogForm({ onSuccess }) {
   );
 
   const handleSportClear = () => {
-    setSport(""); // Clear selected sport in Zustand store
+    setBlogForm({ sportId: "" });
+    setSelectedSport("");
+    setSportError(""); // Clear sport error when cleared
   };
 
-  // Filter the sports based on search text
+  const sports = useSports();
   const getPanelValue = (searchText) =>
     sports
-      .filter((name) => name.toLowerCase().includes(searchText.toLowerCase()))
-      .map((name) => ({ value: name }));
+      .filter((sport) =>
+        sport.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+      .map((sport) => ({ value: sport.name, id: sport.id }));
 
-  // Update options as user types in the AutoComplete input
+  const [options, setOptions] = useState([]);
   const handleSearch = (text) => {
     setOptions(getPanelValue(text));
   };
 
-  // Handle the event when a sport is selected
-  const handleSportSelect = (value) => {
-    setSport(value); // Update sport in Zustand store
+  const handleSportSelect = (value, option) => {
+    setBlogForm({ sportId: option.id });
+    setSelectedSport(value);
+    setSportError(""); // Clear error on valid selection
+  };
+
+  const handleSportInputChange = (text) => {
+    setSelectedSport(text);
+
+    if (text === "") {
+      handleSportClear();
+    } else {
+      const selectedOption = sports.find(
+        (sport) => sport.name.toLowerCase() === text.toLowerCase()
+      );
+      if (!selectedOption) {
+        setSportError("Please select a valid sport from the list.");
+        setBlogForm({ sportId: "" }); // Ensure the sport ID is cleared if invalid
+      } else {
+        setBlogForm({ sportId: selectedOption.id }); // Set sport ID if valid
+        setSportError(""); // Clear error if valid option exists
+      }
+    }
   };
 
   const sportSelect = (
@@ -77,20 +105,20 @@ function WriteBlogForm({ onSuccess }) {
       </label>
       <AutoComplete
         options={options}
-        value={sport} // Bind selected value from Zustand store
+        value={selectedSport}
         onSearch={handleSearch}
-        onSelect={handleSportSelect} // Update store on select
-        onChange={(text) => {
-          if (text === "") {
-            handleSportClear();
-          } else {
-            setSport(text); // Keep local state updated with user input
-          }
-        }}
+        onSelect={handleSportSelect}
+        onChange={handleSportInputChange} // Updated to handle input change
         placeholder="Type to search for a sport"
         size="large"
         className="w-44 text-left"
       />
+
+      {sportError && (
+        <p className="text-sm text-red-500 !leading-5 mt-1 max-w-[11rem]">
+          {sportError}
+        </p>
+      )}
     </li>
   );
 
@@ -101,8 +129,8 @@ function WriteBlogForm({ onSuccess }) {
       </label>
       <TextArea
         name="content"
-        value={content} // Bind content from Zustand store
-        onChange={(e) => setContent(e.target.value)} // Update store on change
+        value={blogForm.content}
+        onChange={(e) => setBlogForm({ content: e.target.value })}
         placeholder="Share your thoughts or experiences in this post"
         maxLength={350}
         autoSize={{
@@ -122,18 +150,29 @@ function WriteBlogForm({ onSuccess }) {
         action="#"
         className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
       >
-        <ul className="flex justify-between items-center gap-4">
+        <ul className="flex justify-between gap-4">
           {titleInput}
           {sportSelect}
         </ul>
         {contentTextArea}
+
+        {errorMessage && (
+          <Alert
+            message={errorMessage}
+            type="error"
+            className="rounded-xl p-3"
+            showIcon
+            closable
+            onClose={() => setErrorMessage("")} // Clear the error on close
+          />
+        )}
         <Button
           htmlType="submit"
-          disabled={isButtonDisabled || isLoading} // Disable button when inputs are empty or loading
+          disabled={isButtonDisabled || isLoading}
           type="primary"
           shape="round"
           size="large"
-          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80  mt-4"
+          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
           icon={
             isLoading ? (
               <Spin size="small" className="white-spin" />
