@@ -54,7 +54,7 @@ function UserBlogs() {
 
   // Render blog list or EmptyData based on data status
   const userBlogsList = userBlogs.length > 0 && (
-    <section className="mt-14 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
+    <section className="mt-20 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
       {userBlogs.map((blog) => (
         <BlogCard
           key={blog.id}

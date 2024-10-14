@@ -21,15 +21,15 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/*" element={<GuestRoutes />} />
         <Route
-          path="/*"
+          path="account/*"
           element={
             <CheckAuth>
               <AccountRoutes />
             </CheckAuth>
           }
         />
-        <Route path="account/*" element={<GuestRoutes />} />
       </Routes>
       <ScrollToTop />
     </>

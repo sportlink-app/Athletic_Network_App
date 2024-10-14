@@ -16,7 +16,7 @@ function Login() {
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/profile");
+      navigate("/account/profile");
     }
   }, [isAuthenticated, navigate, isProfileCompleted]);
   return (
@@ -38,7 +38,7 @@ function Login() {
           <div className="flex gap-2 mt-8 justify-center">
             <p className="text-center text-gray-500"> Not a member? </p>
             <Link
-              to="/account/sign-up"
+              to="/sign-up"
               className="ml-2 font-semibold leading-6 text-green"
             >
               Sign up here.

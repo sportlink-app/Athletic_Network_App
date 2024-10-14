@@ -19,7 +19,7 @@ function CompleteProfile() {
       navigate("/account/login");
     }
     if (isAuthenticated && isProfileCompleted) {
-      navigate("/profile");
+      navigate("/account/profile");
     }
   }, [isAuthenticated, navigate, isProfileCompleted]);
   return (

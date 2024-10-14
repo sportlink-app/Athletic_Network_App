@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 const Container = ({ children, className = "" }) => {
   return (
     <div
-      className={` py-12 md:py-16 lg:py-20 px-2 relative overflow-hidden text-center ${className}`}
+      className={`pt-4 pb-16 md:pb-20 lg:pb-24 px-2 relative overflow-hidden text-center ${className}`}
     >
       {children}
     </div>

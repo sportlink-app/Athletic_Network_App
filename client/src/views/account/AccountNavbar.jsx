@@ -15,22 +15,22 @@ function AccountNavbar() {
   const links = [
     {
       title: "explore",
-      href: "/explore?page=1",
+      href: "/account/explore?page=1",
       icon: <CompassOutlined />,
     },
     {
-      title: "blog",
-      href: "/blog",
-      icon: <FormOutlined />,
-    },
-    {
       title: "my team",
-      href: "/team",
+      href: "/account/team",
       icon: <TeamOutlined />,
     },
     {
+      title: "blog",
+      href: "/account/blog",
+      icon: <FormOutlined />,
+    },
+    {
       title: "notifications",
-      href: "/notifications",
+      href: "/account/notifications",
       icon: (
         <Badge dot offset={[5, -5]}>
           <BellOutlined style={{ color: "white" }} />
@@ -42,7 +42,7 @@ function AccountNavbar() {
   const { username, gender } = userInfoStore();
 
   const profile = (
-    <Link to={"/profile"} className="leading-[.5rem]">
+    <Link to={"/account/profile"} className="leading-[.5rem]">
       <ProfileAvatar username={username} gender={gender} size={40} />
     </Link>
   );

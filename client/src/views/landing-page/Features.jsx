@@ -58,7 +58,7 @@ function Features() {
     </dl>
   );
   return (
-    <Container className="bg-gradient-to-b from-light-green to-white">
+    <Container className=" bg-gradient-to-b from-light-green to-white">
       <span
         className="absolute top-6 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-10"
         aria-hidden="true"
@@ -74,26 +74,33 @@ function Features() {
       <Star
         type="filled"
         color="#00e0b5"
-        className=" absolute top-0 xl:top-1/4 left-[20%] w-5 -rotate-45"
+        className="invisible lg:visible absolute top-0 xl:top-1/4 left-[20%] w-5 -rotate-45"
+        delay="1.5s"
       />
       <Star
         type="filled"
         color="#31e528"
-        className=" absolute top-[2%] right-[10%] w-4 rotate-12"
+        className="invisible md:visible absolute top-[2%] right-[10%] w-4 rotate-12"
       />
       <div
         id="features"
-        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
+        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
       >
         <div className="mx-auto max-w-2xl ">
-          <Text type="title" text="explore our features" className="mb-6" />
+          <Text
+            type="title"
+            text="your ultimate sports toolkit"
+            className="mb-6"
+          />
           <Text
             type="subtitle"
             text="Uncover the capabilities that make our platform unique and effective in connecting athletes seamlessly."
             color="text-gray-600"
           />
         </div>
-        <div className="mx-auto max-w-2xl lg:max-w-none">{features}</div>
+        <section className="mx-auto max-w-2xl lg:max-w-none">
+          {features}
+        </section>
       </div>
     </Container>
   );

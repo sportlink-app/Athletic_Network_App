@@ -1,22 +1,38 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        'yellow': '#FFD500',
-        'green': "#31E528",
-        'light-green': "#f5fff8",
-        'cyan': "#00E0B5",
+        yellow: "#FFD500",
+        green: "#31E528",
+        "light-green": "#f5fff8",
+        cyan: "#00E0B5",
       },
       fontFamily: {
-        title: ['Billion Dreams', 'sans-serif'],
-        main: ['Nunito', 'sans-serif']
+        main: ["Nunito", "sans-serif"],
+        title: ["Bubbleboy", "sans-serif"],
+      },
+      animation: {
+        pulse: "pulse-animation 4s ease-in-out infinite",
+        bounce: "bounce-animation 8s ease-in-out infinite",
+        loop: "loop var(--duration) linear infinite var(--direction)",
+      },
+      keyframes: {
+        "pulse-animation": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0", transform: "scale(.2)" },
+        },
+        "bounce-animation": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-30px)" },
+        },
+        loop: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
     },
   },
   plugins: [],
-}
+};

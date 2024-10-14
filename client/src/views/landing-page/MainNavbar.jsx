@@ -24,7 +24,7 @@ function MainNavbar() {
 
   const { closeNavbar } = mainStore();
   const account = (
-    <Link to="/account">
+    <Link to="/login">
       <Button
         onClick={() => closeNavbar()}
         type="primary"

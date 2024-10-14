@@ -33,7 +33,7 @@ function Testimonials() {
   const posts = (
     <div className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
       {postsList.map((post, index) => {
-        const rotationDegree = index % 2 === 0 ? -1.2 : 1.2;
+        const rotationDegree = index % 2 === 0 ? -1.5 : 1.3;
         return (
           <article
             key={index}
@@ -68,7 +68,7 @@ function Testimonials() {
     </div>
   );
   return (
-    <Container className="relative bg-gradient-to-b from-white to-light-green">
+    <Container className=" bg-gradient-to-b from-white to-light-green">
       <Star
         type="outlined"
         color="#00e0b5"
@@ -76,7 +76,7 @@ function Testimonials() {
       />
       <div
         id="testimonials"
-        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
+        className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
       >
         <Text text="insights from our athletes" />
         {posts}

@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 
-export default function Star({ type, className, color }) {
+export default function Star({ type, className, color, delay = "0s" }) {
   const outlinedStar = (
     <svg
       id="Layer_1"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 50 49.92"
-      className={className}
+      className={`${className} animate-pulse `}
+      style={{ animationDelay: delay }}
     >
       <path
         d="M1.19,26.15a1.19,1.19,0,0,1-.05-2.38c.11,0,11.3-.55,17.87-7.73,3.45-3.78,5-8.75,4.76-14.79a1.19,1.19,0,0,1,2.38-.12c.32,6.71-1.5,12.27-5.4,16.53-7.25,7.91-19,8.47-19.51,8.49Z"
@@ -38,7 +39,8 @@ export default function Star({ type, className, color }) {
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 50 50"
-      className={className}
+      className={`${className} animate-pulse`}
+      style={{ animationDelay: delay }}
     >
       <path
         d="M50,25.21a.73.73,0,0,0,0-.2s0,0,0-.05,0,0,0-.05a1.14,1.14,0,0,0-.07-.33s0,0,0-.07a1.2,1.2,0,0,0-.21-.34l0,0a1.16,1.16,0,0,0-.8-.37h0c-.11,0-11.28-.54-17.86-7.74-3.46-3.78-5.07-8.77-4.78-14.82A1.17,1.17,0,0,0,25.38,0h0A1,1,0,0,0,25.09,0L25,0l-.1,0a1.34,1.34,0,0,0-.27.07h0a1.19,1.19,0,0,0-.85,1.18c.29,6.05-1.31,11-4.76,14.81-6.57,7.19-17.76,7.74-17.87,7.75h0a1.14,1.14,0,0,0-1,.76v0a1.15,1.15,0,0,0-.07.36s0,0,0,.05S0,25,0,25a.73.73,0,0,0,.05.2.8.8,0,0,0,.05.21.86.86,0,0,0,.13.2.62.62,0,0,0,.11.17,1.49,1.49,0,0,0,.2.15l.17.11a2,2,0,0,0,.26.06,1,1,0,0,0,.17,0c.11,0,11.31.56,17.87,7.76,3.45,3.78,5,8.76,4.76,14.8A1.19,1.19,0,0,0,24.9,50h.19a1.19,1.19,0,0,0,1.13-1.25c-.29-6,1.32-11,4.76-14.8,6.57-7.2,17.77-7.75,17.88-7.76a1,1,0,0,0,.17,0,2,2,0,0,0,.26-.06l.17-.11a1.49,1.49,0,0,0,.2-.15l.11-.16a1,1,0,0,0,.13-.22A.65.65,0,0,0,50,25.21ZM33.64,28.59Z"
@@ -55,4 +57,5 @@ Star.propTypes = {
   type: PropTypes.oneOf(["filled", "outlined"]),
   className: PropTypes.string,
   color: PropTypes.string,
+  delay: PropTypes.string,
 };

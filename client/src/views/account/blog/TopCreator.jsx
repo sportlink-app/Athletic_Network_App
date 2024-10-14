@@ -28,7 +28,7 @@ function TopCreators() {
   const creatorsList = topCreators.map((creator, index) => (
     <li key={index} className="flex flex-col items-center gap-2">
       <Link
-        to={`/blog/${creator.username}`}
+        to={`/account/blog/${creator.username}`}
         className="w-fit rounded-full hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer leading-[.5rem]"
       >
         <ProfileAvatar

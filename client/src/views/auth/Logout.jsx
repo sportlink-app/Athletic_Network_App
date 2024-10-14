@@ -27,7 +27,7 @@ function Logout() {
     closeNavbar();
 
     // Redirect to login
-    navigate("/account/login");
+    navigate("/login");
   };
 
   useEffect(() => {

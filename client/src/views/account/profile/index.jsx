@@ -31,7 +31,7 @@ function MyProfile() {
   const moreContent = (
     <ul className="flex flex-col gap-2">
       <EditProfile />
-      <Link to={`/explore/${username}`}>
+      <Link to={`/account/explore/${username}`}>
         <Button
           type="link"
           shape="round"

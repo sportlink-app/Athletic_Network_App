@@ -1,117 +1,172 @@
+@font-face {
+  font-family: "Tehegan";
+  src: url("/fonts/tehegan.ttf") format("truetype");
+}
+
 html {
-    @apply bg-light-green;
-    scroll-behavior: smooth !important;
+  @apply bg-light-green;
+  scroll-behavior: smooth !important;
 }
 
-* :not(h1, h1 span){
-    @apply font-main ;
+* :not(h1, h1 span) {
+  @apply font-main;
 }
 
-input::placeholder, textarea::placeholder, .ant-select-selection-placeholder {
-    font-size: 0.8rem !important;
+::selection {
+  @apply bg-green/10 text-green;
+}
+
+img {
+  user-select: none;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
-p{
-    line-height: 1.7 !important;
+p {
+  line-height: 1.7 !important;
+}
+
+input::placeholder,
+textarea::placeholder,
+.ant-select-selection-placeholder {
+  font-size: 0.8rem !important;
 }
 
 /* Light button */
 .light span {
-    @apply text-green !important;
+  @apply text-green !important;
 }
 
 /* Scroll to top button */
 .ant-float-btn-body {
-    @apply bg-green !important; /* from cyan to green */
+  @apply bg-green !important; /* from cyan to green */
 }
 
 .anticon-vertical-align-top {
-    @apply text-white !important;
+  @apply text-white !important;
 }
 
 /* Input */
 .ant-input-outlined:hover,
 .ant-input-outlined:focus,
 .ant-input-outlined:focus-within,
-.ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector,
-.ant-select-focused.ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector,
-.ant-pagination .ant-pagination-item-active, :where(.css-dev-only-do-not-override-14qglws).ant-picker-outlined:focus-within, :where(.css-dev-only-do-not-override-14qglws).ant-picker-outlined:hover {
-    @apply border-green !important;
+.ant-select-outlined:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer):hover
+  .ant-select-selector,
+.ant-select-focused.ant-select-outlined:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector,
+.ant-pagination .ant-pagination-item-active,
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-outlined:focus-within,
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-outlined:hover {
+  @apply border-green !important;
 }
 
 .ant-select-selector,
 .ant-popover .ant-popover-inner,
 .ant-select-dropdown,
-.ant-pagination .ant-pagination-item, .ant-pagination-item-link, .ant-picker-panel-container {
-    border-radius: 18px !important;
+.ant-pagination .ant-pagination-item,
+.ant-pagination-item-link,
+.ant-picker-panel-container {
+  border-radius: 18px !important;
 }
 
-.ant-pagination .ant-pagination-item-active a, .ant-picker-dropdown, .ant-select-item-option-state {
-    @apply text-green !important;
+.ant-pagination .ant-pagination-item-active a,
+.ant-picker-dropdown,
+.ant-select-item-option-state {
+  @apply text-green !important;
 }
 
 /* Modal */
 .ant-modal .ant-modal-content {
-    padding: 1rem;
-    padding-top: 1.5rem;
-    border-radius: 1.5rem; /* rounded-3xl */
-    background-color: #f9fafb; /* bg-gray-50 */
-    border: solid 0.5px #e5e7eb; /* border-gray-200 */
+  padding: 1rem;
+  padding-top: 1.5rem;
+  border-radius: 1.5rem; /* rounded-3xl */
+  background-color: #f9fafb; /* bg-gray-50 */
+  border: solid 0.5px #e5e7eb; /* border-gray-200 */
 }
 
 /* Switch */
 .ant-switch.ant-switch-checked,
 .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
-    @apply bg-gradient-to-r from-cyan to-green !important;
+  @apply bg-gradient-to-r from-cyan to-green !important;
 }
-
 
 /* Select icon */
 .anticon-down {
-    @apply h-3 w-3 !important;
+  @apply h-3 w-3 !important;
 }
 
 /* Dropdown */
 .ant-dropdown-menu {
-    @apply rounded-2xl p-3 !important;
+  @apply rounded-2xl p-3 !important;
 }
 
 .ant-dropdown-menu-item {
-    @apply rounded-full mt-1 !important;
+  @apply rounded-full mt-1 !important;
 }
 
 .ant-dropdown-menu-item-selected,
-.ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-    @apply text-green bg-white !important;
+.ant-select-dropdown
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  @apply text-green bg-white !important;
 }
 
 /* Icon hover */
 .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
-    @apply text-green bg-white !important; 
+  @apply text-green bg-white !important;
 }
 
 /* Spin dots */
 .white-spin .ant-spin-dot-item {
-    @apply bg-white !important;
+  @apply bg-white !important;
 }
 
-.green-spin .ant-spin-dot-item, :where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
-    @apply bg-green !important;
-} 
+.green-spin .ant-spin-dot-item,
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-selected:not(
+    .ant-picker-cell-disabled
+  )
+  .ant-picker-cell-inner {
+  @apply bg-green !important;
+}
 
-.ant-badge, .ant-avatar-group a{
-    @apply leading-[.5rem] h-fit !important;
+.ant-badge,
+.ant-avatar-group a {
+  @apply leading-[.5rem] h-fit !important;
 }
 
 :where(.css-dev-only-do-not-override-14qglws).ant-btn-primary {
-    @apply shadow-none !important; 
+  @apply shadow-none !important;
 }
 
-:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
-    @apply border-green rounded-full !important;
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  @apply border-green rounded-full !important;
 }
 
+.loop-slider {
+  .inner {
+    display: flex;
+    width: fit-content;
+    animation-name: loop;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: var(--direction);
+    animation-duration: var(--duration);
+  }
+}
+
+@keyframes loop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

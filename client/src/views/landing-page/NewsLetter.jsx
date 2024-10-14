@@ -49,11 +49,11 @@ function Newsletter() {
         <Star
           type="filled"
           color="#31e528"
-          className="absolute top-0 lg:top-1/4 right-[15%] w-5 rotate-12"
+          className="invisible lg:visible absolute top-0 lg:top-1/4 right-[15%] w-5 rotate-12"
         />
         <div
           id="newsletter"
-          className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14 xl:gap-[4.5rem]"
+          className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
         >
           <Text type="title" text="Subscribe to our newsletter." />
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">

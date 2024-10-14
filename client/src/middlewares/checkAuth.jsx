@@ -35,13 +35,13 @@ function CheckAuth({ children }) {
           // If token decoding fails, treat the user as not authenticated
           setAuthState(false);
           setLoading(false);
-          navigate("/account/login");
+          navigate("/login");
         }
       } else {
         // No token, user is not authenticated
         setAuthState(false);
         setLoading(false);
-        navigate("/account/login");
+        navigate("/login");
       }
     };
 
@@ -51,9 +51,9 @@ function CheckAuth({ children }) {
   // Handle navigation based on auth state and profile completion
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/account/login");
+      navigate("/login");
     } else if (!isProfileCompleted) {
-      navigate("/account/complete-profile");
+      navigate("/complete-profile");
     }
   }, [isAuthenticated, isProfileCompleted, navigate]);
 

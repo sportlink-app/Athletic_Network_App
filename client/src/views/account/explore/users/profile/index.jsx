@@ -53,7 +53,7 @@ function UserProfile() {
         >
           <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative">
             <BackButton />
-            <Link to={`/blog/${username}`}>
+            <Link to={`/account/blog/${username}`}>
               <Button
                 type="primary"
                 shape="round"

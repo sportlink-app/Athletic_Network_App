@@ -4,19 +4,21 @@ import Star from "../../components/static/Star";
 
 function Discover() {
   return (
-    <Container className="relative bg-white grid place-items-center">
-      <span className="absolute -top-52 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-20 md:opacity-40 ">
+    <Container className="bg-white grid place-items-center">
+      <span className="absolute -top-72 2xl:-top-96 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-20 md:opacity-40 ">
         <BlurShape color="bg-green" />
       </span>
       <Star
         type="filled"
         color="#00E0B5"
         className="opacity-0 md:opacity-70 absolute top-1/4 left-[5%] xl:left-[10%] w-6 rotate-45"
+        delay="1.5s"
       />
       <Star
         type="outlined"
         color="#00E0B5"
-        className=" absolute top-0 left-[40%] w-6 rotate-12"
+        className="invisible xl:visible absolute top-0 left-[40%] w-6 rotate-12"
+        delay="3s"
       />
       <Star
         type="filled"

@@ -27,7 +27,7 @@ function SignInForm() {
     try {
       setLoading(true);
       await login(); // Call login function from authStore, which now triggers the notification
-      navigate("/profile");
+      navigate("/account/profile");
     } catch (error) {
       // Handle the error message set in the store
       setErrorMessage(error.message); // Set the specific error message

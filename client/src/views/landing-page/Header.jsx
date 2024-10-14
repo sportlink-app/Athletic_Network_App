@@ -9,12 +9,10 @@ function Header() {
   const hero = (
     <>
       <div className="mx-auto  lg:mx-0 w-full text-center">
-        <h1
-          style={{ wordSpacing: "-10px" }}
-          className="text-[3.2rem] sm:text-7xl md:text-8xl xl:text-[7rem] mb-6 whitespace-nowrap font-title bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green"
-        >
-          Your Team Awaits !
+        <h1 className="text-5xl sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
+          your team awaits
         </h1>
+
         <article className="max-w-2xl mx-auto">
           <Text
             type="subtitle"
@@ -23,7 +21,7 @@ function Header() {
           />
         </article>
       </div>
-      <Link to="/account/sign-up">
+      <Link to="/sign-up">
         <Button
           type="primary"
           shape="round"
@@ -61,21 +59,27 @@ function Header() {
   );
 
   return (
-    <div className="relative isolate pt-40 xl:pt-44 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
+    <div className="relative bg-gradient-to-b from-white to-light-green isolate pt-32 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
       <span className="absolute w-full h-4/5 top-0 left-0 bg-gradient-to-r from-cyan to-green"></span>
       <img
         src="/background-waves.svg"
-        className="absolute h-[90%] w-full -top-32 sm:top-0 left-0"
+        className="absolute h-[90%] w-[130%] -top-60 sm:-top-52 lg:-top-32 left-0 opacity-80"
       />
 
       <span
         className="absolute w-full h-full bottom-0 left-0 "
         style={{
           backgroundImage:
-            "linear-gradient(to top, rgb(255 255 255), rgb(255 255 255 ), rgb(255 255 255), rgb(255 255 255 / 85%), rgb(255 255 255 / 0%))",
+            "linear-gradient(to top, rgb(255 255 255), rgb(255 255 255 ), rgb(255 255 255), rgba(255 255 255 / 85%), rgb(255 255 255 / 0%))",
         }}
       ></span>
 
+      <span
+        className="absolute top-4 lg:top-20 -left-1/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu "
+        aria-hidden="true"
+      >
+        <BlurShape color="bg-white" />
+      </span>
       <span
         className="absolute top-0 -left-1/4 transform-gpu blur-3xl sm:translate-x-0 sm:transform-gpu opacity-25 2xl:hidden"
         aria-hidden="true"
@@ -100,31 +104,34 @@ function Header() {
       >
         <BlurShape color="bg-white" />
       </span>
-
       <img
         src="/icons/bottle.svg"
         alt=""
-        className="opacity-80 sm:opacity-100 absolute bottom-72 left-[10%] lg:left-[20%] w-6 md:w-7 rotate-12"
+        className="opacity-80 sm:opacity-100 absolute bottom-72 left-[10%] lg:left-[20%] w-6  blur-[1.2px] animate-bounce"
       />
       <img
         src="/icons/basketball.svg"
         alt=""
-        className="opacity-80 sm:opacity-100 absolute bottom-60 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16"
+        className="opacity-80 sm:opacity-100 absolute bottom-60 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16 animate-bounce"
+        style={{ animationDelay: "5s" }}
       />
       <img
         src="/icons/dumbbell.svg"
         alt=""
-        className="sm:opacity-100 absolute bottom-60 md:bottom-64 lg:bottom-52 right-[30%] lg:right-[35%] w-16 -rotate-12"
+        className="sm:opacity-100 absolute bottom-60 md:bottom-64 lg:bottom-52 right-[30%] lg:right-[35%] w-[4.5rem]  blur-[1px] animate-bounce"
+        style={{ animationDelay: "3s" }}
       />
       <img
         src="/icons/dumbbell-ball.svg"
         alt=""
-        className="absolute bottom-72 lg:bottom-72 right-[10%] lg:right-[20%] w-10 md:w-14 rotate-12"
+        className="absolute bottom-72 lg:bottom-72 right-[10%] lg:right-[20%] w-8 md:w-14  animate-bounce"
+        style={{ animationDelay: "1s" }}
       />
       <Star
         type="filled"
         color="#ffffff"
         className=" absolute top-8 lg:top-20 right-[27%] w-4 md:w-6 -rotate-12"
+        delay="1.5s"
       />
       <Star
         type="outlined"

@@ -1,9 +1,8 @@
-// In AccountRoutes.jsx
-import { Route, Routes } from "react-router-dom";
-import MyProfile from "../views/account/profile";
+import { Route, Routes, Navigate } from "react-router-dom"; // Import Navigate
+import MyProfile from "../views/account/profile"; // Make sure MyProfile is the right component
 import Matches from "../views/account/matches";
 import Notifications from "../views/account/notifications";
-import Error from "../components/static/Error";
+import NotFound from "../components/static/errors/NotFound";
 import Users from "../views/account/explore/users";
 import UserProfile from "../views/account/explore/users/profile";
 import Blogs from "../views/account/blog";
@@ -13,6 +12,8 @@ import Teams from "../views/account/explore/teams";
 function AccountRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/account/profile" replace />} />
+      <Route path="/profile" element={<MyProfile />} />
       <Route path="explore" element={<Teams />} />
       <Route path="explore/users" element={<Users />} />
       <Route path="explore/:username" element={<UserProfile />} />
@@ -20,9 +21,7 @@ function AccountRoutes() {
       <Route path="notifications" element={<Notifications />} />
       <Route path="blog" element={<Blogs />} />
       <Route path="blog/:username" element={<UserBlogs />} />
-      <Route path="profile" element={<MyProfile />} />
-      <Route path="404" element={<Error />} />
-      <Route path="*" element={<Error />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
