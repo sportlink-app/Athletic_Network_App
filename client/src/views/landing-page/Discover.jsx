@@ -1,6 +1,7 @@
 import Container from "../../components/static/Container";
 import BlurShape from "../../components/static/BlurShape";
 import Star from "../../components/static/Star";
+import { motion } from "framer-motion";
 
 function Discover() {
   return (
@@ -17,7 +18,7 @@ function Discover() {
       <Star
         type="outlined"
         color="#00E0B5"
-        className="invisible xl:visible absolute top-0 left-[40%] w-6 rotate-12"
+        className="invisible xl:visible absolute bottom-8 left-[40%] w-6 rotate-12"
         delay="3s"
       />
       <Star
@@ -25,9 +26,15 @@ function Discover() {
         color="#31E528"
         className="opacity-0 md:opacity-80 absolute top-2/4 right-[10%] w-6 -rotate-12 "
       />
-      <div
+
+      <motion.div
+        initial={{ opacity: 0.5, scale: 0.95, rotate: 0 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 2 }}
+        transition={{ ease: "easeOut", duration: 0.5, delay: 0.05 }}
+        whileHover={{ scale: 1.02 }}
+        viewport={{ once: true }}
         id="discover"
-        className="mx-2 bg-gradient-to-r from-cyan to-green max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-[52rem] rounded-3xl shadow-xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden rotate-2"
+        className="mx-2 bg-gradient-to-r from-cyan to-green max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-[52rem] rounded-3xl shadow-xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"
       >
         <div className="relative z-10">
           <h2 className="text-xl sm:text-3xl font-bold tracking-tight">
@@ -40,7 +47,7 @@ function Discover() {
             engage with a growing sports community.
           </p>
         </div>
-      </div>
+      </motion.div>
     </Container>
   );
 }

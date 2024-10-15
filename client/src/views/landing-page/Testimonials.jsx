@@ -3,9 +3,10 @@ import Container from "../../components/static/Container";
 import Star from "../../components/static/Star";
 import Tags from "../../components/static/Tags";
 import Text from "../../components/static/Text";
+import { motion } from "framer-motion";
 
 function Testimonials() {
-  const postsList = [
+  const reviewsList = [
     {
       review:
         "Finding a football team is now a breeze! The app connects me with local players and makes weekend matches enjoyable.",
@@ -16,7 +17,6 @@ function Testimonials() {
     {
       review:
         "This app made finding tennis partners easy! I can join and create teams, and the community is super supportive.",
-
       name: "Salma Khaled",
       gender: "female",
       sports: ["Tennis"],
@@ -30,45 +30,75 @@ function Testimonials() {
     },
   ];
 
-  const posts = (
-    <div className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
-      {postsList.map((post, index) => {
-        const rotationDegree = index % 2 === 0 ? -1.5 : 1.3;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // Optional: Delay between children
+      },
+    },
+  };
+
+  const itemVariants = (index, rotationDegree) => ({
+    hidden: { opacity: 0, y: 10, rotate: 0 },
+    show: {
+      opacity: 1,
+      y: 0,
+      rotate: rotationDegree,
+      transition: {
+        duration: 0.8,
+        delay: index === 0 ? 0.15 : index === 1 ? 0.45 : 0.75,
+      },
+    },
+  });
+
+  const reviews = (
+    <motion.ul
+      initial="hidden"
+      whileInView="show"
+      variants={containerVariants}
+      viewport={{ once: true }}
+      className="mx-auto grid items-start grid-cols-1 gap-8 lg:gap-10 lg:mx-0 lg:grid-cols-3 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none"
+    >
+      {reviewsList.map((review, index) => {
+        const rotationDegree = index % 2 === 0 ? -2 : 2;
+
         return (
-          <article
+          <motion.li
             key={index}
-            className={`flex flex-col items-start justify-between bg-white p-4 sm:p-6 rounded-2xl border-gray-200 border-[1px]`}
-            style={{ transform: `rotate(${rotationDegree}deg)` }}
+            variants={itemVariants(index, rotationDegree)}
+            className="flex flex-col items-start justify-between bg-white p-4 sm:p-6 rounded-2xl border-gray-200 border-[1px]"
           >
             <div className="relative flex items-center gap-x-4 text-left">
               <ProfileAvatar
-                username={post.name}
-                gender={post.gender}
+                username={review.name}
+                gender={review.gender}
                 size={54}
               />
               <div className="text-base leading-6">
                 <p className="font-semibold text-gray-900 capitalize">
-                  <span className="absolute inset-0" />
-                  {post.name}
+                  {review.name}
                 </p>
                 <Tags
-                  list={post.sports}
+                  list={review.sports}
                   className="py-[.1rem] px-[.6rem] text-xs"
                 />
               </div>
             </div>
             <div className="group relative">
               <p className="mt-5 text-left text-base leading-6 text-gray-600">
-                {post.review}
+                {review.review}
               </p>
             </div>
-          </article>
+          </motion.li>
         );
       })}
-    </div>
+    </motion.ul>
   );
+
   return (
-    <Container className=" bg-gradient-to-b from-white to-light-green">
+    <Container className="bg-gradient-to-b from-white to-light-green">
       <Star
         type="outlined"
         color="#00e0b5"
@@ -78,8 +108,18 @@ function Testimonials() {
         id="testimonials"
         className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
       >
-        <Text text="insights from our athletes" />
-        {posts}
+        {/* Fade-in animation for title */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+          viewport={{ once: true }}
+        >
+          <Text text="insights from our athletes" />
+        </motion.div>
+
+        {/* Animated list of reviews */}
+        {reviews}
       </div>
     </Container>
   );

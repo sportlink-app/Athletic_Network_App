@@ -61,7 +61,7 @@ function ProfileAvatar({
       dot={dot}
       color="green"
       offset={[-8, 50]}
-      className={className}
+      className={`${className} rounded-full`}
     >
       {loading ? (
         <SkeletonAvatar

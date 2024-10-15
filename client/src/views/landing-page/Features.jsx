@@ -8,6 +8,7 @@ import {
   UsergroupAddOutlined,
 } from "@ant-design/icons";
 import Star from "../../components/static/Star";
+import { motion } from "framer-motion";
 
 function Features() {
   const featuresList = [
@@ -87,20 +88,33 @@ function Features() {
         className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
       >
         <div className="mx-auto max-w-2xl ">
-          <Text
-            type="title"
-            text="your ultimate sports toolkit"
-            className="mb-6"
-          />
-          <Text
-            type="subtitle"
-            text="Uncover the capabilities that make our platform unique and effective in connecting athletes seamlessly."
-            color="text-gray-600"
-          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+            viewport={{ once: true }}
+          >
+            <Text
+              type="title"
+              text="your ultimate sports toolkit"
+              className="mb-6"
+            />
+            <Text
+              type="subtitle"
+              text="Uncover the capabilities that make our platform unique and effective in connecting athletes seamlessly."
+              color="text-gray-600"
+            />
+          </motion.div>
         </div>
-        <section className="mx-auto max-w-2xl lg:max-w-none">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ ease: "easeIn", duration: 0.9, delay: 0.15 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-2xl lg:max-w-none"
+        >
           {features}
-        </section>
+        </motion.div>
       </div>
     </Container>
   );

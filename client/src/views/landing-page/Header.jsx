@@ -3,16 +3,68 @@ import BlurShape from "../../components/static/BlurShape";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Star from "../../components/static/Star";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
+import { useEffect } from "react";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import PropTypes from "prop-types";
+import ProfileAvatar from "../../components/dynamic/Avatar";
+
+function AnimatedStat({ value }) {
+  const count = useMotionValue(1);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+
+  useEffect(() => {
+    const controls = animate(count, parseInt(value), {
+      duration: 5,
+      ease: "easeInOut",
+    });
+
+    return () => controls.stop();
+  }, [count, value]);
+
+  return <motion.div>{rounded}</motion.div>;
+}
+AnimatedStat.propTypes = {
+  value: PropTypes.number,
+};
 
 function Header() {
   const hero = (
     <>
-      <div className="mx-auto  lg:mx-0 w-full text-center">
-        <h1 className="text-5xl sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
+      <div className="relative mx-auto lg:mx-0 w-full text-center">
+        <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
           your team awaits
         </h1>
-
+        <Tag
+          color="cyan"
+          className="absolute -top-10 lg:top-20 xl:top-28 left-16 lg:left-32 text-xs xl:text-sm px-3 xl:px-4 py-1 rounded-full h-fit capitalize -rotate-6"
+        >
+          join now
+        </Tag>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <ProfileAvatar
+            username="sportlink"
+            gender="male"
+            size={52}
+            className="absolute -top-16 md:-top-14 lg:-top-12 xl:-top-10 right-16 dm:right-32 skew-x-6 skew-y-6 shadow-lg"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
+        >
+          <ProfileAvatar
+            username="sportlink-2"
+            gender="male"
+            size={44}
+            className="absolute -top-28 md:-top-20 lg:-top-14 left-40 sm:left-56 md:left-60 -skew-x-3 -skew-y-6 shadow-lg blur-[2px] "
+          />
+        </motion.div>
         <article className="max-w-2xl mx-auto">
           <Text
             type="subtitle"
@@ -37,10 +89,10 @@ function Header() {
   );
 
   const statsList = [
-    { name: "Sports Categories", value: "+50" },
-    { name: "Teams Formed", value: "+200" },
-    { name: "Blogs Posted", value: "+500" },
-    { name: "Active Users", value: "+300" },
+    { name: "Sports Categories", value: 50 },
+    { name: "Teams Formed", value: 100 },
+    { name: "Blogs Posted", value: 200 },
+    { name: "Active Users", value: 300 },
   ];
 
   const stats = (
@@ -50,8 +102,8 @@ function Header() {
           <dt className="text-base lg:text-lg leading-7 text-gray-500">
             {stat.name}
           </dt>
-          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-600">
-            {stat.value}
+          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-600 flex justify-center">
+            +<AnimatedStat value={stat.value} />
           </dd>
         </div>
       ))}

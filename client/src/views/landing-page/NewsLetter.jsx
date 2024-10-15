@@ -7,6 +7,7 @@ import Container from "../../components/static/Container";
 import Text from "../../components/static/Text";
 import BlurShape from "../../components/static/BlurShape";
 import Star from "../../components/static/Star";
+import { motion } from "framer-motion";
 
 function Newsletter() {
   // Zustand store state and actions
@@ -55,8 +56,21 @@ function Newsletter() {
           id="newsletter"
           className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
         >
-          <Text type="title" text="Subscribe to our newsletter." />
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+            viewport={{ once: true }}
+          >
+            <Text type="title" text="Subscribe to our newsletter." />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ ease: "easeIn", duration: 0.9, delay: 0.15 }}
+            viewport={{ once: true }}
+            className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2"
+          >
             <div className="max-w-xl lg:max-w-lg text-left">
               <Text
                 type="subtitle"
@@ -125,7 +139,7 @@ function Newsletter() {
                 </dd>
               </div>
             </dl>
-          </div>
+          </motion.div>
         </div>
       </Container>
     </>
