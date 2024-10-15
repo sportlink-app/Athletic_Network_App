@@ -4,7 +4,7 @@
 }
 
 html {
-  @apply bg-light-green;
+  @apply bg-light-green !important;
   scroll-behavior: smooth !important;
 }
 

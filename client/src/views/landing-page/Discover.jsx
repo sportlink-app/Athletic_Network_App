@@ -1,14 +1,10 @@
 import Container from "../../components/static/Container";
-import BlurShape from "../../components/static/BlurShape";
 import Star from "../../components/static/Star";
 import { motion } from "framer-motion";
 
 function Discover() {
   return (
-    <Container className="bg-white grid place-items-center">
-      <span className="absolute -top-72 2xl:-top-96 left-2/3 transform-gpu blur-3xl sm:ml-16 opacity-20 md:opacity-40 ">
-        <BlurShape color="bg-green" />
-      </span>
+    <Container className="grid place-items-center">
       <Star
         type="filled"
         color="#00E0B5"

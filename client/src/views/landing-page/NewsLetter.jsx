@@ -2,14 +2,18 @@ import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
 import { Input, Button, message, Spin } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import newsletterStore from "../../store/newsletterStore"; // Import the Zustand store
+import newsletterStore from "../../store/newsletterStore";
 import Container from "../../components/static/Container";
 import Text from "../../components/static/Text";
-import BlurShape from "../../components/static/BlurShape";
 import Star from "../../components/static/Star";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
-function Newsletter() {
+export default function Newsletter({
+  titleAnimation,
+  listAnimationVariables,
+  itemAnimationVariables,
+}) {
   // Zustand store state and actions
   const { email, setEmail, subscribe, emailError, isEmailValid } =
     newsletterStore();
@@ -40,13 +44,7 @@ function Newsletter() {
   return (
     <>
       {contextHolder}
-      <Container className="bg-gradient-to-b from-white to-light-green">
-        <span
-          className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-15"
-          aria-hidden="true"
-        >
-          <BlurShape color="bg-green" />
-        </span>
+      <Container>
         <Star
           type="filled"
           color="#31e528"
@@ -57,21 +55,24 @@ function Newsletter() {
           className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14"
         >
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+            initial={titleAnimation.initial}
+            whileInView={titleAnimation.whileInView}
+            transition={titleAnimation.transition}
             viewport={{ once: true }}
           >
             <Text type="title" text="Subscribe to our newsletter." />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ ease: "easeIn", duration: 0.9, delay: 0.15 }}
+          <motion.ul
+            initial="hidden"
+            whileInView="show"
+            variants={listAnimationVariables}
             viewport={{ once: true }}
             className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2"
           >
-            <div className="max-w-xl lg:max-w-lg text-left">
+            <motion.li
+              variants={itemAnimationVariables()}
+              className="max-w-xl lg:max-w-lg text-left"
+            >
               <Text
                 type="subtitle"
                 text="Stay updated with the latest sports news, events, and tips. Join our community and never miss out on exciting opportunities and updates!"
@@ -107,10 +108,13 @@ function Newsletter() {
               {emailError && (
                 <p className="text-sm ml-2 mt-2 text-red-500">{emailError}</p>
               )}
-            </div>
+            </motion.li>
 
             <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 text-left">
-              <div className="flex flex-col items-start">
+              <motion.li
+                variants={itemAnimationVariables()}
+                className="flex flex-col items-start"
+              >
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <CalendarDaysIcon
                     className="h-10 w-10 bg-clip-text text-green"
@@ -124,8 +128,11 @@ function Newsletter() {
                   Stay updated with our curated selection of insightful articles
                   on sports.
                 </dd>
-              </div>
-              <div className="flex flex-col items-start">
+              </motion.li>
+              <motion.li
+                variants={itemAnimationVariables()}
+                className="flex flex-col items-start"
+              >
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <HandRaisedIcon
                     className="h-10 w-10 bg-clip-text text-green"
@@ -137,13 +144,17 @@ function Newsletter() {
                   We guarantee no spam, only useful updates and insights to help
                   you stay active and informed.
                 </dd>
-              </div>
+              </motion.li>
             </dl>
-          </motion.div>
+          </motion.ul>
         </div>
       </Container>
     </>
   );
 }
 
-export default Newsletter;
+Newsletter.propTypes = {
+  titleAnimation: PropTypes.object.isRequired,
+  listAnimationVariables: PropTypes.object.isRequired,
+  itemAnimationVariables: PropTypes.func.isRequired,
+};

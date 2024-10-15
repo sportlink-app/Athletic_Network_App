@@ -6,7 +6,7 @@ import { UserOutlined } from "@ant-design/icons";
 import mainStore from "../../store/mainStore";
 import { Button } from "antd";
 
-function MainNavbar() {
+export default function MainNavbar() {
   const { isAuthenticated, isProfileCompleted } = authStore();
 
   const links = [
@@ -45,5 +45,3 @@ function MainNavbar() {
 
   return <Navbar startBtn={logo} items={links} endBtn={endBtn} />;
 }
-
-export default MainNavbar;

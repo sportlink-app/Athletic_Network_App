@@ -1,6 +1,5 @@
 import Text from "../../components/static/Text";
 import Container from "../../components/static/Container";
-import BlurShape from "../../components/static/BlurShape";
 import {
   UserOutlined,
   NodeIndexOutlined,
@@ -9,8 +8,13 @@ import {
 } from "@ant-design/icons";
 import Star from "../../components/static/Star";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
-function Features() {
+export default function Features({
+  titleAnimation,
+  listAnimationVariables,
+  itemAnimationVariables,
+}) {
   const featuresList = [
     {
       title: "Team Creation",
@@ -42,36 +46,36 @@ function Features() {
     },
   ];
   const features = (
-    <dl className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-y-16 lg:gap-x-48 mx-4 lg:mx-8 xl:mx-12">
-      {featuresList.map((feature) => (
-        <div key={feature.title} className="relative pl-16 text-left">
-          <dt className="text-base font-semibold leading-7 text-gray-900 capitalize">
-            <div className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-cyan to-green ">
-              {feature.icon}
-            </div>
-            {feature.title}
-          </dt>
-          <dd className="mt-2 text-base leading-7 text-gray-600">
-            {feature.description}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <motion.ul
+      initial="hidden"
+      whileInView="show"
+      variants={listAnimationVariables}
+      viewport={{ once: true }}
+      className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-y-16 lg:gap-x-48 mx-4 lg:mx-8 xl:mx-12"
+    >
+      {featuresList.map((feature, index) => {
+        return (
+          <motion.li
+            key={index}
+            variants={itemAnimationVariables()}
+            className="relative pl-16 text-left"
+          >
+            <dt className="text-base font-semibold leading-7 text-gray-900 capitalize">
+              <div className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-cyan to-green ">
+                {feature.icon}
+              </div>
+              {feature.title}
+            </dt>
+            <dd className="mt-2 text-base leading-7 text-gray-600">
+              {feature.description}
+            </dd>
+          </motion.li>
+        );
+      })}
+    </motion.ul>
   );
   return (
-    <Container className=" bg-gradient-to-b from-light-green to-white">
-      <span
-        className="absolute top-6 -left-1/2 -translate-x-1/2 transform-gpu blur-3xl sm:ml-16 sm:translate-x-0 sm:transform-gpu opacity-10"
-        aria-hidden="true"
-      >
-        <BlurShape color="bg-cyan" />
-      </span>
-      <span
-        className="absolute -top-52 left-1/2 transform-gpu blur-3xl sm:ml-16 opacity-15"
-        aria-hidden="true"
-      >
-        <BlurShape color="bg-green" />
-      </span>
+    <Container>
       <Star
         type="filled"
         color="#00e0b5"
@@ -89,9 +93,9 @@ function Features() {
       >
         <div className="mx-auto max-w-2xl ">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+            initial={titleAnimation.initial}
+            whileInView={titleAnimation.whileInView}
+            transition={titleAnimation.transition}
             viewport={{ once: true }}
           >
             <Text
@@ -106,18 +110,14 @@ function Features() {
             />
           </motion.div>
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ ease: "easeIn", duration: 0.9, delay: 0.15 }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-2xl lg:max-w-none"
-        >
-          {features}
-        </motion.div>
+        <div className="mx-auto max-w-2xl lg:max-w-none">{features}</div>
       </div>
     </Container>
   );
 }
 
-export default Features;
+Features.propTypes = {
+  titleAnimation: PropTypes.object.isRequired,
+  listAnimationVariables: PropTypes.object.isRequired,
+  itemAnimationVariables: PropTypes.func.isRequired,
+};

@@ -36,25 +36,25 @@ InfiniteLoopSlider.propTypes = {
   reverse: PropTypes.bool, // Ensures reverse is an optional boolean
 };
 
-const Sports = () => {
+export default function Sports({ titleAnimation, containerAnimation }) {
   const sports = useSports(); // Fetch sports data
 
   return (
-    <Container className=" bg-white mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14">
+    <Container className="  mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14">
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ ease: "easeIn", duration: 0.7, delay: 0.05 }}
+        initial={titleAnimation.initial}
+        whileInView={titleAnimation.whileInView}
+        transition={titleAnimation.transition}
         viewport={{ once: true }}
       >
         <Text type="title" text="dive into a world of sports" />
       </motion.div>
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ ease: "easeIn", duration: 0.9, delay: 0.15 }}
+        initial={containerAnimation.initial}
+        whileInView={containerAnimation.whileInView}
+        transition={containerAnimation.transition}
         viewport={{ once: true }}
-        className="w-[50rem] xl:w-[60rem] max-w-[90vw] flex flex-col flex-shrink-0 gap-y-4 overflow-hidden mx-auto relative after:pointer-events-none after:absolute after:inset-0 after:bg-gradient-to-r after:from-white after:via-transparent after:to-white after:opacity-100"
+        className="w-[50rem] xl:w-[60rem] max-w-[90vw] flex flex-col flex-shrink-0 gap-y-4 overflow-hidden mx-auto relative after:pointer-events-none after:absolute after:inset-0 after:bg-gradient-to-r after:from-light-green after:via-transparent after:to-light-green after:opacity-100"
       >
         {[...new Array(ROWS)].map((_, i) => (
           <InfiniteLoopSlider
@@ -74,6 +74,9 @@ const Sports = () => {
       </motion.div>
     </Container>
   );
-};
+}
 
-export default Sports;
+Sports.propTypes = {
+  titleAnimation: PropTypes.object.isRequired,
+  containerAnimation: PropTypes.object.isRequired,
+};
