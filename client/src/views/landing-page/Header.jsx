@@ -30,26 +30,59 @@ export default function Header() {
   const hero = (
     <>
       <div className="relative mx-auto lg:mx-0 w-full text-center">
-        <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
-          your team awaits
-        </h1>
-        <Tag
-          color="cyan"
-          className="absolute -top-10 lg:top-20 xl:top-28 left-16 lg:left-32 text-xs xl:text-sm px-3 xl:px-4 py-1 rounded-full -skew-x-6 -skew-y-1 -rotate-6"
+        <motion.div
+          initial={{ opacity: 0.2, scale: 0.95, rotate: 0 }}
+          animate={{ opacity: 1, scale: 1, rotate: -0.8 }}
+          transition={{ ease: "easeIn", duration: 1, delay: -0.2 }}
+          viewport={{ once: true }}
         >
-          Join Now
-        </Tag>
-        <Avatar
-          src="
-            https://api.dicebear.com/9.x/micah/svg?seed=sportlink&hair=fonze&backgroundColor=a1ff9d&mouth=smile&facialHairProbability=0"
-          size={52}
-          className="absolute -top-16 md:-top-14 lg:-top-12 xl:-top-10 right-16 dm:right-32 xl:right-40 skew-x-6 skew-y-6 shadow-lg border-[2px] border-white"
-        />
-        <Avatar
-          src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink2&hair=dannyPhantom&backgroundColor=7effe5&mouth=smile&facialHairProbability=0"
-          size={44}
-          className="absolute -top-28 md:-top-20 lg:-top-14 left-40 sm:left-56 md:left-60 -skew-x-3 -skew-y-6 shadow-lg border-[2px] border-white blur-[1px]"
-        />
+          <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
+            your team awaits
+          </h1>
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, skewX: 0, skewY: 0, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0.5, skewX: -6, skewY: -1, rotate: -6 }}
+          transition={{ ease: "easeInOut", duration: 0.8, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="absolute -top-10 lg:top-20 xl:top-28 left-16 lg:left-32"
+        >
+          <Tag
+            color="cyan"
+            className="-skew-x-6 -skew-y-1 -rotate-6 text-xs xl:text-sm px-3 xl:px-4 py-1 rounded-full shadow-lg"
+          >
+            Join Now
+          </Tag>
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 0.9, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="absolute -top-16 md:-top-14 lg:-top-12 xl:-top-10 right-16 dm:right-32 xl:right-40"
+        >
+          <Avatar
+            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink&hair=fonze&backgroundColor=a1ff9d&mouth=smile&facialHairProbability=0"
+            size={52}
+            className="skew-x-0 skew-y-0 shadow-lg border-[2px] border-white"
+          />
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 1, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="absolute -top-28 md:-top-20 lg:-top-14 left-40 sm:left-56 md:left-60"
+        >
+          <Avatar
+            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink2&hair=dannyPhantom&backgroundColor=7effe5&mouth=smile&facialHairProbability=0"
+            size={44}
+            className=" -skew-x-3 -skew-y-6 shadow-lg border-[2px] border-white blur-[1px]"
+          />
+        </motion.div>
         <article className="max-w-2xl mx-auto">
           <Text
             type="subtitle"
@@ -65,7 +98,7 @@ export default function Header() {
           size="large"
           icon={<ArrowRightOutlined />}
           iconPosition="end"
-          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] duration-500"
+          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
         >
           Get Started
         </Button>
@@ -247,10 +280,6 @@ export default function Header() {
   return (
     <div className="relative isolate pt-32 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
       <span className="absolute w-full h-4/5 top-0 left-0 bg-gradient-to-r from-cyan to-green"></span>
-      {/* <img
-        src="/background-waves.svg"
-        className="absolute h-[90%] w-[130%] -top-60 sm:-top-52 lg:-top-32 left-0 opacity-80"
-      /> */}
 
       <span
         className="absolute w-full h-full bottom-0 left-0 "
