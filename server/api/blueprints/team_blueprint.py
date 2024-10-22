@@ -75,16 +75,29 @@ def get_teams(current_user):
     return jsonify(result), 200
 
 # Invite Member API
-@team_blueprint.route('/team/invite/<int:team_id>', methods=['POST'])
+@team_blueprint.route('/team/invite', methods=['POST'])
 @token_required()
-def invite_member(current_user, team_id):
+def invite_member(current_user):
+    # Get the team_id from the query parameters
+    team_id = request.args.get('team_id', type=int)
+    if not team_id:
+        return jsonify({"message": "team_id query parameter is required"}), 400
+
     data = request.get_json()
     user_id = data.get('user_id')  # The ID of the user to invite
 
     # Check if the team exists and is owned by the current user
-    team = Team.query.filter_by(id=team_id, owner_id=current_user.id).first()
+    team = Team.query.filter_by(id=team_id).first()
     if not team:
-        return jsonify({"message": "Team not found or you are not the owner"}), 404
+        return jsonify({"message": "Team not found"}), 404
+
+    # Check if the current user is the owner of the team
+    if team.owner_id != current_user.id:
+        return jsonify({"message": "You are not the owner of this team"}), 403
+
+    # Ensure the owner is not inviting themselves
+    if user_id == current_user.id:
+        return jsonify({"message": "You cannot invite yourself to your own team"}), 400
 
     # Check if the user is already a member or has an existing invite
     existing_invite = TeamInvite.query.filter_by(team_id=team_id, user_id=user_id).first()
@@ -102,39 +115,42 @@ def invite_member(current_user, team_id):
 
     return jsonify({"message": "Invitation sent successfully"}), 201
 
-# Check Notifications API
+# Get Notifications API
 @team_blueprint.route('/notifications', methods=['GET'])
 @token_required()
-def check_notifications(current_user):
-    # Query to get all pending invitations for the current user
-    invitations = (
-        db.session.query(TeamInvite)
-        .filter_by(user_id=current_user.id, status='Pending')
-        .all()
-    )
+def get_notifications(current_user):
+    try:
+        # Query to get all pending invitations for the current user
+        invitations = (
+            db.session.query(TeamInvite)
+            .filter_by(user_id=current_user.id, status='pending')
+            .all()
+        )
 
-    # Prepare the response
-    result = []
-    for invite in invitations:
-        team = invite.team  # Assuming there is a relationship between TeamInvite and Team
-        owner = team.owner  # Get the owner of the team
+        # Prepare the response
+        result = []
+        for invite in invitations:
+            team = invite.team  # Assuming there is a relationship between TeamInvite and Team
+            owner = team.owner  # Get the owner of the team
 
-        result.append({
-            "invite_id": invite.id,
-            "team_id": team.id,
-            "team_name": team.name,
-            "sport": team.sport.name,
-            "city": team.city,
-            "date": team.date,
-            "description": team.description,
-            "owner_username": owner.username,  # Owner's username
-            "owner_id": owner.id  # Owner's user ID
-        })
+            result.append({
+                "invite_id": invite.id,
+                "team_id": team.id,
+                "team_name": team.name,
+                "sport": team.sport.name,
+                "city": team.city,
+                "date": team.date,
+                "description": team.description,
+                "owner_username": owner.username,  # Owner's username
+                "owner_id": owner.id  # Owner's user ID
+            })
 
-    if not result:
-        return jsonify({"message": "No pending invitations found"}), 404
+        # Return an empty array if no invitations found
+        return jsonify(result), 200
 
-    return jsonify(result), 200
+    except Exception as e:
+        # Handle exceptions and return an error message
+        return jsonify({"error": str(e)}), 500
 
 # Respond to Invitation API
 @team_blueprint.route('/invitations/<int:invite_id>', methods=['PATCH'])

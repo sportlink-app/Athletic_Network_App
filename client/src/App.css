@@ -16,7 +16,8 @@ html {
   @apply bg-green/10 text-green;
 }
 
-img {
+img,
+svg {
   user-select: none;
 }
 

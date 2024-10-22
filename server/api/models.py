@@ -62,10 +62,10 @@ class Blog(db.Model):
 # Function to insert default sports
 def create_default_sports():
     default_sports = [
-        'Soccer', 'Basketball', 'Tennis', 'Baseball', 'Swimming',
+        'Football', 'Basketball', 'Tennis', 'Baseball', 'Swimming',
         'Volleyball', 'Cricket', 'Rugby', 'Table Tennis', 'Golf',
         'Handball', 'Hockey', 'Boxing', 'Cycling', 'Wrestling',
-        'Gymnastics', 'Martial Arts', 'Skiing', 'Surfing',
+        'Gymnastics', 'Surf', 'Skiing', 'Surfing',
         'Snowboarding', 'Skateboarding', 'Darts', 'Fencing',
         'Bowling', 'Archery', 'Rowing', 'Kickball', 'Lacrosse',
         'Squash', 'Polo', 'BMX Racing', 'Water Polo',

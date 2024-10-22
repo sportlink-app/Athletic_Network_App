@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"; // Import PropTypes
 import Container from "../../components/static/Container";
 import Tags from "../../components/static/Tags";
-import useSports from "../../components/dynamic/SportsNames";
 import Text from "../../components/static/Text";
 import { motion } from "framer-motion";
 
@@ -37,10 +36,43 @@ InfiniteLoopSlider.propTypes = {
 };
 
 export default function Sports({ titleAnimation, containerAnimation }) {
-  const sports = useSports(); // Fetch sports data
+  const sports = [
+    "Football",
+    "Basketball",
+    "Tennis",
+    "Baseball",
+    "Swimming",
+    "Volleyball",
+    "Cricket",
+    "Rugby",
+    "Table Tennis",
+    "Golf",
+    "Handball",
+    "Hockey",
+    "Boxing",
+    "Cycling",
+    "Wrestling",
+    "Gymnastics",
+    "Surf",
+    "Skiing",
+    "Surfing",
+    "Snowboarding",
+    "Skateboarding",
+    "Darts",
+    "Fencing",
+    "Bowling",
+    "Archery",
+    "Rowing",
+    "Kickball",
+    "Lacrosse",
+    "Squash",
+    "Polo",
+    "BMX Racing",
+    "Water Polo",
+  ];
 
   return (
-    <Container className="  mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14">
+    <Container className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-10 sm:gap-12 md:gap-14">
       <motion.div
         initial={titleAnimation.initial}
         whileInView={titleAnimation.whileInView}
@@ -63,12 +95,9 @@ export default function Sports({ titleAnimation, containerAnimation }) {
             reverse={i % 2}
           >
             <Tags
-              list={shuffle(sports.map((sport) => sport.name)).slice(
-                0,
-                TAGS_PER_ROW
-              )}
+              list={shuffle(sports).slice(0, TAGS_PER_ROW)} // Directly use the shuffled sports array
               className="px-4 py-1 text-base"
-            />{" "}
+            />
           </InfiniteLoopSlider>
         ))}
       </motion.div>

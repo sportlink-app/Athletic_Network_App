@@ -36,7 +36,7 @@ function Navbar({ startBtn, items, endBtn }) {
 Navbar.propTypes = {
   items: PropTypes.array,
   startBtn: PropTypes.object,
-  endBtn: PropTypes.string,
+  endBtn: PropTypes.object,
   navScroll: PropTypes.bool,
 };
 

@@ -21,7 +21,9 @@ function ProfileAvatar({
   gender,
   size = 64,
   dot = false,
+  offset = [-8, 50],
   count,
+  color,
   className = "",
 }) {
   const [loading, setLoading] = useState(true);
@@ -59,9 +61,9 @@ function ProfileAvatar({
     <Badge
       count={count}
       dot={dot}
-      color="green"
-      offset={[-8, 50]}
-      className={`${className} rounded-full`}
+      color={color}
+      offset={offset}
+      className={`${className} rounded-full `}
     >
       {loading ? (
         <SkeletonAvatar
@@ -87,6 +89,8 @@ ProfileAvatar.propTypes = {
   size: PropTypes.number,
   dot: PropTypes.bool,
   count: PropTypes.number,
+  color: PropTypes.number,
+  offset: PropTypes.array,
   className: PropTypes.string,
 };
 

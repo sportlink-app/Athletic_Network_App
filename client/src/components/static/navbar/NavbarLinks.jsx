@@ -3,7 +3,7 @@ import mainStore from "../../../store/mainStore";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 
-function NavbarLinks(props) {
+function NavbarLinks({ links, className }) {
   const { closeNavbar } = mainStore();
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -17,9 +17,9 @@ function NavbarLinks(props) {
   };
   return (
     <ul
-      className={`flex gap-10 md:gap-4 items-center flex-col md:flex-row ${props.className}`}
+      className={` flex gap-10 md:gap-4 items-center flex-col md:flex-row ${className}`}
     >
-      {props.links.map((link, index) => (
+      {links.map((link, index) => (
         <li key={index}>
           <Link to={link.href || "/"}>
             <Button

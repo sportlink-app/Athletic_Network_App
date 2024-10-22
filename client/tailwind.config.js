@@ -8,6 +8,7 @@ export default {
         green: "#31E528",
         "light-green": "#f5fff8",
         cyan: "#00E0B5",
+        "light-cyan": "#b9fff1",
       },
       fontFamily: {
         main: ["Nunito", "sans-serif"],
@@ -16,8 +17,10 @@ export default {
       animation: {
         pulse: "pulse-animation 4s ease-in-out infinite",
         bounce: "bounce-animation 8s ease-in-out infinite",
-        loop: "loop var(--duration) linear infinite var(--direction)",
+        show: "show-animation .5s ease-out forwards",
+        hide: "hide-animation 1s ease-out forwards",
       },
+
       keyframes: {
         "pulse-animation": {
           "0%, 100%": { opacity: "1" },
@@ -27,9 +30,21 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-30px)" },
         },
-        loop: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
+        "show-animation": {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
+        "hide-animation": {
+          "0%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0",
+          },
         },
       },
     },

@@ -70,8 +70,8 @@ function TeamCard({ name, description, sports, members, rest, city, date }) {
 
       <div className="flex justify-between items-end gap-4 ">
         <div className="flex flex-col items-start gap-1 ">
-          <span className="flex justify-center items-center gap-1 text-gray-500">
-            <CalendarOutlined className="text-xs" />
+          <span className="flex justify-center items-center gap-1 md:gap-2 text-gray-500">
+            <CalendarOutlined className="text-sm" />
             <p className="text-xs sm:text-sm ">
               {new Date(date).toLocaleString(undefined, {
                 year: "numeric",
@@ -82,8 +82,8 @@ function TeamCard({ name, description, sports, members, rest, city, date }) {
               })}
             </p>
           </span>
-          <span className="flex justify-center items-center gap-1 text-gray-500">
-            <EnvironmentOutlined className="text-xs" />
+          <span className="flex justify-center items-center gap-1 md:gap-2 text-gray-500">
+            <EnvironmentOutlined className="text-sm" />
             <p className="text-xs sm:text-sm  capitalize">{city}</p>
           </span>
         </div>

@@ -70,7 +70,7 @@ function ProfileContent({ bio, sports, email, city, tel }) {
 }
 
 ProfileContent.propTypes = {
-  bio: PropTypes.bio,
+  bio: PropTypes.string,
   gender: PropTypes.string,
   sports: PropTypes.array,
   email: PropTypes.string,

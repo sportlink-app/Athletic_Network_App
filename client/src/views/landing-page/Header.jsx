@@ -13,7 +13,7 @@ function AnimatedStat({ value }) {
 
   useEffect(() => {
     const controls = animate(count, parseInt(value), {
-      duration: 5,
+      duration: 4,
       ease: "easeInOut",
     });
 
@@ -27,106 +27,6 @@ AnimatedStat.propTypes = {
 };
 
 export default function Header() {
-  const hero = (
-    <>
-      <div className="relative mx-auto lg:mx-0 w-full text-center">
-        <motion.div
-          initial={{ opacity: 0.2, scale: 0.95, rotate: 0 }}
-          animate={{ opacity: 1, scale: 1, rotate: -0.8 }}
-          transition={{ ease: "easeIn", duration: 1, delay: -0.2 }}
-          viewport={{ once: true }}
-        >
-          <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.8deg] !leading-snug font-title px-1 text-shadow-effect">
-            your team awaits
-          </h1>
-        </motion.div>
-
-        <motion.div
-          animate={{ opacity: 1, scale: 1, skewX: 0, skewY: 0, rotate: 0 }}
-          initial={{ opacity: 0, scale: 0.5, skewX: -6, skewY: -1, rotate: -6 }}
-          transition={{ ease: "easeInOut", duration: 0.8, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="absolute -top-10 lg:top-20 xl:top-28 left-16 lg:left-32"
-        >
-          <Tag
-            color="cyan"
-            className="-skew-x-6 -skew-y-1 -rotate-6 text-xs xl:text-sm px-3 xl:px-4 py-1 rounded-full shadow-lg"
-          >
-            Join Now
-          </Tag>
-        </motion.div>
-
-        <motion.div
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          initial={{ opacity: 0, scale: 0, rotate: -10 }}
-          transition={{ ease: "easeOut", duration: 0.9, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="absolute -top-16 md:-top-14 lg:-top-12 xl:-top-10 right-16 dm:right-32 xl:right-40"
-        >
-          <Avatar
-            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink&hair=fonze&backgroundColor=a1ff9d&mouth=smile&facialHairProbability=0"
-            size={52}
-            className="skew-x-0 skew-y-0 shadow-lg border-[2px] border-white"
-          />
-        </motion.div>
-
-        <motion.div
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          initial={{ opacity: 0, scale: 0, rotate: -10 }}
-          transition={{ ease: "easeOut", duration: 1, delay: 0.5 }}
-          viewport={{ once: true }}
-          className="absolute -top-28 md:-top-20 lg:-top-14 left-40 sm:left-56 md:left-60"
-        >
-          <Avatar
-            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink2&hair=dannyPhantom&backgroundColor=7effe5&mouth=smile&facialHairProbability=0"
-            size={44}
-            className=" -skew-x-3 -skew-y-6 shadow-lg border-[2px] border-white blur-[1px]"
-          />
-        </motion.div>
-        <article className="max-w-2xl mx-auto">
-          <Text
-            type="subtitle"
-            text="Connect with Athletes, Form Teams, and Play Anytime, Anywhere. Join, Compete, and Share Stories with Like-Minded Sports Enthusiasts."
-            color="text-gray-600"
-          />
-        </article>
-      </div>
-      <Link to="/sign-up">
-        <Button
-          type="primary"
-          shape="round"
-          size="large"
-          icon={<ArrowRightOutlined />}
-          iconPosition="end"
-          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
-        >
-          Get Started
-        </Button>
-      </Link>
-    </>
-  );
-
-  const statsList = [
-    { name: "Sports Categories", value: 50 },
-    { name: "Teams Formed", value: 100 },
-    { name: "Blogs Posted", value: 200 },
-    { name: "Active Users", value: 300 },
-  ];
-
-  const stats = (
-    <dl className="mt-28 grid gap-8 grid-cols-2 lg:grid-cols-4 text-center">
-      {statsList.map((stat) => (
-        <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
-          <dt className="text-base lg:text-lg leading-7 text-gray-500">
-            {stat.name}
-          </dt>
-          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-600 flex justify-center">
-            +<AnimatedStat value={stat.value} />
-          </dd>
-        </div>
-      ))}
-    </dl>
-  );
   const colors = { cyan: "#00e0b5", green: "#31e528" };
   const basketballIcon = (color) => (
     <svg
@@ -277,6 +177,159 @@ export default function Header() {
       />
     </svg>
   );
+  const notificationIcon = (color) => (
+    <svg
+      className="w-4 xl:w-5"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+    >
+      <path
+        d="M16 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3Zm0-4a1 1 0 1 0 1 1 1 1 0 0 0-1-1ZM19 24h-6a1 1 0 0 0-1 1v1a4 4 0 0 0 8 0v-1a1 1 0 0 0-1-1Z"
+        fill={color}
+      ></path>
+      <path
+        d="M28.45 24.11A6.21 6.21 0 0 1 25 18.53V15a9 9 0 0 0-18 0v3.53a6.21 6.21 0 0 1-3.45 5.58A1 1 0 0 0 4 26h24a1 1 0 0 0 .45-1.89Z"
+        fill={color}
+      ></path>
+    </svg>
+  );
+  const sendIcon = (color) => (
+    <svg
+      className="w-4 xl:w-5"
+      xmlSpace="preserve"
+      xmlns="http://www.w3.org/2000/svg"
+      enableBackground="new 0 0 24 24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="m21.5 11.1-17.9-9c-.9-.4-1.9.4-1.5 1.3l2.5 6.7L16 12 4.6 13.9l-2.5 6.7c-.3.9.6 1.7 1.5 1.2l17.9-9c.7-.3.7-1.3 0-1.7z"
+        fill={color}
+      ></path>
+    </svg>
+  );
+  const hero = (
+    <>
+      <div className="relative mx-auto lg:mx-0 w-full text-center">
+        <motion.div
+          initial={{ opacity: 0.3, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ ease: "easeOut", duration: 1, delay: -0.2 }}
+          viewport={{ once: true }}
+        >
+          <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-6 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.9deg] !leading-snug font-title px-1 text-shadow-effect">
+            your team awaits
+          </h1>
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, skewX: 0, skewY: 0, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0.5, skewX: -6, skewY: -1, rotate: -6 }}
+          transition={{ ease: "easeInOut", duration: 0.8, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="absolute -top-10 lg:top-20 xl:top-28 left-16 lg:left-32"
+        >
+          <Tag
+            color="cyan"
+            className="-skew-x-6 -skew-y-1 -rotate-6 text-xs xl:text-sm px-3 xl:px-4 py-1 rounded-full shadow-lg"
+          >
+            Join Now
+          </Tag>
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 0.9, delay: 0.7 }}
+          viewport={{ once: true }}
+          className="absolute -top-14 md:top-20 lg:-top-6 left-0 md:left-44 lg:left-24"
+        >
+          <div className="bg-light-cyan p-[.4rem] rounded-full -skew-x-6 -skew-y-6 shadow-lg blur-[1px] lg:blur-0">
+            {notificationIcon(colors.cyan)}
+          </div>
+        </motion.div>
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 0.9, delay: 0.9 }}
+          viewport={{ once: true }}
+          className="absolute -top-10 lg:-top-6 xl:top-28 right-[45%] sm:right-[40%] md:right-[35%]"
+        >
+          <div className="bg-[#c1ffbf] p-[.4rem] rounded-full skew-x-6 skew-y-6 shadow-lg blur-[1px]">
+            {sendIcon(colors.green)}
+          </div>
+        </motion.div>
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 0.9, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="absolute -top-16 md:-top-14 lg:-top-12 xl:-top-10 right-16 dm:right-32 xl:right-40"
+        >
+          <Avatar
+            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink&hair=fonze&backgroundColor=a1ff9d&mouth=smile&facialHairProbability=0"
+            size={52}
+            className="skew-x-3 skew-y-3 shadow-lg border-[2px] border-white"
+          />
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0, scale: 0, rotate: -10 }}
+          transition={{ ease: "easeOut", duration: 1, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="absolute -top-28 md:-top-20 lg:-top-14 left-40 sm:left-56 md:left-60"
+        >
+          <Avatar
+            src="https://api.dicebear.com/9.x/micah/svg?seed=sportlink2&hair=dannyPhantom&backgroundColor=7effe5&mouth=smile&facialHairProbability=0"
+            size={44}
+            className=" -skew-x-3 -skew-y-6 shadow-lg border-[2px] border-white blur-[1px]"
+          />
+        </motion.div>
+        <article className="max-w-2xl mx-auto">
+          <Text
+            type="subtitle"
+            text="Connect with Athletes, Form Teams, and Play Anytime, Anywhere. Join, Compete, and Share Stories with Like-Minded Sports Enthusiasts."
+            color="text-gray-600"
+          />
+        </article>
+      </div>
+      <Link to="/sign-up">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          icon={<ArrowRightOutlined />}
+          iconPosition="end"
+          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
+        >
+          Get Started
+        </Button>
+      </Link>
+    </>
+  );
+
+  const statsList = [
+    { name: "Sports Categories", value: 50 },
+    { name: "Teams Formed", value: 100 },
+    { name: "Blogs Posted", value: 200 },
+    { name: "Active Users", value: 300 },
+  ];
+
+  const stats = (
+    <dl className="mt-28 grid gap-8 grid-cols-2 lg:grid-cols-4 text-center">
+      {statsList.map((stat) => (
+        <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
+          <dt className="text-base lg:text-lg leading-7 text-gray-500">
+            {stat.name}
+          </dt>
+          <dd className="text-2xl lg:text-3xl font-bold leading-9 tracking-tight text-gray-600 flex justify-center">
+            +<AnimatedStat value={stat.value} />
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+
   return (
     <div className="relative isolate pt-32 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
       <span className="absolute w-full h-4/5 top-0 left-0 bg-gradient-to-r from-cyan to-green"></span>

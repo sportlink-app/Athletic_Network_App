@@ -1,7 +1,7 @@
-import { Route, Routes, Navigate } from "react-router-dom"; // Import Navigate
-import MyProfile from "../views/account/profile"; // Make sure MyProfile is the right component
+import { Route, Routes, Navigate } from "react-router-dom";
+import MyProfile from "../views/account/profile";
 import Matches from "../views/account/matches";
-import Notifications from "../views/account/notifications";
+import Notification from "../views/account/notifications";
 import NotFound from "../components/static/errors/NotFound";
 import Users from "../views/account/explore/users";
 import UserProfile from "../views/account/explore/users/profile";
@@ -18,7 +18,7 @@ function AccountRoutes() {
       <Route path="explore/users" element={<Users />} />
       <Route path="explore/:username" element={<UserProfile />} />
       <Route path="matches" element={<Matches />} />
-      <Route path="notifications" element={<Notifications />} />
+      <Route path="notification/:id" element={<Notification />} />
       <Route path="blog" element={<Blogs />} />
       <Route path="blog/:username" element={<UserBlogs />} />
       <Route path="*" element={<NotFound />} />

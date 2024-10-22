@@ -77,12 +77,12 @@ function UserBlogs() {
           style={{ backgroundColor: coverBgColor }}
           className="w-full h-28 md:h-32 xl:h-40 flex justify-center items-end"
         >
-          <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative">
+          <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative ">
             <BackButton />
           </div>
         </div>
 
-        <section className="container mx-auto px-4 mt-10 lg:mt-14 xl:mt-16">
+        <section className="container mx-auto px-4 mt-10 lg:mt-14 xl:mt-16 ">
           <div className="w-full flex items-center flex-col">
             <ProfileHeader username={username} gender={userGender} />
           </div>

@@ -13,7 +13,7 @@ function Users() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [isDataFetched, setIsDataFetched] = useState(false); // Track if the data fetch is complete
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   // Get page and sport from URL params or fallback to defaults
   const pageFromParams = Number(searchParams.get("page")) || currentPage;

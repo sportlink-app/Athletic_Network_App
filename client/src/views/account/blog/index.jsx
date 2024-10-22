@@ -7,7 +7,7 @@ import { FloatButton, message, Button, Spin } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import BlogCard from "../../../components/dynamic/BlogCard";
 
-function Blogs() {
+export default function Blogs() {
   const { blogs, getBlogs, totalItems } = blogStore();
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -95,5 +95,3 @@ function Blogs() {
     </>
   );
 }
-
-export default Blogs;
