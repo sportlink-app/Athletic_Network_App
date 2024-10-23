@@ -83,7 +83,7 @@ function Users() {
         />
         {isLoading && <Spin size="small" className="white-spin" />}
         {!isLoading && isDataFetched && users.length === 0 ? (
-          <EmptyData text="No users Found!" />
+          <EmptyData text="No users found!" />
         ) : (
           usersList
         )}

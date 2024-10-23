@@ -28,7 +28,7 @@ function TopCreators() {
   const creatorsList = topCreators.map((creator, index) => (
     <li key={index} className="flex flex-col items-center gap-2">
       <Link
-        to={`/account/blog/${creator.username}`}
+        to={`/blog/${creator.username}`}
         className="w-fit rounded-full hover:scale-[1.03] hover:shadow-xl duration-500 cursor-pointer leading-[.5rem]"
       >
         <ProfileAvatar
@@ -49,7 +49,7 @@ function TopCreators() {
     <>
       {contextHolder}
       <div className="min-h-40 text-center mt-6">
-        <Text type="title" text="Top Creators" className="mb-6" />
+        <Text type="title" text="Top Creators" className="mb-8" />
         <div className="flex flex-wrap justify-center gap-x-10 gap-y-2">
           {topCreators.length > 0 && creatorsList}
         </div>

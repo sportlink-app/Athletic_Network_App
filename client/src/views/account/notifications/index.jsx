@@ -10,6 +10,7 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import Tags from "../../../components/static/Tags";
+import Footer from "../../../components/static/Footer";
 
 export default function Notifications() {
   const [isLoading, setLoading] = useState(false);
@@ -74,7 +75,7 @@ export default function Notifications() {
               <div className="flex flex-wrap items-end gap-4 lg:gap-5">
                 {members.map((member) => (
                   <Link
-                    to={`/account/explore/${member.username}`}
+                    to={`/explore/${member.username}`}
                     key={member.username}
                     className={`${
                       member.username === owner.username
@@ -122,6 +123,7 @@ export default function Notifications() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

@@ -46,7 +46,7 @@ function CompleteProfileForm() {
       // Update the profile completion status in authStore
       setProfileCompletedState(true);
 
-      navigate("/account/profile"); // Navigate to profile page
+      navigate("/profile"); // Navigate to profile page
     } catch (error) {
       // Handle the error message set in the store
       setErrorMessage(error.message);

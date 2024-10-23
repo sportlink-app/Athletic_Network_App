@@ -1,26 +1,83 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import MyProfile from "../views/account/profile";
-import Matches from "../views/account/matches";
+import Events from "../views/account/events";
 import Notification from "../views/account/notifications";
 import NotFound from "../components/static/errors/NotFound";
-import Users from "../views/account/explore/users";
-import UserProfile from "../views/account/explore/users/profile";
+import Users from "../views/account/teams/users";
+import UserProfile from "../views/account/teams/users/profile";
 import Blogs from "../views/account/blog";
 import UserBlogs from "../views/account/blog/profile";
-import Teams from "../views/account/explore/teams";
+import Teams from "../views/account/teams/teams";
+import CheckAuth from "../middlewares/checkAuth";
 
 function AccountRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/account/profile" replace />} />
-      <Route path="/profile" element={<MyProfile />} />
-      <Route path="explore" element={<Teams />} />
-      <Route path="explore/users" element={<Users />} />
-      <Route path="explore/:username" element={<UserProfile />} />
-      <Route path="matches" element={<Matches />} />
-      <Route path="notification/:id" element={<Notification />} />
-      <Route path="blog" element={<Blogs />} />
-      <Route path="blog/:username" element={<UserBlogs />} />
+      <Route
+        path="/profile"
+        element={
+          <CheckAuth>
+            <MyProfile />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="teams"
+        element={
+          <CheckAuth>
+            <Teams />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="teams/users"
+        element={
+          <CheckAuth>
+            <Users />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="user/:username"
+        element={
+          <CheckAuth>
+            <UserProfile />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="events"
+        element={
+          <CheckAuth>
+            <Events />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="notification/:id"
+        element={
+          <CheckAuth>
+            <Notification />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="blog"
+        element={
+          <CheckAuth>
+            <Blogs />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="blog/:username"
+        element={
+          <CheckAuth>
+            <UserBlogs />
+          </CheckAuth>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

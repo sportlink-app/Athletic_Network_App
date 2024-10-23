@@ -13,7 +13,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
 import createTeamStore from "../../../../../store/team/createTeamStore";
 import PropTypes from "prop-types";
-import dayjs from "dayjs"; // Lightweight date library
+import dayjs from "dayjs";
 
 function CreateTeamForm({ onSuccess }) {
   const {

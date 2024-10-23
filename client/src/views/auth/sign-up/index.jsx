@@ -15,7 +15,7 @@ function SignUp() {
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/account/profile");
+      navigate("/profile");
     }
   }, [isAuthenticated, navigate, isProfileCompleted]);
   return (
@@ -28,7 +28,10 @@ function SignUp() {
             <p className="text-center text-gray-500">
               Already have an account?
             </p>
-            <Link to="/login" className="font-semibold leading-6 text-green">
+            <Link
+              to="/account/login"
+              className="font-semibold leading-6 text-green"
+            >
               Sign in here.
             </Link>
           </div>

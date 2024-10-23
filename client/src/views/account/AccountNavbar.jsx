@@ -4,52 +4,87 @@ import {
   BellOutlined,
   FormOutlined,
 } from "@ant-design/icons";
-import { Badge } from "antd";
+import { Badge, Button, Popover } from "antd";
 import Navbar from "../../components/static/navbar";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../../components/dynamic/Avatar";
 import Logout from "../auth/Logout";
 import userInfoStore from "../../store/user/userInfoStore";
+import NotificationsList from "./notifications/notifications-list";
+import { useState, useEffect } from "react";
 
 function AccountNavbar() {
   const links = [
     {
-      title: "explore",
-      href: "/account/explore?page=1",
-      icon: <CompassOutlined />,
-    },
-    {
-      title: "my team",
-      href: "/account/team",
+      title: "teams",
+      href: "/teams",
       icon: <TeamOutlined />,
     },
     {
-      title: "blog",
-      href: "/account/blog",
-      icon: <FormOutlined />,
+      title: "events",
+      href: "/events",
+      icon: <CompassOutlined />,
     },
     {
-      title: "notifications",
-      href: "/account/notifications",
-      icon: (
-        <Badge dot offset={[5, -5]}>
-          <BellOutlined style={{ color: "white" }} />
-        </Badge>
-      ),
+      title: "blog",
+      href: "/blog",
+      icon: <FormOutlined />,
     },
   ];
 
-  const { username, gender, availability } = userInfoStore();
+  const { username, gender } = userInfoStore();
+
+  // State to control popover visibility
+  const [open, setOpen] = useState(false);
+
+  // Disable body scroll when popover is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = ""; // Clean up on unmount or when popover closes
+    };
+  }, [open]);
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
 
   const profile = (
-    <Link to={"/account/profile"} className="leading-[.5rem]">
-      <ProfileAvatar
-        username={username}
-        gender={gender}
-        size={40}
-        className="overflow-hidden"
-      />
-    </Link>
+    <div className="flex items-center gap-4">
+      <Link to={"/profile"} className="leading-[.5rem]" onClick={hide}>
+        <ProfileAvatar
+          username={username}
+          gender={gender}
+          size={40}
+          className="overflow-hidden"
+        />
+      </Link>
+      <Popover
+        content={<NotificationsList hide={hide} />}
+        trigger="click"
+        open={open}
+        onOpenChange={handleOpenChange}
+      >
+        <Badge dot offset={[-5, 8]}>
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon={<BellOutlined />}
+            className="!bg-white/20 hover:!bg-white/30"
+          />
+        </Badge>
+      </Popover>
+    </div>
   );
 
   return <Navbar startBtn={profile} items={links} endBtn={<Logout />} />;

@@ -89,7 +89,7 @@ function UserBlogs() {
           {isLoading && <Spin size="small" className="white-spin" />}
           {isDataFetched && userBlogs.length !== 0 && userBlogsList}
           {!isLoading && isDataFetched && userBlogs.length === 0 && (
-            <EmptyData text="No Blog Posts Found!" />
+            <EmptyData text="No blog posts found!" />
           )}
           <div className="flex justify-center mt-4">
             {!isLoading && userBlogs.length < userBlogsTotalItems && (

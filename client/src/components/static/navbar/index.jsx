@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import NavbarToggle from "./toggle/NavbarToggle";
+import NavbarToggle from "./NavbarToggle";
 import NavbarLinks from "./NavbarLinks";
 import mainStore from "../../../store/mainStore";
 

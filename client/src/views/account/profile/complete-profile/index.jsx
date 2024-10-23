@@ -15,10 +15,10 @@ function CompleteProfile() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/account/login");
+      navigate("/login");
     }
     if (isAuthenticated && isProfileCompleted) {
-      navigate("/account/profile");
+      navigate("/profile");
     }
   }, [isAuthenticated, navigate, isProfileCompleted]);
   return (

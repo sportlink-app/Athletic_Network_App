@@ -2,7 +2,6 @@ import "./App.css";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "./components/utils/ScrollToTop";
-import CheckAuth from "./middlewares/checkAuth";
 import authStore from "./store/user/authStore";
 import Preloader from "./components/static/Preloader";
 import AccountNavbar from "./views/account/AccountNavbar";
@@ -38,18 +37,10 @@ function App() {
       ) : (
         <MainNavbar />
       )}
-
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/*" element={<GuestRoutes />} />
-        <Route
-          path="account/*"
-          element={
-            <CheckAuth>
-              <AccountRoutes />
-            </CheckAuth>
-          }
-        />
+        <Route path="account/*" element={<GuestRoutes />} />
+        <Route path="/*" element={<AccountRoutes />} />
       </Routes>
 
       <ScrollToTop />

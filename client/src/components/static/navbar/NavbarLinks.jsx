@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 import mainStore from "../../../store/mainStore";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 
 function NavbarLinks({ links, className }) {
   const { closeNavbar } = mainStore();
+  const location = useLocation();
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -15,9 +17,10 @@ function NavbarLinks({ links, className }) {
     }
     closeNavbar();
   };
+
   return (
     <ul
-      className={` flex gap-10 md:gap-4 items-center flex-col md:flex-row ${className}`}
+      className={`flex gap-10 md:gap-4 items-center flex-col md:flex-row ${className}`}
     >
       {links.map((link, index) => (
         <li key={index}>
@@ -28,7 +31,11 @@ function NavbarLinks({ links, className }) {
               shape="round"
               size="large"
               icon={link.icon}
-              className="!bg-transparent hover:!bg-white/20 duration-300 capitalize"
+              className={`${
+                location.pathname === link.href
+                  ? "!bg-black/5"
+                  : "!bg-transparent"
+              } hover:!bg-white/20 duration-300 capitalize`}
             >
               {link.title}
             </Button>

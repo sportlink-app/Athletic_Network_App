@@ -24,7 +24,7 @@ export default function MainNavbar() {
 
   const { closeNavbar } = mainStore();
   const account = (
-    <Link to="/login">
+    <Link to="/account/login">
       <Button
         onClick={() => closeNavbar()}
         type="primary"

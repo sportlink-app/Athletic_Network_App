@@ -34,7 +34,7 @@ function BlogCard({ username, gender, sport, date, title, content, btn }) {
               size={36}
               bgColor={avatarBgColor}
             />
-            <Link to={`/account/explore/${username}`}>
+            <Link to={`/user/${username}`}>
               <p className="text-base text-gray-700 capitalize hover:underline">
                 {username}
               </p>
