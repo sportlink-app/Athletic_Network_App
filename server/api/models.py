@@ -130,3 +130,20 @@ class JoinRequest(db.Model):
     # Relationships
     team = db.relationship('Team', backref='join_requests', passive_deletes=True)
     user = db.relationship('Myusers', backref='join_requests', passive_deletes=True)
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)  # The user receiving the notification
+    invite_id = db.Column(db.Integer, db.ForeignKey('team_invites.id'), nullable=True)  # Foreign key for the team invite
+    type = db.Column(db.String(50))  # Type of notification: 'Team Invite', 'Blog Update', etc.
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    user = db.relationship('Myusers', foreign_keys=[user_id], backref='notifications_received', passive_deletes=True)
+    invite = db.relationship('TeamInvite', backref='notifications', passive_deletes=True)  # Relationship with TeamInvite
+
+    def __repr__(self):
+        return f'<Notification from {self.sender_id} to {self.user_id}>'
+

@@ -187,3 +187,7 @@ textarea::placeholder,
     transform: translateX(-50%);
   }
 }
+
+.ant-popover-title {
+  @apply mt-2 text-center !important;
+}

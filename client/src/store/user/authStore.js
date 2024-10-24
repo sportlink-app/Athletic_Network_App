@@ -17,6 +17,9 @@ const authStore = create((set, get) => ({
   authenticatedUsername: Cookies.get("token")
     ? jwtDecode(Cookies.get("token")).username
     : false,
+  authenticatedId: Cookies.get("token")
+    ? jwtDecode(Cookies.get("token")).id
+    : false,
   // Set authentication state
   setAuthState: (isAuthenticated) => {
     set({ isAuthenticated });

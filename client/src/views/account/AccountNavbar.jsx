@@ -1,17 +1,10 @@
-import {
-  CompassOutlined,
-  TeamOutlined,
-  BellOutlined,
-  FormOutlined,
-} from "@ant-design/icons";
-import { Badge, Button, Popover } from "antd";
+import { CompassOutlined, TeamOutlined, FormOutlined } from "@ant-design/icons";
 import Navbar from "../../components/static/navbar";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../../components/dynamic/Avatar";
 import Logout from "../auth/Logout";
 import userInfoStore from "../../store/user/userInfoStore";
-import NotificationsList from "./notifications/notifications-list";
-import { useState, useEffect } from "react";
+import NotificationBadge from "./notifications/NotificationBadge";
 
 function AccountNavbar() {
   const links = [
@@ -34,33 +27,9 @@ function AccountNavbar() {
 
   const { username, gender } = userInfoStore();
 
-  // State to control popover visibility
-  const [open, setOpen] = useState(false);
-
-  // Disable body scroll when popover is open
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = ""; // Clean up on unmount or when popover closes
-    };
-  }, [open]);
-
-  const hide = () => {
-    setOpen(false);
-  };
-
-  const handleOpenChange = (newOpen) => {
-    setOpen(newOpen);
-  };
-
   const profile = (
     <div className="flex items-center gap-4">
-      <Link to={"/profile"} className="leading-[.5rem]" onClick={hide}>
+      <Link to={"/profile"} className="leading-[.5rem]">
         <ProfileAvatar
           username={username}
           gender={gender}
@@ -68,22 +37,7 @@ function AccountNavbar() {
           className="overflow-hidden"
         />
       </Link>
-      <Popover
-        content={<NotificationsList hide={hide} />}
-        trigger="click"
-        open={open}
-        onOpenChange={handleOpenChange}
-      >
-        <Badge dot offset={[-5, 8]}>
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon={<BellOutlined />}
-            className="!bg-white/20 hover:!bg-white/30"
-          />
-        </Badge>
-      </Popover>
+      <NotificationBadge />
     </div>
   );
 

@@ -128,7 +128,13 @@ const createTeamStore = create((set, get) => ({
 
       get().clearFields();
     } catch (error) {
-      throw new Error("Failed to create team");
+      if (error.response && error.response.status === 404) {
+        throw new Error("Team name already exists");
+      } else if (error.response && error.response.status === 400) {
+        throw new Error("Description is too long, max 500 characters allowed");
+      } else {
+        throw new Error("Failed to create team");
+      }
     }
   },
 }));

@@ -2,7 +2,7 @@ import { Button, message, Spin } from "antd";
 import { useState } from "react";
 import ProfileAvatar from "../../../components/dynamic/Avatar";
 import { getRandomColor } from "../../../components/utils/randomColor";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   CalendarOutlined,
   EnvironmentOutlined,
@@ -13,6 +13,7 @@ import Tags from "../../../components/static/Tags";
 import Footer from "../../../components/static/Footer";
 
 export default function Notifications() {
+  const { id } = useParams();
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -38,7 +39,7 @@ export default function Notifications() {
       <div className="min-h-screen container mx-auto px-4 my-10">
         <div className="w-full mx-auto">
           {isLoading ? (
-            <Spin size="small" className="white-spin" />
+            <Spin size="small" className="green-spin" />
           ) : (
             <div className="w-full mx-auto p-5 flex flex-col gap-4 lg:gap-5">
               <div className="w-full flex flex-col md:flex-row-reverse gap-5 justify-between">
@@ -63,7 +64,7 @@ export default function Notifications() {
                   </Button>
                 </div>
                 <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
-                  {team_name} by {owner.username}
+                  {team_name} by {owner.username} {id}
                 </h3>
               </div>
               <Tags list={sport} className="py-1 px-4 text-sm" />

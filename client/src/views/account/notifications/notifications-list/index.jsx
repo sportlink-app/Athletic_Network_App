@@ -1,72 +1,38 @@
-import { message, Spin } from "antd";
-import { useState } from "react";
 import EmptyData from "../../../../components/static/EmptyData";
 import NotificationCard from "./NotificationCard";
+import notificationStore from "../../../../store/notificationStore";
+import PropTypes from "prop-types";
 
 export default function NotificationsList({ hide }) {
-  const [isLoading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
-  const [isDataFetched, setIsDataFetched] = useState(false);
-  const notifications = [
-    {
-      city: "casablanca",
-      date: "Mon, 21 Oct 2024 00:00:00 GMT",
-      invite_id: 6,
-      owner: { username: "sakawa", gender: "female" },
-      sport: "Surfing",
-      team_id: 28,
-      team_name: "test team",
-    },
-    {
-      city: "casablanca",
-      date: "Mon, 21 Oct 2024 00:00:00 GMT",
-      invite_id: 6,
-      owner: { username: "sakawa", gender: "female" },
-      sport: "Surfing",
-      team_id: 28,
-      team_name: "test team",
-    },
-    {
-      city: "casablanca",
-      date: "Mon, 21 Oct 2024 00:00:00 GMT",
-      invite_id: 6,
-      owner: { username: "sakawa", gender: "female" },
-      sport: "Surfing",
-      team_id: 28,
-      team_name: "test team",
-    },
-  ];
+  const { notifications } = notificationStore();
+
   const notificationsList = notifications.length > 0 && (
     <div className="flex flex-col gap-4">
-      {notifications.map((user, index) => (
+      {notifications.map((notification, index) => (
         <NotificationCard
           key={index}
-          teamName={user.team_name}
-          sport={user.sport}
-          owner={user.owner}
-          inviteId={user.invite_id}
-          city={user.city}
-          date={user.date}
+          notificationType={notification.type}
+          teamName={notification.team_name}
+          createdAt={notification.created_at}
+          sender={notification.sender}
+          inviteId={notification.invite_id}
           hide={hide}
         />
       ))}
     </div>
   );
+
   return (
     <>
-      {contextHolder}
-
-      <div className="p-1 sm:p-2">
-        {isLoading && <Spin size="small" className="white-spin" />}
-        {notifications.length === 0 ? (
-          <EmptyData
-            text="You don't have any notification"
-            className="!h-fit"
-          />
-        ) : (
-          notificationsList
-        )}
-      </div>
+      {notifications.length === 0 ? (
+        <EmptyData text="You don't have any notifications" className="!h-fit" />
+      ) : (
+        notificationsList
+      )}
     </>
   );
 }
+
+NotificationsList.propTypes = {
+  hide: PropTypes.func,
+};

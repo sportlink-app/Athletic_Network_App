@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers, Team, TeamInvite, JoinRequest
+from ..models import db, Myusers, Team, TeamInvite, Notification
 from .user_blueprint import token_required
 from sqlalchemy import func
+from ..utils.notification_utils import notify_new_notification 
+from ..utils.socketio import socketio, connected_users
 
 team_blueprint = Blueprint('team_blueprint', __name__)
 
@@ -21,6 +23,11 @@ def create_team(current_user):
     if not name or not sport_id or not city or not date:
         return jsonify({"message": "Missing required fields"}), 400
 
+    # Check if the team name already exists
+    existing_team = Team.query.filter_by(name=name).first()
+    if existing_team:
+        return jsonify({"message": "Team name already exists"}), 404
+    
     # Optionally, you can also validate the description length
     if description and len(description) > 500:
         return jsonify({"message": "Description is too long, max 500 characters allowed"}), 400
@@ -111,46 +118,23 @@ def invite_member(current_user):
         invited_by_id=current_user.id
     )
     db.session.add(invite)
+    db.session.flush()  
+
+    # Create a notification for the invited user
+    notification = Notification(
+        user_id=user_id,
+        invite_id=invite.id,
+        type='invite'
+    )
+    db.session.add(notification)
+    
+    # Call the notify function from utils
+    notify_new_notification(user_id, socketio, connected_users)
+    
+    # Commit all changes to the database
     db.session.commit()
 
     return jsonify({"message": "Invitation sent successfully"}), 201
-
-# Get Notifications API
-@team_blueprint.route('/notifications', methods=['GET'])
-@token_required()
-def get_notifications(current_user):
-    try:
-        # Query to get all pending invitations for the current user
-        invitations = (
-            db.session.query(TeamInvite)
-            .filter_by(user_id=current_user.id, status='pending')
-            .all()
-        )
-
-        # Prepare the response
-        result = []
-        for invite in invitations:
-            team = invite.team  # Assuming there is a relationship between TeamInvite and Team
-            owner = team.owner  # Get the owner of the team
-
-            result.append({
-                "invite_id": invite.id,
-                "team_id": team.id,
-                "team_name": team.name,
-                "sport": team.sport.name,
-                "city": team.city,
-                "date": team.date,
-                "description": team.description,
-                "owner_username": owner.username,  # Owner's username
-                "owner_id": owner.id  # Owner's user ID
-            })
-
-        # Return an empty array if no invitations found
-        return jsonify(result), 200
-
-    except Exception as e:
-        # Handle exceptions and return an error message
-        return jsonify({"error": str(e)}), 500
 
 # Respond to Invitation API
 @team_blueprint.route('/invitations/<int:invite_id>', methods=['PATCH'])
