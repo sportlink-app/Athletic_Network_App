@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import MyProfile from "../views/account/profile";
-import Events from "../views/account/events";
+import Hub from "../views/account/hub";
 import Notification from "../views/account/notifications";
 import NotFound from "../components/static/errors/NotFound";
 import Users from "../views/account/teams/users";
@@ -47,10 +47,10 @@ function AccountRoutes() {
         }
       />
       <Route
-        path="events"
+        path="hub"
         element={
           <CheckAuth>
-            <Events />
+            <Hub />
           </CheckAuth>
         }
       />

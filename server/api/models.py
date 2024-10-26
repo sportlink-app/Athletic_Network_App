@@ -110,40 +110,43 @@ class TeamInvite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
-    invited_by_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)  # Ensure this is a foreign key
     status = db.Column(db.String(20), default='pending')  # 'Pending', 'Accepted', 'Rejected'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
     team = db.relationship('Team', backref='invites', passive_deletes=True)
     user = db.relationship('Myusers', backref='team_invites', foreign_keys=[user_id], passive_deletes=True)
-    invited_by = db.relationship('Myusers', backref='invited_teams', foreign_keys=[invited_by_id], passive_deletes=True)
+    owner = db.relationship('Myusers', backref='invited_teams', foreign_keys=[owner_id], passive_deletes=True)  # Correctly reference the owner
 
 class JoinRequest(db.Model):
     __tablename__ = 'join_requests'
     id = db.Column(db.Integer, primary_key=True)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
-    status = db.Column(db.String(20), default='Pending')  # 'Pending', 'Accepted', 'Rejected'
+    owner_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)  # Ensure this is a foreign key
+    status = db.Column(db.String(20), default='pending')  # 'Pending', 'Accepted', 'Rejected'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
     team = db.relationship('Team', backref='join_requests', passive_deletes=True)
-    user = db.relationship('Myusers', backref='join_requests', passive_deletes=True)
+    user = db.relationship('Myusers', backref='join_requests', foreign_keys=[user_id], passive_deletes=True)
+    owner = db.relationship('Myusers', backref='requested_teams', foreign_keys=[owner_id], passive_deletes=True)  # Correctly reference the owner
+
 
 class Notification(db.Model):
     __tablename__ = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)  # The user receiving the notification
-    invite_id = db.Column(db.Integer, db.ForeignKey('team_invites.id'), nullable=True)  # Foreign key for the team invite
-    type = db.Column(db.String(50))  # Type of notification: 'Team Invite', 'Blog Update', etc.
+    user_id = db.Column(db.Integer, db.ForeignKey('myusers.id'), nullable=False)
+    reference_id = db.Column(db.Integer, nullable=True)  # ID of the reference entity (JoinRequest/TeamInvite/Team)
+    type = db.Column(db.String(50), nullable=False)  # Type of notification
+    is_visited = db.Column(db.Boolean, default=False)
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
-    user = db.relationship('Myusers', foreign_keys=[user_id], backref='notifications_received', passive_deletes=True)
-    invite = db.relationship('TeamInvite', backref='notifications', passive_deletes=True)  # Relationship with TeamInvite
+    user = db.relationship('Myusers', backref='notifications_received', passive_deletes=True)
 
     def __repr__(self):
-        return f'<Notification from {self.sender_id} to {self.user_id}>'
+        return f'<Notification {self.type} for user {self.user_id}>'
 

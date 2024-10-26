@@ -115,7 +115,7 @@ def invite_member(current_user):
     invite = TeamInvite(
         team_id=team_id,
         user_id=user_id,
-        invited_by_id=current_user.id
+        owner_id=current_user.id
     )
     db.session.add(invite)
     db.session.flush()  
@@ -123,8 +123,8 @@ def invite_member(current_user):
     # Create a notification for the invited user
     notification = Notification(
         user_id=user_id,
-        invite_id=invite.id,
-        type='invite'
+        reference_id=invite.id,  # Reference to the TeamInvite
+        type='team_invite'  # Specify the type of notification
     )
     db.session.add(notification)
     

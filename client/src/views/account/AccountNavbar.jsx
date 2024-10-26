@@ -1,4 +1,8 @@
-import { CompassOutlined, TeamOutlined, FormOutlined } from "@ant-design/icons";
+import {
+  AppstoreAddOutlined,
+  TeamOutlined,
+  FormOutlined,
+} from "@ant-design/icons";
 import Navbar from "../../components/static/navbar";
 import { Link } from "react-router-dom";
 import ProfileAvatar from "../../components/dynamic/Avatar";
@@ -14,9 +18,9 @@ function AccountNavbar() {
       icon: <TeamOutlined />,
     },
     {
-      title: "events",
-      href: "/events",
-      icon: <CompassOutlined />,
+      title: "my hub",
+      href: "/hub",
+      icon: <AppstoreAddOutlined />,
     },
     {
       title: "blog",

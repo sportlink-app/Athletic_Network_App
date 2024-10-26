@@ -7,23 +7,48 @@ import notificationStore from "../../../store/notificationStore";
 import authStore from "../../../store/user/authStore";
 
 export default function NotificationBadge() {
-  const { count, getUnreadCount, getNotifications } = notificationStore();
+  const {
+    count,
+    getUnreadCount,
+    setCount,
+    getNotifications,
+    markNotificationAsRead,
+  } = notificationStore();
   const { authenticatedId } = authStore();
   const [open, setOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(count);
-  const [isLoading, setIsLoading] = useState(false); // State for loading notifications
+  const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  // Handle popover open/close state
-  const hide = () => setOpen(false);
+  const handleCountUpdate = async (newCount) => {
+    await setCount(newCount); // Update count and refresh notifications
+  };
+
+  useEffect(() => {
+    if (authenticatedId) {
+      const socket = io(import.meta.env.VITE_SERVER_URL, {
+        transports: ["websocket"],
+        query: { user_id: authenticatedId },
+      });
+
+      socket.on("unread_notifications_count", (data) => {
+        handleCountUpdate(data.count);
+      });
+
+      return () => {
+        socket.off("unread_notifications_count");
+        socket.disconnect();
+      };
+    }
+  }, [authenticatedId]);
+
   const handleOpenChange = async (newOpen) => {
     setOpen(newOpen);
 
-    // Fetch notifications when the popover is opened
     if (newOpen) {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         await getNotifications();
+        await markNotificationAsRead();
       } catch (error) {
         messageApi.error("Failed to load notifications.");
       } finally {
@@ -32,51 +57,14 @@ export default function NotificationBadge() {
     }
   };
 
-  // Fetch initial unread count when the component mounts
   useEffect(() => {
-    const fetchInitialCount = async () => {
-      try {
-        await getUnreadCount();
-        setUnreadCount(count); // Ensure unreadCount is set based on the fetched count
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
+    getUnreadCount();
+  }, []);
 
-    fetchInitialCount();
-  }, [count, getUnreadCount]);
-
-  // Establish socket connection once authenticatedId is available
   useEffect(() => {
-    if (authenticatedId) {
-      const newSocket = io("http://localhost:5001", {
-        transports: ["websocket"],
-        query: { user_id: authenticatedId },
-      });
-
-      // Listen for unread notifications count updates from the server
-      newSocket.on("unread_notifications_count", (data) => {
-        setUnreadCount(data.count);
-      });
-
-      // Clean up the listener and disconnect socket when the component unmounts
-      return () => {
-        newSocket.off("unread_notifications_count");
-        newSocket.disconnect();
-      };
-    }
-  }, [authenticatedId]);
-
-  // Disable body scroll when popover is open
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
-      document.body.style.overflow = ""; // Clean up on unmount or when popover closes
+      document.body.style.overflow = "";
     };
   }, [open]);
 
@@ -86,11 +74,15 @@ export default function NotificationBadge() {
       <Popover
         title="Your notifications"
         content={
-          <div className="p-1 sm:p-2 w-80 md:w-96 min-h-32 max-h-96 overflow-y-auto flex justify-center items-center">
+          <div
+            className={`p-1 sm:p-2 w-80 md:w-96 ${
+              isLoading ? "h-96" : "min-h-32 max-h-96"
+            }  overflow-y-auto flex justify-center`}
+          >
             {isLoading ? (
-              <Spin size="large" className="green-spin" />
+              <Spin size="large" className="green-spin my-20" />
             ) : (
-              <NotificationsList hide={hide} />
+              <NotificationsList hide={() => setOpen(false)} />
             )}
           </div>
         }
@@ -98,7 +90,7 @@ export default function NotificationBadge() {
         open={open}
         onOpenChange={handleOpenChange}
       >
-        <Badge count={unreadCount} offset={[0, 6]}>
+        <Badge count={count} offset={[0, 6]}>
           <Button
             type="primary"
             shape="circle"

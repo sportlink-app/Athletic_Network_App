@@ -11,6 +11,8 @@ export default function NotificationsList({ hide }) {
       {notifications.map((notification, index) => (
         <NotificationCard
           key={index}
+          id={notification.id}
+          isVisited={notification.is_visited}
           notificationType={notification.type}
           teamName={notification.team_name}
           createdAt={notification.created_at}
@@ -25,7 +27,10 @@ export default function NotificationsList({ hide }) {
   return (
     <>
       {notifications.length === 0 ? (
-        <EmptyData text="You don't have any notifications" className="!h-fit" />
+        <EmptyData
+          text="You don't have any notifications"
+          className="!h-fit my-8"
+        />
       ) : (
         notificationsList
       )}

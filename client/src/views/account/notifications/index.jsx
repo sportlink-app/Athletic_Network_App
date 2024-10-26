@@ -31,7 +31,7 @@ export default function Notifications() {
   ];
   const sport = "Surfing";
   // const team_id = 28;
-  const team_name = "test team";
+  const teamName = "test team";
 
   return (
     <>
@@ -64,7 +64,7 @@ export default function Notifications() {
                   </Button>
                 </div>
                 <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
-                  {team_name} by {owner.username} {id}
+                  {teamName} by {owner.username} {id}
                 </h3>
               </div>
               <Tags list={sport} className="py-1 px-4 text-sm" />
