@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from .user_blueprint import token_required
-from ..models import db, Notification, TeamInvite, JoinRequest, Team, Myusers
+from ..models import db, Notification, TeamInvite, JoinRequest, Team, Myusers, Sport
 from ..utils.socketio import socketio, connected_users, handle_connect, handle_disconnect
 
 notification_blueprint = Blueprint('notification_blueprint', __name__)
@@ -35,11 +35,11 @@ def get_all_notifications(current_user):
             "id": notification.id,
             "is_visited": notification.is_visited,
             "type": notification.type,
+            "reference_id": notification.reference_id,
             "created_at": notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         }
-
-        if notification.reference_id:
-            if notification.type == 'team_invite':
+        
+        if notification.type == 'team_invite':
                 invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
                 if invite:
                     team = Team.query.filter_by(id=invite.team_id).first()
@@ -53,7 +53,7 @@ def get_all_notifications(current_user):
                             }
                         })
 
-            elif notification.type == 'join_request':
+        elif notification.type == 'join_request':
                 join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
                 if join_request:
                     team = Team.query.filter_by(id=join_request.team_id).first()
@@ -67,7 +67,7 @@ def get_all_notifications(current_user):
                             }
                         })
 
-            elif notification.type == 'team_completion':
+        elif notification.type == 'team_completion':
                 # Assuming you have a method to get the team details
                 team = Team.query.filter_by(id=notification.reference_id).first()
                 if team:
@@ -142,7 +142,6 @@ def get_specific_notification(current_user, notification_id):
             "created_at": notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             "type": notification.type,
             "reference_id": notification.reference_id,
-            "is_visited": notification.is_visited
         }
 
         # Mark the notification as visited
@@ -157,11 +156,15 @@ def get_specific_notification(current_user, notification_id):
                     team = Team.query.filter_by(id=invite.team_id).first()
                     sender = Myusers.query.filter_by(id=invite.owner_id).first()
                     if team and sender:
+                        # Fetch sport details if available
+                        sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
+                        
                         notification_data.update({
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
                             "date": team.date.strftime('%Y-%m-%d'),
+                            "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,
                                 "gender": sender.gender
@@ -174,11 +177,15 @@ def get_specific_notification(current_user, notification_id):
                     team = Team.query.filter_by(id=join_request.team_id).first()
                     sender = Myusers.query.filter_by(id=join_request.user_id).first()
                     if team and sender:
+                        # Fetch sport details if available
+                        sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
+
                         notification_data.update({
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
                             "date": team.date.strftime('%Y-%m-%d'),
+                            "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,
                                 "gender": sender.gender
@@ -188,11 +195,23 @@ def get_specific_notification(current_user, notification_id):
             elif notification.type == 'team_completion':
                 team = Team.query.filter_by(id=notification.reference_id).first()
                 if team:
+                    # Fetch team members
+                    members = Member.query.filter_by(team_id=team.id).all()
+                    members_data = [
+                        {"username": member.username, "availability": member.availability, "gender": member.gender}
+                        for member in members
+                    ]
+
+                    # Fetch sport details if available
+                    sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
+
                     notification_data.update({
                         "team_name": team.name,
                         "city": team.city,
                         "description": team.description,
-                        "date": team.date.strftime('%Y-%m-%d')
+                        "date": team.date.strftime('%Y-%m-%d'),
+                        "sport": sport.name if sport else "N/A",  # Add sport name if available
+                        "members": members_data
                     })
 
         return jsonify(notification_data), 200

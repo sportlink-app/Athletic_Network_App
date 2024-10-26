@@ -74,13 +74,15 @@ const notificationStore = create((set) => ({
     }
   },
 
-  notification: {},
+  notification: null,
   getNotification: async (id) => {
     try {
-      await axios.get(`/notification/${id}`, {
+      const response = await axios.get(`/notification/${id}`, {
         headers: getAuthHeaders(),
       });
+      set({ notification: response.data });
     } catch (error) {
+      console.error("Failed to get notification details:", error);
       throw new Error("Failed to get notification details");
     }
   },

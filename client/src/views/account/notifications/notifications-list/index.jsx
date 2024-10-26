@@ -13,11 +13,11 @@ export default function NotificationsList({ hide }) {
           key={index}
           id={notification.id}
           isVisited={notification.is_visited}
-          notificationType={notification.type}
+          type={notification.type}
           teamName={notification.team_name}
           createdAt={notification.created_at}
           sender={notification.sender}
-          inviteId={notification.invite_id}
+          referenceId={notification.reference_id}
           hide={hide}
         />
       ))}

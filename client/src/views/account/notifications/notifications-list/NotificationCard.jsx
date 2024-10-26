@@ -9,34 +9,31 @@ import { Button, message, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import notificationStore from "../../../../store/notificationStore";
+import { getNotificationMessage } from "../../../../components/static/notificationMessages";
 
 export default function NotificationCard({
   id,
   isVisited,
-  notificationType,
-  inviteId,
+  type,
+  referenceId,
   createdAt,
   teamName,
   sender,
   hide,
 }) {
   const { deleteNotification } = notificationStore();
-
-  const inviteMessage = `${sender.username} has invited you to join the team ${teamName}`;
-  const demandMessage = `${sender.username} has accepted your request to join the team ${teamName}`;
+  const [messageApi, contextHolder] = message.useMessage();
 
   const formattedDate = formatDistanceToNow(parseISO(createdAt), {
     addSuffix: true,
   });
-
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleNotificationDelete = async (e) => {
     e.stopPropagation();
     e.preventDefault();
     try {
       await deleteNotification(id);
-      messageApi.success("Notification delete successfully!");
+      messageApi.success("Notification deleted successfully!");
     } catch (error) {
       messageApi.error("Failed to delete notification!");
     }
@@ -53,9 +50,7 @@ export default function NotificationCard({
         >
           <div className="flex flex-col justify-between">
             <h3 className="text-base text-gray-900">
-              {notificationType === "team_invite"
-                ? inviteMessage
-                : demandMessage}
+              {getNotificationMessage(type, sender, teamName)}
             </h3>
             <p className="text-xs text-slate-600">{formattedDate}</p>
           </div>
@@ -66,9 +61,9 @@ export default function NotificationCard({
               size="middle"
               className="!bg-slate-50 hover:!bg-slate-200 !text-slate-800"
               icon={<DeleteOutlined />}
-              onClick={handleNotificationDelete} // Wrapped in handleNotificationDelete function
+              onClick={handleNotificationDelete}
             />
-            {notificationType === "team_invite" && (
+            {type !== "team_completion" && (
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button
@@ -96,12 +91,12 @@ export default function NotificationCard({
 }
 
 NotificationCard.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.number.isRequired,
   isVisited: PropTypes.bool,
-  notificationType: PropTypes.string,
-  inviteId: PropTypes.string,
+  type: PropTypes.string.isRequired,
+  referenceId: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
   teamName: PropTypes.string,
-  createdAt: PropTypes.string,
   sender: PropTypes.object,
   hide: PropTypes.func,
 };

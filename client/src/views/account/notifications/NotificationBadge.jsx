@@ -39,7 +39,7 @@ export default function NotificationBadge() {
         socket.disconnect();
       };
     }
-  }, [authenticatedId]);
+  }, [authenticatedId, handleCountUpdate]);
 
   const handleOpenChange = async (newOpen) => {
     setOpen(newOpen);
