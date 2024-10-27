@@ -43,8 +43,9 @@ const userInfoStore = create(
           set({ availability: response.data.availability });
           return response.data;
         } catch (error) {
-          console.error("Error in getAvailability:", error.message);
-          throw error;
+          throw new Error(
+            "An unexpected error occurred, please refresh the page or try again later"
+          );
         }
       },
 
@@ -90,7 +91,9 @@ const userInfoStore = create(
           // Properly clear zustand-persist localStorage
           userInfoStore.persist.clearStorage();
         } catch (error) {
-          console.error("Error deleting profile:", error.message);
+          throw new Error(
+            "Error deleting profile, please refresh the page or try again later"
+          );
         }
       },
 

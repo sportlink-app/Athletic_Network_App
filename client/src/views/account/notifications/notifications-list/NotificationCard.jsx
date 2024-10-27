@@ -46,7 +46,7 @@ export default function NotificationCard({
         <Card
           className={`${
             !isVisited ? "!bg-green/10 hover:!bg-green/5 !border-green" : ""
-          } border-transparent rounded-2xl p-5 flex gap-5 hover:bg-slate-50 hover:scale-[1.02] hover:!border-gray-300 hover:shadow-lg duration-500 cursor-pointer`}
+          }  border-transparent rounded-2xl p-5 flex gap-5 justify-between hover:bg-slate-50 hover:scale-[1.02] !border-gray-300 hover:shadow-lg duration-500 cursor-pointer`}
         >
           <div className="flex flex-col justify-between">
             <h3 className="text-base text-gray-900">
@@ -63,7 +63,7 @@ export default function NotificationCard({
               icon={<DeleteOutlined />}
               onClick={handleNotificationDelete}
             />
-            {type !== "team_completion" && (
+            {(type === "team_invite" || type === "join_request") && (
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button
@@ -94,7 +94,7 @@ NotificationCard.propTypes = {
   id: PropTypes.number.isRequired,
   isVisited: PropTypes.bool,
   type: PropTypes.string.isRequired,
-  referenceId: PropTypes.string,
+  referenceId: PropTypes.number,
   createdAt: PropTypes.string.isRequired,
   teamName: PropTypes.string,
   sender: PropTypes.object,

@@ -51,7 +51,9 @@ const blogStore = create((set, get) => ({
         totalItems: response.data.total_items,
       });
     } catch (error) {
-      throw new Error("Failed to get blogs");
+      throw new Error(
+        "Failed to get blogs, please refresh the page or try again later"
+      );
     }
   },
 
@@ -83,7 +85,9 @@ const blogStore = create((set, get) => ({
         userBlogsCurrentPage: reset ? 2 : get().userBlogsCurrentPage + 1,
       });
     } catch (error) {
-      throw new Error("Failed to get blogs");
+      throw new Error(
+        "Failed to get blogs, please refresh the page or try again later"
+      );
     }
   },
 
@@ -107,7 +111,9 @@ const blogStore = create((set, get) => ({
       clearFields();
       await getBlogs(true); // Reset and fetch the latest blogs
     } catch (error) {
-      throw new Error("Failed to create blog");
+      throw new Error(
+        "Failed to create blog, please refresh the page or try again later"
+      );
     }
   },
 
@@ -126,7 +132,9 @@ const blogStore = create((set, get) => ({
         userBlogsTotalItems: state.userBlogsTotalItems - 1,
       }));
     } catch (error) {
-      throw new Error("Failed to delete blog");
+      throw new Error(
+        "Failed to delete blog, please refresh the page or try again later"
+      );
     }
   },
 
@@ -140,7 +148,9 @@ const blogStore = create((set, get) => ({
       });
       set({ topCreators: response.data });
     } catch (error) {
-      throw new Error("Failed to fetch top creators");
+      throw new Error(
+        "Failed to fetch top creators, please refresh the page or try again later"
+      );
     }
   },
 }));

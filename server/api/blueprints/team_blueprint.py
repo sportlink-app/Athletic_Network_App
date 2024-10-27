@@ -136,42 +136,60 @@ def invite_member(current_user):
 
     return jsonify({"message": "Invitation sent successfully"}), 201
 
-# Respond to Invitation API
-@team_blueprint.route('/invitation/<int:invite_id>', methods=['PATCH'])
+# Respond to Invite API
+@team_blueprint.route('/team/invite/response/<int:reference_id>', methods=['POST'])
 @token_required()
-def respond_to_invitation(current_user, invite_id):
-    # Query for the invitation
-    invite = TeamInvite.query.filter_by(id=invite_id, user_id=current_user.id).first()
-    
-    if not invite:
-        return jsonify({"message": "Invitation not found or does not belong to you"}), 404
-
-    # Check if the invitation is still pending
-    if invite.status != 'Pending':
-        return jsonify({"message": "Invitation has already been responded to"}), 400
-
-    # Check the action (accept or reject)
+def respond_to_invitation(current_user, reference_id):
     data = request.get_json()
-    action = data.get('action')  # expected to be either 'accept' or 'reject'
+    action = data.get('action')  # 'accept' or 'reject'
 
-    if action == 'accept':
-        # Add user to the team (assuming there is a many-to-many relationship)
-        team = invite.team  # Get the team associated with the invitation
-        team.members.append(current_user)  # Add the current user to the team
+    # Check if action is valid
+    if action not in ['accept', 'reject']:
+        return jsonify({"message": "Invalid action. Use 'accept' or 'reject'."}), 400
 
-        # Update the invite status
-        invite.status = 'Accepted'
-        
-        db.session.commit()
+    # Check if the invite exists
+    invite = TeamInvite.query.filter_by(id=reference_id).first()
+    if not invite:
+        return jsonify({"message": "Invitation not found."}), 404
 
-        return jsonify({"message": "Invitation accepted successfully"}), 200
+    # Check if the current user is the invited user
+    if invite.user_id != current_user.id:
+        return jsonify({"message": "You are not authorized to respond to this invitation."}), 403
 
-    elif action == 'reject':
-        # Delete the invitation
-        db.session.delete(invite)
-        db.session.commit()
+    # Update the status of the invitation
+    invite.status = 'accepted' if action == 'accept' else 'rejected'
 
-        return jsonify({"message": "Invitation rejected successfully"}), 200
+    # Notify the team owner of the acceptance/rejection
+    notification = Notification(
+        user_id=invite.owner_id,
+        reference_id=invite.id,  # Reference to the TeamInvite
+        type='team_invite_response'
+    )
+    db.session.add(notification)
 
-    else:
-        return jsonify({"message": "Invalid action. Please specify 'accept' or 'reject'."}), 400
+    # Call the notify function from utils
+    notify_new_notification(invite.owner_id, socketio, connected_users)
+    
+    # Commit changes
+    db.session.commit()
+
+    # Check if the team is complete
+    team = Team.query.get(invite.team_id)
+    if team:
+        # Assuming the expected team size is a property of the team model
+        expected_team_size = team.members_count  # Adjust this if the property is named differently
+        if team.members_count == expected_team_size:  
+            team.isCompleted = True
+            db.session.commit()
+            # Notify all team members
+            for member in team.members:
+                member_notification = Notification(
+                    user_id=member.id,
+                    reference_id=team.id,
+                    type='team_completed'
+                )
+                db.session.add(member_notification)
+
+    db.session.commit()
+
+    return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200

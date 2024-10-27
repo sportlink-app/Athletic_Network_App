@@ -7,7 +7,7 @@ export default function NotificationsList({ hide }) {
   const { notifications } = notificationStore();
 
   const notificationsList = notifications.length > 0 && (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       {notifications.map((notification, index) => (
         <NotificationCard
           key={index}

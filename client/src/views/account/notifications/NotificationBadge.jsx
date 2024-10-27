@@ -20,9 +20,8 @@ export default function NotificationBadge() {
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleCountUpdate = async (newCount) => {
-    await setCount(newCount); // Update count and refresh notifications
+    await setCount(newCount);
   };
-
   useEffect(() => {
     if (authenticatedId) {
       const socket = io(import.meta.env.VITE_SERVER_URL, {
@@ -74,7 +73,7 @@ export default function NotificationBadge() {
       <Popover
         title="Your notifications"
         content={
-          <div className="p-1 sm:p-2 w-80 md:w-96 min-h-32 max-h-96 overflow-y-auto flex justify-center">
+          <div className="p-1 sm:p-2 w-80 md:w-96 h-80 overflow-y-auto flex justify-center">
             {isLoading ? (
               <Spin size="large" className="green-spin my-6" />
             ) : (

@@ -61,7 +61,7 @@ const usersStore = create((set) => ({
   fetchUsers: async (page = 1, perPage = 12, sport = "") => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/users?page=${page}&per_page=${perPage}&sport=${sport}`,
+        `/users?page=${page}&per_page=${perPage}&sport=${sport}`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -80,11 +80,8 @@ const usersStore = create((set) => ({
         selectedSport: sport, // Update selected sport
       });
     } catch (error) {
-      console.error("Error fetching users:", error); // Added for debugging
       throw new Error(
-        error.response?.status === 404
-          ? "Users not found"
-          : "An unexpected error occurred"
+        "An unexpected error occurred, please refresh the page or try again later"
       );
     }
   },

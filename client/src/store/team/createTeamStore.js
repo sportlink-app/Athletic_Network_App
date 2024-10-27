@@ -133,7 +133,7 @@ const createTeamStore = create((set, get) => ({
       } else if (error.response && error.response.status === 400) {
         throw new Error("Description is too long, max 500 characters allowed");
       } else {
-        throw new Error("Failed to create team");
+        throw new Error("Failed to create team, please refresh the page or try again later");
       }
     }
   },

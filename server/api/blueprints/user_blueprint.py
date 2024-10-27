@@ -64,8 +64,9 @@ def signup():
             'id': new_user.id,
             'username': new_user.username,
             'isProfileCompleted': new_user.isProfileCompleted,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=365)
         }, SECRET_KEY)
+
 
         return jsonify({
             "message": "Profile created successfully!",
@@ -88,7 +89,7 @@ def login():
             'id': user.id,
             'username': user.username,
             'isProfileCompleted': user.isProfileCompleted,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=365)
         }, SECRET_KEY)
 
         return jsonify({"message": "Login successful",'username': user.username, "token": token}), 200

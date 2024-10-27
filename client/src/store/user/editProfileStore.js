@@ -140,7 +140,7 @@ const editProfileStore = create((set, get) => {
           throw new Error("Username already exists");
         } else {
           throw new Error(
-            "An unexpected error occurred, please try again later"
+            "An unexpected error occurred, please refresh the page or try again later"
           );
         }
       }

@@ -12,9 +12,13 @@ const sportStore = create((set) => ({
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        throw new Error("Failed to get sports, please try again");
+        throw new Error(
+          "Failed to get sports, please refresh the page or try again later"
+        );
       } else {
-        throw new Error("An unexpected error occurred, please try again later");
+        throw new Error(
+          "An unexpected error occurred, please try again later "
+        );
       }
     }
   },

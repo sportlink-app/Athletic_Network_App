@@ -22,7 +22,7 @@ def get_unread_notifications_count(current_user):
 
     return jsonify({'unread_count': unread_count}), 200
 
-# Get Notifications API 
+# Get Notifications API
 @notification_blueprint.route('/notifications', methods=['GET'])
 @token_required()
 def get_all_notifications(current_user):
@@ -40,40 +40,53 @@ def get_all_notifications(current_user):
         }
         
         if notification.type == 'team_invite':
-                invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
-                if invite:
-                    team = Team.query.filter_by(id=invite.team_id).first()
-                    sender = Myusers.query.filter_by(id=invite.owner_id).first()
-                    if team and sender:
-                        notification_data.update({
-                            "team_name": team.name,
-                            "sender": {
-                                "username": sender.username,
-                                "gender": sender.gender
-                            }
-                        })
-
-        elif notification.type == 'join_request':
-                join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
-                if join_request:
-                    team = Team.query.filter_by(id=join_request.team_id).first()
-                    sender = Myusers.query.filter_by(id=join_request.user_id).first()
-                    if team and sender:
-                        notification_data.update({
-                            "team_name": team.name,
-                            "sender": {
-                                "username": sender.username,
-                                "gender": sender.gender
-                            }
-                        })
-
-        elif notification.type == 'team_completion':
-                # Assuming you have a method to get the team details
-                team = Team.query.filter_by(id=notification.reference_id).first()
+            invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
+            if invite:
+                team = Team.query.filter_by(id=invite.team_id).first()
+                sender = Myusers.query.filter_by(id=invite.owner_id).first()
+                if team and sender:
+                    notification_data.update({
+                        "team_name": team.name,
+                        "sender": {
+                            "username": sender.username,
+                            "gender": sender.gender
+                        }
+                    })
+        
+        elif notification.type == 'team_invite_response':
+            invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
+            if invite:
+                team = Team.query.filter_by(id=invite.team_id).first()
+                sender = Myusers.query.filter_by(id=invite.user_id).first()
                 if team:
                     notification_data.update({
-                        "team_name": team.name
+                        "team_name": team.name,
+                        "sender": {
+                            "username": sender.username,  
+                            "gender": sender.gender       
+                        }
                     })
+
+        elif notification.type in ['join_request', 'join_request_response']: 
+            join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
+            if join_request:
+                team = Team.query.filter_by(id=join_request.team_id).first()
+                sender = Myusers.query.filter_by(id=join_request.user_id).first()
+                if team and sender:
+                    notification_data.update({
+                        "team_name": team.name,
+                        "sender": {
+                            "username": sender.username,
+                            "gender": sender.gender
+                        }
+                    })
+
+        elif notification.type == 'team_completion':
+            team = Team.query.filter_by(id=notification.reference_id).first()
+            if team:
+                notification_data.update({
+                    "team_name": team.name
+                })
 
         notifications_data.append(notification_data)
 
@@ -169,10 +182,10 @@ def get_specific_notification(current_user, notification_id):
                     team = Team.query.filter_by(id=invite.team_id).first()
                     sender = Myusers.query.filter_by(id=invite.owner_id).first()
                     if team and sender:
-                        # Fetch sport details if available
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
                         
                         notification_data.update({
+                            "team_id": team.id,
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
@@ -184,13 +197,33 @@ def get_specific_notification(current_user, notification_id):
                             }
                         })
 
-            elif notification.type == 'join_request':
+            elif notification.type == 'team_invite_response':
+                invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
+                if invite:
+                    team = Team.query.filter_by(id=invite.team_id).first()
+                    sender = Myusers.query.filter_by(id=invite.user_id).first()  # Set sender as owner_id
+                    if team and sender:
+                        sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
+                        
+                        notification_data.update({
+                            "team_id": team.id,
+                            "team_name": team.name,
+                            "city": team.city,
+                            "description": team.description,
+                            "date": team.date.strftime('%Y-%m-%d'),
+                            "sport": sport.name if sport else "N/A",  # Add sport name if available
+                            "sender": {
+                                "username": sender.username,
+                                "gender": sender.gender
+                            }
+                        })
+
+            elif notification.type in ['join_request', 'join_request_response']: 
                 join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
                 if join_request:
                     team = Team.query.filter_by(id=join_request.team_id).first()
                     sender = Myusers.query.filter_by(id=join_request.user_id).first()
                     if team and sender:
-                        # Fetch sport details if available
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
 
                         notification_data.update({
@@ -205,28 +238,7 @@ def get_specific_notification(current_user, notification_id):
                             }
                         })
 
-            elif notification.type == 'team_completion':
-                team = Team.query.filter_by(id=notification.reference_id).first()
-                if team:
-                    # Fetch team members
-                    members = Member.query.filter_by(team_id=team.id).all()
-                    members_data = [
-                        {"username": member.username, "availability": member.availability, "gender": member.gender}
-                        for member in members
-                    ]
-
-                    # Fetch sport details if available
-                    sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
-
-                    notification_data.update({
-                        "team_name": team.name,
-                        "city": team.city,
-                        "description": team.description,
-                        "date": team.date.strftime('%Y-%m-%d'),
-                        "sport": sport.name if sport else "N/A",  # Add sport name if available
-                        "members": members_data
-                    })
-
+            
         return jsonify(notification_data), 200
 
     except Exception as e:

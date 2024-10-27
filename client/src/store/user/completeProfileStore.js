@@ -119,7 +119,9 @@ const completeProfileStore = create((set, get) => ({
       } else if (error.response && error.response.status === 500) {
         throw new Error("Update profile failed, please try again");
       } else {
-        throw new Error("An unexpected error occurred, please try again later");
+        throw new Error(
+          "An unexpected error occurred, please refresh the page or try again later"
+        );
       }
     }
   },
