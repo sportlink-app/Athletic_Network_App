@@ -74,13 +74,9 @@ export default function NotificationBadge() {
       <Popover
         title="Your notifications"
         content={
-          <div
-            className={`p-1 sm:p-2 w-80 md:w-96 ${
-              isLoading ? "h-96" : "min-h-32 max-h-96"
-            }  overflow-y-auto flex justify-center`}
-          >
+          <div className="p-1 sm:p-2 w-80 md:w-96 min-h-32 max-h-96 overflow-y-auto flex justify-center">
             {isLoading ? (
-              <Spin size="large" className="green-spin my-20" />
+              <Spin size="large" className="green-spin my-6" />
             ) : (
               <NotificationsList hide={() => setOpen(false)} />
             )}

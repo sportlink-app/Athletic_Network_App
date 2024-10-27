@@ -111,18 +111,31 @@ def mark_notifications_as_read(current_user):
 @token_required()
 def delete_notification(current_user, notification_id):
     try:
+        # Fetch the notification to delete
         notification = Notification.query.get(notification_id)
 
         if not notification:
-            return jsonify({"message": "Notification_id not found"}), 404
+            return jsonify({"message": "Notification not found"}), 404
 
         if notification.user_id != current_user.id:
             return jsonify({"message": "You are not authorized to delete this notification"}), 403
 
+        # Delete the related reference based on notification type
+        if notification.reference_id:
+            if notification.type == 'team_invite':
+                invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
+                if invite:
+                    db.session.delete(invite)
+            elif notification.type == 'join_request':
+                join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
+                if join_request:
+                    db.session.delete(join_request)
+
+        # Delete the notification itself
         db.session.delete(notification)
         db.session.commit()
 
-        return jsonify({"message": "Notification deleted successfully"}), 200
+        return jsonify({"message": "Notification and associated reference deleted successfully"}), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 

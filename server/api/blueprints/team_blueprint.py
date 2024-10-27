@@ -137,7 +137,7 @@ def invite_member(current_user):
     return jsonify({"message": "Invitation sent successfully"}), 201
 
 # Respond to Invitation API
-@team_blueprint.route('/invitations/<int:invite_id>', methods=['PATCH'])
+@team_blueprint.route('/invitation/<int:invite_id>', methods=['PATCH'])
 @token_required()
 def respond_to_invitation(current_user, invite_id):
     # Query for the invitation
