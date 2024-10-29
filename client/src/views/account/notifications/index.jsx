@@ -32,7 +32,7 @@ export default function Notifications() {
       }
     };
     fetchNotification();
-  }, [id, getNotification]);
+  }, [id, getNotification, navigate]);
 
   const {
     reference_id: referenceId,

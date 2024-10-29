@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers, Team, TeamInvite, Notification
+from ..models import db, Myusers, Team, team_members, TeamInvite, Notification
 from .user_blueprint import token_required
 from sqlalchemy import func
 from ..utils.notification_utils import notify_new_notification 
@@ -42,7 +42,13 @@ def create_team(current_user):
         members_count=members_count,  
         owner_id=current_user.id
     )
+    
     db.session.add(team)
+    db.session.commit()
+
+    # Add the current user to the team_members table
+    team_member_entry = team_members.insert().values(team_id=team.id, user_id=current_user.id)
+    db.session.execute(team_member_entry)
     db.session.commit()
 
     return jsonify({
@@ -104,7 +110,7 @@ def invite_member(current_user):
 
     # Ensure the owner is not inviting themselves
     if user_id == current_user.id:
-        return jsonify({"message": "You cannot invite yourself to your own team"}), 400
+        return jsonify({"message": "You cannot invite yourself to your own team"}), 403
 
     # Check if the user is already a member or has an existing invite
     existing_invite = TeamInvite.query.filter_by(team_id=team_id, user_id=user_id).first()
@@ -137,9 +143,13 @@ def invite_member(current_user):
     return jsonify({"message": "Invitation sent successfully"}), 201
 
 # Respond to Invite API
-@team_blueprint.route('/team/invite/response/<int:reference_id>', methods=['POST'])
+@team_blueprint.route('/team/invite/response', methods=['POST'])
 @token_required()
-def respond_to_invitation(current_user, reference_id):
+def respond_to_invitation(current_user):
+    reference_id = request.args.get('reference_id', type=int)
+    if not reference_id:
+        return jsonify({"message": "reference_id query parameter is required"}), 400
+    
     data = request.get_json()
     action = data.get('action')  # 'accept' or 'reject'
 
@@ -173,23 +183,28 @@ def respond_to_invitation(current_user, reference_id):
     # Commit changes
     db.session.commit()
 
-    # Check if the team is complete
-    team = Team.query.get(invite.team_id)
-    if team:
-        # Assuming the expected team size is a property of the team model
-        expected_team_size = team.members_count  # Adjust this if the property is named differently
-        if team.members_count == expected_team_size:  
-            team.isCompleted = True
-            db.session.commit()
-            # Notify all team members
-            for member in team.members:
-                member_notification = Notification(
-                    user_id=member.id,
-                    reference_id=team.id,
-                    type='team_completed'
-                )
-                db.session.add(member_notification)
+    if action == 'accept':
+        # Add the user to the team members
+        team = Team.query.get(invite.team_id)
+        if team:
+            # Add the current user to the team members
+            team.members.append(current_user)  # Assuming current_user is an instance of the Myusers model
+            team.members_count += 1  # Update the count of members
+            
+            # Check if the team is complete
+            expected_team_size = team.members_count  # This should be the maximum size of the team
+            if team.members_count == expected_team_size:  
+                team.isCompleted = True
 
-    db.session.commit()
+                # Notify all team members
+                for member in team.members:
+                    member_notification = Notification(
+                        user_id=member.id,
+                        reference_id=team.id,
+                        type='team_completed'
+                    )
+                    db.session.add(member_notification)
+
+            db.session.commit()  # Commit changes after adding the member and checking completion status
 
     return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200

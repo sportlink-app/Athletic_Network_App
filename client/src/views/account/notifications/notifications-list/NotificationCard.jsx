@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import notificationStore from "../../../../store/notificationStore";
 import { getNotificationMessage } from "../../../../components/static/notificationMessages";
+import teamStore from "../../../../store/team/teamStore";
+import { useState } from "react";
 
 export default function NotificationCard({
   id,
@@ -22,11 +24,14 @@ export default function NotificationCard({
   hide,
 }) {
   const { deleteNotification } = notificationStore();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { inviteRespond } = teamStore();
 
   const formattedDate = formatDistanceToNow(parseISO(createdAt), {
     addSuffix: true,
   });
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isLoading, setLoading] = useState(false);
 
   const handleNotificationDelete = async (e) => {
     e.stopPropagation();
@@ -36,6 +41,20 @@ export default function NotificationCard({
       messageApi.success("Notification deleted successfully!");
     } catch (error) {
       messageApi.error("Failed to delete notification!");
+    }
+  };
+
+  const handleRespondClick = async (e, action) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await inviteRespond(referenceId, action);
+      messageApi.success(`Invite ${action}ed successfully`);
+    } catch (error) {
+      messageApi.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,6 +86,8 @@ export default function NotificationCard({
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button
+                    onClick={(e) => handleRespondClick(e, "accept")}
+                    disabled={isLoading}
                     type="primary"
                     shape="circle"
                     icon={<CheckOutlined />}
@@ -75,6 +96,8 @@ export default function NotificationCard({
                 </Tooltip>
                 <Tooltip title="Reject" color="red">
                   <Button
+                    onClick={(e) => handleRespondClick(e, "reject")}
+                    disabled={isLoading}
                     type="primary"
                     shape="circle"
                     icon={<CloseOutlined />}

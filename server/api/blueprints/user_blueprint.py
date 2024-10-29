@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers, Sport, user_sports
+from ..models import db, Myusers, Sport, Team, TeamInvite
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
@@ -262,7 +262,7 @@ def get_specific_user(current_user, username):
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
-# Get All Users API and search by sport name
+# Get All Users API and search by username
 @user_blueprint.route('/users', methods=['GET'])
 @token_required()
 def get_all_users(current_user):
@@ -270,32 +270,52 @@ def get_all_users(current_user):
         # Get pagination parameters
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
-
-        # Get optional sport filter
-        sport_name = request.args.get('sport', None)
+        team_id = request.args.get('team_id', None, type=int)
+        username = request.args.get('username', None, type=str)
 
         # Extract the current user's ID from the token
         current_user_id = current_user.id
 
-        # Retrieve the current user's city from the database
+        # Retrieve the current user's data from the database
         current_user_db = Myusers.query.filter_by(id=current_user_id).first()
-
+        
         if not current_user_db:
             return jsonify({"message": "User not found"}), 404
 
-        current_user_city = current_user_db.city  # Get the city from the user's data
+        team_members = set()  # Initialize set for team members
+        team_invites = set()  # Initialize set for team invites
+
+        # Validate team existence and ownership if team_id is provided
+        if team_id:
+            team = Team.query.filter_by(id=team_id, owner_id=current_user_id).first()
+            if not team:
+                return jsonify({"message": "Team not found or you are not the team owner"}), 403
+            
+            # Populate team members and invites
+            team_members = {member.id for member in team.members}
+            team_invites = {invite.user_id for invite in TeamInvite.query.filter_by(team_id=team_id).all()}
+
+        # Get the current user's city
+        current_user_city = current_user_db.city
 
         # Base query to filter out the current user and ensure profile completion
         query = Myusers.query.filter(
-            Myusers.id != current_user_id,               # Exclude the current user
-            Myusers.isProfileCompleted == True,          # Ensure profile is completed
-            Myusers.availability == True,                # Ensure the user is available
-            Myusers.city == current_user_city            # Filter users by the same city
+            Myusers.id != current_user_id,
+            Myusers.isProfileCompleted == True,
+            Myusers.availability == True,
+            Myusers.city == current_user_city
         )
 
-        # If a sport name is provided, filter users by sport
-        if sport_name:
-            query = query.join(user_sports).join(Sport).filter(Sport.name.ilike(f'%{sport_name}%'))
+        # Filter by team's sport and city if team_id is provided
+        if team_id:
+            query = query.filter(
+                Myusers.city == team.city,
+                Myusers.sports.any(Sport.name == team.sport.name)
+            )
+
+        # Apply username filter if provided
+        if username:
+            query = query.filter(Myusers.username.ilike(f"%{username}%"))
 
         # Paginate the results
         users_query = query.paginate(page=page, per_page=per_page, error_out=False)
@@ -305,10 +325,13 @@ def get_all_users(current_user):
         for user in users_query.items:
             sports_list = [sport.name for sport in user.sports]
             user_data = {
+                "id": user.id,
                 "username": user.username,
                 "gender": user.gender,
                 "sports": sports_list,
-                "city": user.city
+                "city": user.city,
+                "isMember": user.id in team_members if team_id else False,
+                "isInvited": user.id in team_invites if team_id else False
             }
             output.append(user_data)
 

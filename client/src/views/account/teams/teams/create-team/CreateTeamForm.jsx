@@ -1,21 +1,14 @@
 import { useState } from "react";
-import {
-  Alert,
-  AutoComplete,
-  Button,
-  DatePicker,
-  Input,
-  message,
-  Spin,
-} from "antd";
+import { Alert, AutoComplete, Button, DatePicker, Input, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
 import createTeamStore from "../../../../../store/team/createTeamStore";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
-function CreateTeamForm({ onSuccess }) {
+function CreateTeamForm() {
   const {
     teamForm,
     errors,
@@ -35,16 +28,17 @@ function CreateTeamForm({ onSuccess }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSport, setSelectedSport] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
+
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       await createTeam();
+      const teamId = createTeamStore.getState().teamId;
       setSelectedSport("");
-      onSuccess();
-      messageApi.success("Your team created successfully!");
+      navigate(`/team/${teamId}/users`);
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
@@ -204,7 +198,25 @@ function CreateTeamForm({ onSuccess }) {
   );
 
   const handleDateChange = (value) => {
+    const now = dayjs();
+    if (value && value.isBefore(now)) {
+      createTeamStore.setState((state) => ({
+        errors: {
+          ...state.errors,
+          dateError: "Date and time cannot be in the past.",
+        },
+      }));
+    } else {
+      createTeamStore.setState((state) => ({
+        errors: { ...state.errors, dateError: "" },
+      }));
+    }
     setTeamForm({ date: value ? value.toISOString() : "" });
+  };
+
+  // Disable dates before today
+  const disabledDate = (current) => {
+    return current && current < dayjs().startOf("day");
   };
 
   const dateInput = (
@@ -214,12 +226,19 @@ function CreateTeamForm({ onSuccess }) {
       </label>
       <DatePicker
         format="YYYY-MM-DD HH:mm"
+        showTime={window.innerWidth >= 640} // Show time only on wider screens
         value={teamForm.date ? dayjs(teamForm.date) : null}
         onChange={handleDateChange}
+        disabledDate={disabledDate} // Disable past dates in calendar
         placeholder="Select date and time"
         size="large"
         className="!rounded-full"
       />
+      {errors.dateError && (
+        <p className="text-sm text-red-500 !leading-5 mt-1">
+          {errors.dateError}
+        </p>
+      )}
     </li>
   );
 
@@ -238,50 +257,47 @@ function CreateTeamForm({ onSuccess }) {
   );
 
   return (
-    <>
-      {contextHolder}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-2 lg:gap-3 max-w-md mx-auto py-4 text-left"
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-2 lg:gap-3 max-w-lg mx-auto py-4 text-left"
+    >
+      <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
+        {nameInput}
+        {sportSelect}
+        {membersCountInput}
+        {descriptionInput}
+        {cityInput}
+        {dateInput}
+      </ul>
+      {errorMessage && (
+        <Alert
+          message={errorMessage}
+          type="error"
+          className="rounded-xl p-3"
+          showIcon
+          closable
+          onClose={() => setErrorMessage("")} // Clear the error on close
+        />
+      )}
+      <Button
+        htmlType="submit"
+        disabled={isLoading || isFormInvalid()}
+        type="primary"
+        shape="round"
+        size="large"
+        className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+        icon={
+          isLoading ? (
+            <Spin size="small" className="white-spin" />
+          ) : (
+            <ArrowRightOutlined size={16} />
+          )
+        }
+        iconPosition="end"
       >
-        <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
-          {nameInput}
-          {sportSelect}
-          {membersCountInput}
-          {descriptionInput}
-          {cityInput}
-          {dateInput}
-        </ul>
-        {errorMessage && (
-          <Alert
-            message={errorMessage}
-            type="error"
-            className="rounded-xl p-3"
-            showIcon
-            closable
-            onClose={() => setErrorMessage("")} // Clear the error on close
-          />
-        )}
-        <Button
-          htmlType="submit"
-          disabled={isLoading || isFormInvalid()}
-          type="primary"
-          shape="round"
-          size="large"
-          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
-          icon={
-            isLoading ? (
-              <Spin size="small" className="white-spin" />
-            ) : (
-              <ArrowRightOutlined size={16} />
-            )
-          }
-          iconPosition="end"
-        >
-          Create & Invite Members
-        </Button>
-      </form>
-    </>
+        Create & Invite Members
+      </Button>
+    </form>
   );
 }
 

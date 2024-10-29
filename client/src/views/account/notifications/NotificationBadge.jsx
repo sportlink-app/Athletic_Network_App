@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Badge, Button, Popover, message, Spin } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import NotificationsList from "./notifications-list";
@@ -19,9 +19,10 @@ export default function NotificationBadge() {
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleCountUpdate = async (newCount) => {
-    await setCount(newCount);
-  };
+  const handleCountUpdate = useCallback(async () => {
+    await setCount(0);
+  }, [setCount]);
+
   useEffect(() => {
     if (authenticatedId) {
       const socket = io(import.meta.env.VITE_SERVER_URL, {
@@ -61,6 +62,7 @@ export default function NotificationBadge() {
   }, []);
 
   useEffect(() => {
+    setCount(0);
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";

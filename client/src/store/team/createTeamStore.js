@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import authStore from "../user/authStore";
+import dayjs from "dayjs";
 
 const createTeamStore = create((set, get) => ({
   teamForm: {
@@ -14,7 +15,9 @@ const createTeamStore = create((set, get) => ({
   errors: {
     membersCountError: "",
     sportError: "",
+    dateError: "",
   },
+  teamId: "",
 
   setTeamForm: (formData) =>
     set((state) => ({
@@ -64,6 +67,26 @@ const createTeamStore = create((set, get) => ({
         });
       }
     }
+
+    // Validate the date
+    if (name === "date") {
+      const selectedDate = dayjs(value);
+      if (selectedDate.isBefore(dayjs(), "day")) {
+        set({
+          errors: {
+            ...errors,
+            dateError: "Date must not be in the past.",
+          },
+        });
+      } else {
+        set({
+          errors: {
+            ...errors,
+            dateError: "",
+          },
+        });
+      }
+    }
   },
 
   handleSearch: (text, sports) => {
@@ -97,9 +120,11 @@ const createTeamStore = create((set, get) => ({
     const isFieldEmpty =
       !name || !sportId || !membersCount || !description || !city || !date;
 
+    // Check if any error messages are set
     const hasErrors =
-      errors.sportError !== "" || errors.membersCountError !== "";
+      errors.sportError || errors.membersCountError || errors.dateError;
 
+    // Button should be disabled if any field is empty or there are errors
     return isFieldEmpty || hasErrors;
   },
 
@@ -108,14 +133,14 @@ const createTeamStore = create((set, get) => ({
       get().teamForm;
 
     try {
-      await axios.post(
+      const response = await axios.post(
         "/team",
         {
           name,
           sport_id: sportId,
           members_count: Number(membersCount),
           description,
-          city,
+          city: city.toLowerCase(),
           date,
         },
         {
@@ -125,6 +150,7 @@ const createTeamStore = create((set, get) => ({
           },
         }
       );
+      set({ teamId: response.data.team_id });
 
       get().clearFields();
     } catch (error) {
@@ -133,7 +159,9 @@ const createTeamStore = create((set, get) => ({
       } else if (error.response && error.response.status === 400) {
         throw new Error("Description is too long, max 500 characters allowed");
       } else {
-        throw new Error("Failed to create team, please refresh the page or try again later");
+        throw new Error(
+          "Failed to create team, please refresh the page or try again later"
+        );
       }
     }
   },

@@ -1,4 +1,4 @@
-import DataField from "../../../../../components/dynamic/DataField";
+import DataField from "../../../../../components/static/DataField";
 import { Divider } from "antd";
 import Tags from "../../../../../components/static/Tags";
 import { BulbOutlined, HeartOutlined } from "@ant-design/icons";
@@ -10,13 +10,13 @@ function ProfileContent({ bio, sports }) {
       <DataField
         title="Bio"
         content={bio}
-        icon={<BulbOutlined className="text-sm" />}
+        icon={<BulbOutlined className="text-sm pt-[2px]" />}
       />
       <Divider type="horizontal" className="w-full border-gray-200 my-4" />
       <li>
         <span className="w-fit flex justify-center items-center gap-[.35rem]">
-          <HeartOutlined className="text-sm" />
-          <p className="text-sm text-gray-600 mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+          <HeartOutlined className="text-sm pt-[2px]" />
+          <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
             Sports
           </p>
         </span>

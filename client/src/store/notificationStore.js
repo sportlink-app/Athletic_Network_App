@@ -34,7 +34,7 @@ const notificationStore = create((set) => ({
 
   setCount: async (newCount) => {
     set({ count: newCount });
-    await notificationStore.getState().getNotifications(); // Fetch notifications when count is set
+    await notificationStore.getState().getNotifications();
   },
 
   getNotifications: async () => {

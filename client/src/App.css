@@ -144,6 +144,8 @@ textarea::placeholder,
 }
 
 .green-spin .ant-spin-dot-item,
+.ant-picker-ok
+  :where(.css-dev-only-do-not-override-14qglws).ant-btn-primary.ant-btn-solid,
 :where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown
   .ant-picker-cell-in-view.ant-picker-cell-selected:not(
     .ant-picker-cell-disabled
@@ -164,9 +166,14 @@ textarea::placeholder,
 :where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown
   .ant-picker-cell-in-view.ant-picker-cell-today
   .ant-picker-cell-inner::before {
-  @apply border-green rounded-full !important;
+  @apply border-green !important;
 }
-
+:where(.css-dev-only-do-not-override-14qglws).ant-picker-dropdown
+  .ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  @apply bg-light-green text-green border-green border-[.8px] !important;
+}
 .loop-slider {
   .inner {
     display: flex;

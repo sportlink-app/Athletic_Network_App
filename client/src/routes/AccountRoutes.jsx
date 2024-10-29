@@ -9,6 +9,7 @@ import Blogs from "../views/account/blog";
 import UserBlogs from "../views/account/blog/profile";
 import Teams from "../views/account/teams/teams";
 import CheckAuth from "../middlewares/checkAuth";
+import ServerError from "../components/static/errors/ServerError";
 
 function AccountRoutes() {
   return (
@@ -31,7 +32,7 @@ function AccountRoutes() {
         }
       />
       <Route
-        path="teams/users"
+        path="team/:teamId/users"
         element={
           <CheckAuth>
             <Users />
@@ -78,6 +79,7 @@ function AccountRoutes() {
           </CheckAuth>
         }
       />
+      <Route path="server-error" element={<ServerError />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

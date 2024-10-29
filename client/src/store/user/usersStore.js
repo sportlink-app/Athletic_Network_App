@@ -55,13 +55,13 @@ const usersStore = create((set) => ({
   totalUsers: 0,
   currentPage: 1,
   perPage: 12,
-  selectedSport: "", // Added to track sport filter
+  searchedUsername: "",
 
-  // Fetch user data with pagination and sport filter
-  fetchUsers: async (page = 1, perPage = 12, sport = "") => {
+  // Fetch user data with pagination and username filter
+  fetchUsers: async (teamId, page = 1, perPage = 12, username = "") => {
     try {
       const response = await axios.get(
-        `/users?page=${page}&per_page=${perPage}&sport=${sport}`,
+        `/users?team_id=${teamId}&page=${page}&per_page=${perPage}&username=${username}`,
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -77,12 +77,10 @@ const usersStore = create((set) => ({
         totalUsers: total_items,
         currentPage: page,
         perPage: perPage,
-        selectedSport: sport, // Update selected sport
+        searchedUsername: username,
       });
     } catch (error) {
-      throw new Error(
-        "An unexpected error occurred, please refresh the page or try again later"
-      );
+      throw new Error(error.status);
     }
   },
 }));

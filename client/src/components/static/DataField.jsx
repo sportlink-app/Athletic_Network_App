@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import Text from "../static/Text";
+import Text from "./Text";
 
 const DataField = ({ content, title, icon }) => {
   return (
-    <li>
-      <span className="w-fit flex justify-center items-center gap-[.35rem]">
+    <li className="text-gray-600">
+      <span className=" w-fit flex justify-center items-center gap-[.35rem]">
         {icon}
-        <p className="text-sm text-gray-600 mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+        <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
           {title}
         </p>
       </span>

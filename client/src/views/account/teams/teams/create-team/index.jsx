@@ -9,10 +9,6 @@ function CreateTeam() {
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 
-  const handleSuccess = async () => {
-    setIsModalOpen(false); // Close modal on successful blog creation
-  };
-
   return (
     <>
       <Button
@@ -33,8 +29,9 @@ function CreateTeam() {
         title="Create Team"
         footer={null}
         style={{ borderRadius: "100px", textAlign: "center" }}
+        className="!w-[620px]"
       >
-        <CreateTeamForm onSuccess={handleSuccess} />
+        <CreateTeamForm />
       </Modal>
     </>
   );
