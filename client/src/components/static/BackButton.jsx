@@ -10,7 +10,7 @@ const BackButton = () => {
       size="large"
       onClick={() => navigate(-1)}
       icon={<ArrowLeftOutlined size={16} />}
-      className="absolute top-5 left-2 sm:left-4 hover:!border-green"
+      className="back-btn absolute top-5 left-2 sm:left-4 hover:!border-green"
     >
       Back
     </Button>

@@ -134,7 +134,7 @@ textarea::placeholder,
 }
 
 /* Icon hover */
-.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+.back-btn.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
   @apply text-green bg-white !important;
 }
 

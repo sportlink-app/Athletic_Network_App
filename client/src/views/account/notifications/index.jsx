@@ -1,4 +1,4 @@
-import { Button, Spin } from "antd";
+import { Button, message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -13,11 +13,12 @@ import Footer from "../../../components/static/Footer";
 import notificationStore from "../../../store/notificationStore";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { getNotificationMessage } from "../../../components/static/notificationMessages";
+import teamStore from "../../../store/team/teamStore";
 
 export default function Notifications() {
   const { id } = useParams();
   const { notification, getNotification } = notificationStore();
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -45,18 +46,32 @@ export default function Notifications() {
     city,
     sport,
     sender,
-  } = notification || {}; // Add a fallback to an empty object
+  } = notification || {};
 
   const formattedDate = createdAt
     ? formatDistanceToNow(parseISO(createdAt), { addSuffix: true })
-    : "Date not available"; // Add a check to format date only if createdAt is available
+    : "Date not available";
+
+  const { inviteRespond } = teamStore();
+  const [isDisabled, setDisabled] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const handleInviteRespond = async (action) => {
+    setDisabled(true);
+    try {
+      await inviteRespond(referenceId, action);
+      messageApi.success(`Invite ${action}ed successfully`);
+    } catch (error) {
+      messageApi.error(error.message);
+    }
+  };
 
   return (
     <>
+      {contextHolder}
       <div className="min-h-screen container mx-auto px-4 my-10 ">
         {isLoading ? (
-          <div className="w-full h-full flex justify-center items-center">
-            <Spin size="large" className="green-spin" />
+          <div className="w-full h-[70vh] flex justify-center items-center">
+            <Spin size="large" className="green-spin mx-auto my-20" />
           </div>
         ) : notification ? ( // Check if notification is not null
           <div className="w-full mx-auto p-5 flex flex-col gap-4 lg:gap-5">
@@ -71,6 +86,8 @@ export default function Notifications() {
               {(type === "team_invite" || type === "join_request") && (
                 <div className="flex gap-2 md:gap-4 self-end">
                   <Button
+                    onClick={() => handleInviteRespond("reject")}
+                    disabled={isDisabled}
                     type="primary"
                     shape="round"
                     size="large"
@@ -80,6 +97,8 @@ export default function Notifications() {
                     Reject
                   </Button>
                   <Button
+                    onClick={() => handleInviteRespond("accept")}
+                    disabled={isDisabled}
                     type="primary"
                     shape="round"
                     size="large"

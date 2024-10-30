@@ -295,7 +295,7 @@ function CreateTeamForm() {
         }
         iconPosition="end"
       >
-        Create & Invite Members
+        Next
       </Button>
     </form>
   );

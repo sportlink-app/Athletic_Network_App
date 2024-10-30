@@ -2,7 +2,7 @@ import { Alert, AutoComplete, Button, Input, Spin, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import useSports from "../../../../components/dynamic/SportsNames";
-import { CheckOutlined } from "@ant-design/icons";
+import { SendOutlined } from "@ant-design/icons";
 import blogStore from "../../../../store/blogStore";
 import PropTypes from "prop-types";
 
@@ -185,9 +185,10 @@ function WriteBlogForm({ onSuccess }) {
             isLoading ? (
               <Spin size="small" className="white-spin" />
             ) : (
-              <CheckOutlined size={16} />
+              <SendOutlined size={16} />
             )
           }
+          iconPosition="end"
         >
           Post
         </Button>

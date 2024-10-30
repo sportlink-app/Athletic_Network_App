@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Footer from "../../../../components/static/Footer";
-import { Button, Pagination, Spin, message } from "antd";
+import { Button, Pagination, message } from "antd";
 import UsernameFilter from "./UsernameFilter"; // Updated import
 import UserCard from "./UserCard";
 import usersStore from "../../../../store/user/usersStore";
@@ -28,7 +28,9 @@ export default function Users() {
       await fetchUsers(teamId, pageFromParams, perPage, usernameFromParams);
       setIsDataFetched(true);
     } catch (error) {
-      if (error.message === "403") {
+      if (error.message === "400") {
+        navigate(`/team/${teamId}`);
+      } else if (error.message === "403") {
         navigate("/teams");
       } else {
         messageApi.error(

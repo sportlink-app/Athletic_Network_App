@@ -54,7 +54,6 @@ def create_team(current_user):
     return jsonify({
         "message": "Team created successfully",
         "team_id": team.id,
-        "isCompleted": team.isCompleted
     }), 201
 
 # Retrieve Teams API
@@ -149,7 +148,7 @@ def respond_to_invitation(current_user):
     reference_id = request.args.get('reference_id', type=int)
     if not reference_id:
         return jsonify({"message": "reference_id query parameter is required"}), 400
-    
+
     data = request.get_json()
     action = data.get('action')  # 'accept' or 'reject'
 
@@ -166,45 +165,56 @@ def respond_to_invitation(current_user):
     if invite.user_id != current_user.id:
         return jsonify({"message": "You are not authorized to respond to this invitation."}), 403
 
+    # Check if the team is already completed
+    team = Team.query.get(invite.team_id)
+    if team and team.isCompleted:
+        return jsonify({"message": "The team is already completed. You cannot accept this invitation."}), 401
+
     # Update the status of the invitation
     invite.status = 'accepted' if action == 'accept' else 'rejected'
 
-    # Notify the team owner of the acceptance/rejection
-    notification = Notification(
-        user_id=invite.owner_id,
-        reference_id=invite.id,  # Reference to the TeamInvite
-        type='team_invite_response'
-    )
-    db.session.add(notification)
+    # Delete any notification associated with the invitation
+    notification = Notification.query.filter_by(reference_id=invite.id, type='team_invite').first()
+    if notification:
+        db.session.delete(notification)
 
-    # Call the notify function from utils
-    notify_new_notification(invite.owner_id, socketio, connected_users)
-    
+    # If the action is 'accept', add the user to the team members and notify the team owner
+    if action == 'accept' and team:
+        # Add the current user to team members
+        team.members.append(current_user)
+
+        # Send notification to the team owner about the acceptance
+        owner_notification = Notification(
+            user_id=invite.owner_id,  # Owner of the team
+            reference_id=invite.id,
+            type='team_invite_response'
+        )
+        db.session.add(owner_notification)
+
+        # Notify the owner if they are connected
+        notify_new_notification(invite.owner_id, socketio, connected_users)
+
+        # Count actual members in the team_members table
+        actual_member_count = db.session.query(team_members).filter_by(team_id=team.id).count()
+
+        # Check if the actual member count meets the required members_count
+        if actual_member_count >= team.members_count:
+            # Mark the team as completed
+            team.isCompleted = True
+
+            # Send a "team_completion" notification to all team members
+            for member in team.members:
+                completion_notification = Notification(
+                    user_id=member.id,
+                    reference_id=team.id,
+                    type='team_completion'
+                )
+                db.session.add(completion_notification)
+
+                # Notify connected users
+                notify_new_notification(member.id, socketio, connected_users)
+
     # Commit changes
     db.session.commit()
-
-    if action == 'accept':
-        # Add the user to the team members
-        team = Team.query.get(invite.team_id)
-        if team:
-            # Add the current user to the team members
-            team.members.append(current_user)  # Assuming current_user is an instance of the Myusers model
-            team.members_count += 1  # Update the count of members
-            
-            # Check if the team is complete
-            expected_team_size = team.members_count  # This should be the maximum size of the team
-            if team.members_count == expected_team_size:  
-                team.isCompleted = True
-
-                # Notify all team members
-                for member in team.members:
-                    member_notification = Notification(
-                        user_id=member.id,
-                        reference_id=team.id,
-                        type='team_completed'
-                    )
-                    db.session.add(member_notification)
-
-            db.session.commit()  # Commit changes after adding the member and checking completion status
 
     return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200

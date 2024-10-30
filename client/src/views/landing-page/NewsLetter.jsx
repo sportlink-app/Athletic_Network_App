@@ -92,7 +92,7 @@ export default function Newsletter({
                   size="large"
                   onClick={handleSubscribe}
                   disabled={isButtonDisabled}
-                  className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 duration-300 disabled:!text-slate-100"
+                  className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 duration-300 disabled:!text-slate-100 w-fit"
                   icon={
                     isLoading ? (
                       <Spin size="small" className="white-spin" />

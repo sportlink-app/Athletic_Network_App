@@ -1,6 +1,6 @@
 import Text from "../../components/static/Text";
 import Star from "../../components/static/Star";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, QuestionOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Avatar, Button, Tag } from "antd";
 import { useEffect } from "react";
@@ -31,7 +31,7 @@ export default function Header() {
   const basketballIcon = (color) => (
     <svg
       style={{ animationDelay: "5s" }}
-      className="opacity-80 sm:opacity-100 absolute bottom-60 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16 animate-bounce"
+      className="opacity-80 sm:opacity-100 absolute bottom-56 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16 animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
     >
@@ -64,7 +64,7 @@ export default function Header() {
   );
   const bottleIcon = (color) => (
     <svg
-      className="opacity-80 sm:opacity-100 absolute bottom-72 left-[10%] lg:left-[20%] w-6  blur-[1.2px] animate-bounce"
+      className="opacity-80 sm:opacity-100 absolute bottom-64 left-[10%] lg:left-[20%] w-6 blur-[1.2px] animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 47.19 100"
     >
@@ -117,7 +117,7 @@ export default function Header() {
   const dumbellBallIcon = (color) => (
     <svg
       style={{ animationDelay: "1s" }}
-      className="absolute bottom-72 lg:bottom-72 right-[10%] lg:right-[20%] w-8 md:w-14  animate-bounce"
+      className="absolute bottom-64 right-[10%] lg:right-[20%] w-8 md:w-14  animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 66.7 100"
     >
@@ -147,7 +147,7 @@ export default function Header() {
   const dumbellIcon = (color) => (
     <svg
       style={{ animationDelay: "3s" }}
-      className="sm:opacity-100 absolute bottom-60 md:bottom-64 lg:bottom-52 right-[30%] lg:right-[35%] w-[4.5rem]  blur-[1px] animate-bounce"
+      className="sm:opacity-100 absolute bottom-56 md:bottom-60 lg:bottom-52 right-[30%] lg:right-[35%] w-[4.5rem]  blur-[1px] animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 53.83"
     >
@@ -293,18 +293,32 @@ export default function Header() {
           />
         </article>
       </div>
-      <Link to="/sign-up">
-        <Button
-          type="primary"
-          shape="round"
-          size="large"
-          icon={<ArrowRightOutlined />}
-          iconPosition="end"
-          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
-        >
-          Get Started
-        </Button>
-      </Link>
+      <div className="flex gap-4 sm:gap-6">
+        <Link to="/how-it-works">
+          <Button
+            type="default"
+            shape="round"
+            size="large"
+            icon={<QuestionOutlined />}
+            iconPosition="end"
+            className="font-semibold !bg-transparent border-[1.3px] !border-cyan !text-cyan hover:!text-cyan hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
+          >
+            How It Works
+          </Button>
+        </Link>
+        <Link to="/sign-up">
+          <Button
+            type="primary"
+            shape="round"
+            size="large"
+            icon={<ArrowRightOutlined />}
+            iconPosition="end"
+            className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
+          >
+            Get Started
+          </Button>
+        </Link>
+      </div>
     </>
   );
 
@@ -316,7 +330,7 @@ export default function Header() {
   ];
 
   const stats = (
-    <dl className="mt-28 grid gap-8 grid-cols-2 lg:grid-cols-4 text-center">
+    <dl className="mt-32 grid gap-8 grid-cols-2 lg:grid-cols-4 text-center">
       {statsList.map((stat) => (
         <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
           <dt className="text-base lg:text-lg leading-7 text-gray-500">
@@ -331,7 +345,7 @@ export default function Header() {
   );
 
   return (
-    <div className="relative isolate pt-32 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
+    <div className="relative isolate pt-28 pb-12 md:pb-16 lg:pb-20 flex overflow-hidden">
       <span className="absolute w-full h-4/5 top-0 left-0 bg-gradient-to-r from-cyan to-green"></span>
 
       <span

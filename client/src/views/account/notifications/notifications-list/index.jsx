@@ -14,6 +14,7 @@ export default function NotificationsList({ hide }) {
           id={notification.id}
           isVisited={notification.is_visited}
           type={notification.type}
+          isTeamCompleted={notification.is_team_completed}
           teamName={notification.team_name}
           createdAt={notification.created_at}
           sender={notification.sender}

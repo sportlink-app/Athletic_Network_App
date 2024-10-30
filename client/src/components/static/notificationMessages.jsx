@@ -12,7 +12,13 @@ export const notificationMessages = {
 
 export const getNotificationMessage = (type, sender, teamName) => {
   const messageFunction = notificationMessages[type];
-  return messageFunction
-    ? messageFunction(sender, teamName)
-    : "You have a new notification";
+
+  if (messageFunction) {
+    // Check if the message function expects only one argument (teamName only)
+    return messageFunction.length === 1
+      ? messageFunction(teamName)
+      : messageFunction(sender, teamName);
+  }
+
+  return "You have a new notification";
 };

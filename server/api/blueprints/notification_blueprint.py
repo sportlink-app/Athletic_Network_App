@@ -50,7 +50,8 @@ def get_all_notifications(current_user):
                         "sender": {
                             "username": sender.username,
                             "gender": sender.gender
-                        }
+                        },
+                        "is_team_completed": team.isCompleted
                     })
         
         elif notification.type == 'team_invite_response':
@@ -82,6 +83,7 @@ def get_all_notifications(current_user):
                     })
 
         elif notification.type == 'team_completion':
+
             team = Team.query.filter_by(id=notification.reference_id).first()
             if team:
                 notification_data.update({
@@ -117,7 +119,6 @@ def mark_notifications_as_read(current_user):
         return jsonify({"message": "Notifications marked as read"}), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
-
 
 # Delete Notification API
 @notification_blueprint.route('/notification/<int:notification_id>', methods=['DELETE'])

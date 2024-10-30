@@ -3,9 +3,10 @@ import {
   CloseOutlined,
   CheckOutlined,
   DeleteOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { Button, message, Tooltip } from "antd";
+import { Button, message, Tag, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import notificationStore from "../../../../store/notificationStore";
@@ -17,6 +18,7 @@ export default function NotificationCard({
   id,
   isVisited,
   type,
+  isTeamCompleted,
   referenceId,
   createdAt,
   teamName,
@@ -52,7 +54,15 @@ export default function NotificationCard({
       await inviteRespond(referenceId, action);
       messageApi.success(`Invite ${action}ed successfully`);
     } catch (error) {
-      messageApi.error(error.message);
+      if (error.message === "401") {
+        messageApi.warning(
+          "The team is already completed. You cannot accept this invitation."
+        );
+      } else {
+        messageApi.error(
+          "Failed to respond to invitation, please refresh the page or try again later"
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -61,10 +71,13 @@ export default function NotificationCard({
   return (
     <>
       {contextHolder}
-      <Link to={`/notification/${id}`} onClick={hide}>
+      <Link
+        to={type === "team_completion" ? `/team/${id}` : `/notification/${id}`}
+        onClick={hide}
+      >
         <Card
           className={`${
-            !isVisited ? "!bg-green/10 hover:!bg-green/5 !border-green" : ""
+            !isVisited ? "!bg-green/5 hover:!bg-green/10 !border-green" : ""
           }  border-transparent rounded-2xl p-5 flex gap-5 justify-between hover:bg-slate-50 hover:scale-[1.02] !border-gray-300 hover:shadow-lg duration-500 cursor-pointer`}
         >
           <div className="flex flex-col justify-between">
@@ -82,7 +95,8 @@ export default function NotificationCard({
               icon={<DeleteOutlined />}
               onClick={handleNotificationDelete}
             />
-            {(type === "team_invite" || type === "join_request") && (
+            {((!isTeamCompleted && type === "team_invite") ||
+              type === "join_request") && (
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button
@@ -106,6 +120,16 @@ export default function NotificationCard({
                 </Tooltip>
               </div>
             )}
+            {type === "team_invite" && isTeamCompleted && (
+              <Tag
+                bordered={false}
+                color="warning"
+                className="py-1 px-2 rounded-full"
+                icon={<ExclamationCircleOutlined />}
+              >
+                Team is completed
+              </Tag>
+            )}
           </div>
         </Card>
       </Link>
@@ -117,6 +141,7 @@ NotificationCard.propTypes = {
   id: PropTypes.number.isRequired,
   isVisited: PropTypes.bool,
   type: PropTypes.string.isRequired,
+  isTeamCompleted: PropTypes.bool,
   referenceId: PropTypes.number,
   createdAt: PropTypes.string.isRequired,
   teamName: PropTypes.string,

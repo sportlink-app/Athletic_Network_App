@@ -291,6 +291,10 @@ def get_all_users(current_user):
             if not team:
                 return jsonify({"message": "Team not found or you are not the team owner"}), 403
             
+            # Check if the team is completed
+            if team.isCompleted:
+                return jsonify({"message": "The team is already completed"}), 400
+            
             # Populate team members and invites
             team_members = {member.id for member in team.members}
             team_invites = {invite.user_id for invite in TeamInvite.query.filter_by(team_id=team_id).all()}

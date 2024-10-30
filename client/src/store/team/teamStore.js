@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import authStore from "../user/authStore";
+import notificationStore from "../notificationStore";
 
 const teamStore = create(() => ({
   teamInvite: async (teamId, userId) => {
@@ -37,11 +38,10 @@ const teamStore = create(() => ({
           },
         }
       );
+      // Refresh notifications after responding
+      await notificationStore.getState().getNotifications();
     } catch (error) {
-      console.log(error);
-      throw new Error(
-        "Failed to respond to invitation, please try again later"
-      );
+      throw new Error(error.status);
     }
   },
 }));
