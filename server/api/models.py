@@ -85,7 +85,7 @@ class Team(db.Model):
     sport_id = db.Column(db.Integer, db.ForeignKey('sports.id'), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(500))
-    date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     members_count = db.Column(db.Integer, default=0)
     isCompleted = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

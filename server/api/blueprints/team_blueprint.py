@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import db, Myusers, Team, team_members, TeamInvite, Notification
 from .user_blueprint import token_required
 from sqlalchemy import func
-from ..utils.notification_utils import notify_new_notification 
+from ..utils.notification_utils import notify_new_notification
 from ..utils.socketio import socketio, connected_users
 
 team_blueprint = Blueprint('team_blueprint', __name__)
@@ -42,7 +42,7 @@ def create_team(current_user):
         members_count=members_count,  
         owner_id=current_user.id
     )
-    
+
     db.session.add(team)
     db.session.commit()
 
@@ -58,33 +58,70 @@ def create_team(current_user):
 
 # Retrieve Teams API
 @team_blueprint.route('/teams', methods=['GET'])
-@token_required()
+@token_required()  # Ensure the current user is authenticated
 def get_teams(current_user):
-    # Query to get teams that are not owned by the current user and have more than 2 members
-    teams = (
-        db.session.query(Team)
-        .outerjoin(Team.members)  # Use outer join to include teams without members
-        .filter(Team.owner_id != current_user.id)  # Exclude teams owned by the current user
-        .filter(Team.isCompleted == False)  # Exclude completed teams
-        .group_by(Team.id)  # Group by team ID to aggregate member count
-        .having(func.count(Myusers.id) >= 1)  # Count of members (users) must be greater than 2
-        .options(db.joinedload(Team.members))  # Eager load members
-        .all()
-    )
-
-    # Prepare the response
-    result = []
-    for team in teams:
-        result.append({
+    # Get pagination parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 9, type=int)
+    
+    # Get filtering parameters
+    sport_name = request.args.get('sport')  # Assume sport name is passed as a query parameter
+    current_city = current_user.city  # Assuming current_user has a 'city' attribute
+    
+    # Query for teams that are not completed and in the same city
+    teams_query = Team.query.filter_by(isCompleted=False, city=current_city)
+    
+    # Filter by sport if provided
+    if sport_name:
+        teams_query = teams_query.filter(Team.sport.has(name=sport_name))
+    
+    # Sort by date or members count
+    sort_by = request.args.get('sort_by', 'date')  # Default to sorting by date
+    if sort_by == 'members_count':
+        teams_query = teams_query.order_by(Team.members_count)
+    else:
+        teams_query = teams_query.order_by(Team.date)  # Default sorting by date
+    
+    # Apply pagination
+    paginated_teams = teams_query.paginate(page=page, per_page=per_page, error_out=False)
+    
+    # Build the response data
+    teams_data = []
+    for team in paginated_teams.items:
+        # Prepare members list with required fields
+        members_data = [
+            {"username": member.username, "gender": member.gender}
+            for member in team.members
+        ]
+        
+        # Calculate the remaining members to complete the team
+        required_members = team.members_count - len(members_data)
+        
+        # Prepare team data with ownership flag for the current user
+        team_data = {
             "id": team.id,
             "name": team.name,
-            "sport": team.sport.name,
-            "city": team.city,
+            "description": team.description,
+            "members": members_data,
+            "rest": required_members,
             "date": team.date,
-            "members": [{"username": member.username, "gender": member.gender} for member in team.members]
-        })
-
-    return jsonify(result), 200
+            "city": team.city,
+            "sport": team.sport.name,
+            "isOwner": current_user.id == team.owner_id
+        }
+        
+        teams_data.append(team_data)
+    
+    # Create the paginated response
+    response = {
+        "teams": teams_data,
+        "page": paginated_teams.page,
+        "per_page": paginated_teams.per_page,
+        "total_pages": paginated_teams.pages,
+        "total_teams": paginated_teams.total,
+    }
+    
+    return jsonify(response), 200
 
 # Invite Member API
 @team_blueprint.route('/team/invite', methods=['POST'])

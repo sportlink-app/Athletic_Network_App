@@ -16,7 +16,7 @@ function CreateTeam() {
         type="primary"
         shape="round"
         size="large"
-        className="!bg-cyan hover:!bg-cyan hover:brightness-105"
+        className="!bg-cyan hover:!bg-cyan hover:brightness-105 w-fit"
         icon={<UsergroupAddOutlined size={16} />}
         iconPosition="start"
       >

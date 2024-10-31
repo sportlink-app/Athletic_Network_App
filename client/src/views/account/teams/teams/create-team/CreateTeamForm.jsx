@@ -145,7 +145,7 @@ function CreateTeamForm() {
           setSelectedSport(text);
           handleSportSearch(text); // Update options based on input
         }}
-        placeholder="Type to search for a sport"
+        placeholder="Type and select a sport"
         size="large"
       />
       {errors.sportError && (

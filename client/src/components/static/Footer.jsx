@@ -49,7 +49,7 @@ function Footer() {
 
       <div className="flex justify-center items-center gap-4 order-first lg:order-none">
         <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
-        <span className="text-white text-lg lg:text-xl font-semibold">
+        <span className="text-white text-base lg:text-lg font-semibold">
           by Seifeddine AAZA
         </span>
       </div>

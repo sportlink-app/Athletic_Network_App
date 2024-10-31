@@ -151,6 +151,7 @@ const createTeamStore = create((set, get) => ({
         }
       );
       set({ teamId: response.data.team_id });
+      console.log(date);
 
       get().clearFields();
     } catch (error) {

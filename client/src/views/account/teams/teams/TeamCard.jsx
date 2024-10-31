@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { Avatar, Button, Tag } from "antd";
 import { Link } from "react-router-dom";
 
-function TeamCard({ name, description, sports, members, rest, city, date }) {
+function TeamCard({ name, description, sport, members, rest, city, date }) {
   const avatarGroupRandomColor = getRandomColor(name);
   const avatarGroupColor = darkenColor(avatarGroupRandomColor, 30);
   const avatarGroupBgColor = lightenColor(avatarGroupRandomColor, 5);
@@ -33,7 +33,7 @@ function TeamCard({ name, description, sports, members, rest, city, date }) {
         <h3 className="text-base xl:text-lg font-medium text-gray-900 capitalize">
           {name}
         </h3>
-        <Tags list={sports} />
+        <Tags list={[sport]} />
       </div>
       <p className="text-sm text-gray-600">{description}</p>
 
@@ -109,7 +109,7 @@ TeamCard.propTypes = {
   date: PropTypes.string,
   members: PropTypes.array,
   rest: PropTypes.number,
-  sports: PropTypes.arrayOf(PropTypes.string),
+  sport: PropTypes.arrayOf(PropTypes.string),
   key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

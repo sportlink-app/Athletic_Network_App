@@ -117,7 +117,7 @@ function WriteBlogForm({ onSuccess }) {
         onSearch={handleSearch}
         onSelect={handleSportSelect}
         onChange={handleSportInputChange} // Updated to handle input change
-        placeholder="Type to search for a sport"
+        placeholder="Type and select a sport"
         size="large"
         className="w-44 text-left"
       />
