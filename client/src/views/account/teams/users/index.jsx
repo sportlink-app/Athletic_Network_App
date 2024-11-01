@@ -11,15 +11,15 @@ import { CheckOutlined } from "@ant-design/icons";
 export default function Users() {
   const { users, totalUsers, currentPage, perPage, fetchUsers } = usersStore();
 
+  const { teamId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromParams = Number(searchParams.get("page")) || currentPage;
+  const usernameFromParams = searchParams.get("username") || "";
+
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [invitedUsers, setInvitedUsers] = useState(new Set()); // State to track invited users
-
-  const { teamId } = useParams();
-  const pageFromParams = Number(searchParams.get("page")) || currentPage;
-  const usernameFromParams = searchParams.get("username") || "";
+  const [invitedUsers, setInvitedUsers] = useState(new Set());
 
   const navigate = useNavigate();
   const fetchUsersData = useCallback(async () => {
@@ -54,7 +54,6 @@ export default function Users() {
     fetchUsersData();
   }, [fetchUsersData]);
 
-  // Smoothly scroll to top of the page
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -130,7 +129,7 @@ export default function Users() {
             pageSize={perPage}
             total={totalUsers}
             onChange={handlePageChange}
-            className="mt-6 mx-auto w-fit"
+            className="mt-10 mx-auto w-fit"
           />
         )}
       </section>

@@ -1,85 +1,134 @@
-import { AutoComplete, FloatButton, Select } from "antd";
+import { FloatButton, message, Pagination } from "antd";
 import Footer from "../../../../components/static/Footer";
 import CreateTeam from "./create-team";
 import TeamCard from "./TeamCard";
-import useSports from "../../../../components/dynamic/SportsNames";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import teamStore from "../../../../store/team/teamStore";
+import SportFilter from "./filters/SportFilter";
+import SortByFilter from "./filters/SortByFilter";
+import EmptyData from "../../../../components/static/EmptyData";
 
 function Teams() {
-  // const teamsList = teams.length > 0 && (
-  //   <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-  //     {teams.map((team, index) => (
-  //       <TeamCard />
-  //     ))}
-  //   </div>
-  // );
+  const {
+    teams,
+    totalTeams,
+    currentPage,
+    perPage,
+    fetchTeams,
+    setSportFilter,
+  } = teamStore();
 
-  const sports = useSports();
-  const [options, setOptions] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromParams = Number(searchParams.get("page")) || currentPage;
+  const sportFromParams = searchParams.get("sport") || "";
+  const [sortBy, setSortBy] = useState("date");
 
-  const sportSelect = (
-    <AutoComplete
-      options={options}
-      placeholder="Type and select a sport"
-      size="large"
-      className="w-40 sm:w-44"
-    />
+  const [isLoading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isDataFetched, setIsDataFetched] = useState(false);
+
+  const navigate = useNavigate();
+
+  const fetchTeamsData = useCallback(async () => {
+    setLoading(true);
+    try {
+      await fetchTeams(pageFromParams, perPage, sportFromParams, sortBy);
+      setIsDataFetched(true);
+    } catch (error) {
+      if (error.message === "400") {
+        navigate(`/`);
+      } else if (error.message === "403") {
+        navigate("/login");
+      } else {
+        messageApi.error(
+          "An unexpected error occurred, please refresh the page or try again later"
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [
+    pageFromParams,
+    perPage,
+    sportFromParams,
+    sortBy,
+    fetchTeams,
+    messageApi,
+    navigate,
+  ]);
+
+  useEffect(() => {
+    fetchTeamsData();
+  }, [fetchTeamsData]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handlePageChange = (page) => {
+    setSearchParams({ page, sport: sportFromParams });
+    scrollToTop();
+  };
+
+  const handleSortChange = (sortValue) => {
+    setSortBy(sortValue);
+    setSearchParams({ page: 1, sport: sportFromParams, sort_by: sortValue });
+  };
+
+  const handleSportChange = (sport) => {
+    setSearchParams({ page: 1, sport, sort_by: sortBy });
+    setSportFilter(sport); // Update sport filter in store
+  };
+
+  const teamsList = teams.length > 0 && (
+    <div className="mt-6 grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {teams.map((team, index) => (
+        <TeamCard
+          key={index}
+          name={team.name}
+          description={team.description}
+          members={team.members}
+          rest={team.rest}
+          date={team.date}
+          city={team.city}
+          sport={team.sport}
+          isMember={team.isMember}
+        />
+      ))}
+    </div>
   );
 
-  const sortBy = (
-    <Select
-      placeholder="Sort By"
-      options={[
-        { value: "members_count", label: "Sort by members" },
-        { value: "date", label: "Sort by date" },
-      ]}
-      size="large"
-      className="main-select w-36 sm:w-40 !text-xs"
-    />
-  );
   return (
     <>
-      {/* {contextHolder} */}
+      {contextHolder}
       <section className="min-h-screen container mx-auto px-4 my-10">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <CreateTeam />
           <div className="self-end flex gap-4">
-            {sportSelect}
-            {sortBy}
+            <SportFilter onSportChange={handleSportChange} />
+            <SortByFilter onSortChange={handleSortChange} />
           </div>
         </div>
-        <div className="mt-6 grid gap-x-6 gap-y-4 md:gap-y-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          <TeamCard
-            name="Best team"
-            description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid, adnesciunt! Reprehenderit accusamus neque voluptatibus.
-            "
-            members={[
-              { username: "sako", gender: "male" },
-              { username: "saalako", gender: "female" },
-              { username: "saaako", gender: "female" },
-              { username: "saaako", gender: "male" },
-            ]}
-            rest={2}
-            date="2024-10-01 00:00:00"
-            city="casablanca"
-            sport="tennis"
-          />
-        </div>
-        {/* {isLoading && <Spin size="small" className="white-spin" />}
-        {!isLoading && isDataFetched && users.length === 0 ? (
-          <EmptyData text="No users Found!" />
+
+        {!isLoading && isDataFetched && teams.length === 0 ? (
+          <EmptyData text="No teams found!" />
         ) : (
-          usersList
+          teamsList
         )}
-        {users.length > 0 && (
+
+        {teams.length > 0 && (
           <Pagination
             current={pageFromParams}
             pageSize={perPage}
-            total={totalUsers}
+            total={totalTeams}
             onChange={handlePageChange}
-            className="mt-6 mx-auto w-fit"
+            className="mt-10 mx-auto w-fit"
           />
-        )} */}
+        )}
       </section>
       <Footer />
       <FloatButton.BackTop duration={100} />

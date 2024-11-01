@@ -97,7 +97,10 @@ def get_teams(current_user):
         # Calculate the remaining members to complete the team
         required_members = team.members_count - len(members_data)
         
-        # Prepare team data with ownership flag for the current user
+        # Check if the current user is a member or the owner of the team
+        is_member = any(member.id == current_user.id for member in team.members)
+        
+        # Prepare team data with isMember flag for the current user
         team_data = {
             "id": team.id,
             "name": team.name,
@@ -107,7 +110,7 @@ def get_teams(current_user):
             "date": team.date,
             "city": team.city,
             "sport": team.sport.name,
-            "isOwner": current_user.id == team.owner_id
+            "isMember": is_member
         }
         
         teams_data.append(team_data)

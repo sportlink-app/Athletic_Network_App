@@ -11,11 +11,20 @@ import {
   EnvironmentOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import { Avatar, Button, Tag } from "antd";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function TeamCard({ name, description, sport, members, rest, city, date }) {
+export default function TeamCard({
+  name,
+  description,
+  sport,
+  members,
+  rest,
+  city,
+  date,
+  isMember,
+}) {
   const avatarGroupRandomColor = getRandomColor(name);
   const avatarGroupColor = darkenColor(avatarGroupRandomColor, 30);
   const avatarGroupBgColor = lightenColor(avatarGroupRandomColor, 5);
@@ -28,7 +37,7 @@ function TeamCard({ name, description, sport, members, rest, city, date }) {
   };
 
   return (
-    <Card className="h-full rounded-2xl p-5 flex flex-col gap-4">
+    <Card className="h-full rounded-2xl p-5 flex flex-col gap-5">
       <div className="w-full flex justify-between">
         <h3 className="text-base xl:text-lg font-medium text-gray-900 capitalize">
           {name}
@@ -49,7 +58,7 @@ function TeamCard({ name, description, sport, members, rest, city, date }) {
         }}
       >
         {members.map((member) => (
-          <Link to={`/explore/${member.username}`} key={member.username}>
+          <Link to={`/user/${member.username}`} key={member.username}>
             <ProfileAvatar
               username={member.username}
               gender={member.gender}
@@ -68,11 +77,11 @@ function TeamCard({ name, description, sport, members, rest, city, date }) {
         -{rest} <span className="ml-1">Members</span>
       </Tag>
 
-      <div className="flex justify-between items-end gap-4 ">
-        <div className="flex flex-col items-start gap-1 ">
+      <div className="flex md:flex-col xl:flex-row justify-between  gap-4 ">
+        <div className="flex flex-col  items-start gap-[.35rem]">
           <span className="flex justify-center items-center gap-1 md:gap-2 text-gray-500">
             <CalendarOutlined className="text-sm" />
-            <p className="text-xs sm:text-sm ">
+            <p className="text-xs">
               {new Date(date).toLocaleString(undefined, {
                 year: "numeric",
                 month: "long",
@@ -84,18 +93,19 @@ function TeamCard({ name, description, sport, members, rest, city, date }) {
           </span>
           <span className="flex justify-center items-center gap-1 md:gap-2 text-gray-500">
             <EnvironmentOutlined className="text-sm" />
-            <p className="text-xs sm:text-sm  capitalize">{city}</p>
+            <p className="text-xs capitalize">{city}</p>
           </span>
         </div>
         <Button
+          disabled={isMember}
           onClick={handleInviteClick}
           type="primary"
           shape="round"
           size="large"
-          className="!bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
+          className="w-fit self-end !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
           icon={<UserAddOutlined size={16} />}
         >
-          Join
+          {isMember ? "Member" : "Join"}
         </Button>
       </div>
     </Card>
@@ -103,6 +113,7 @@ function TeamCard({ name, description, sport, members, rest, city, date }) {
 }
 
 TeamCard.propTypes = {
+  key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   name: PropTypes.string,
   description: PropTypes.string,
   city: PropTypes.string,
@@ -110,7 +121,5 @@ TeamCard.propTypes = {
   members: PropTypes.array,
   rest: PropTypes.number,
   sport: PropTypes.arrayOf(PropTypes.string),
-  key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isMember: PropTypes.bool,
 };
-
-export default TeamCard;
