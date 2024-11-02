@@ -18,8 +18,8 @@ export default function SportFilter({ onSportChange }) {
     if (text) {
       setOptions(getPanelValue(text));
     } else {
-      // Clear options when input is empty
-      setOptions([]);
+      // Show all options when input is empty
+      setOptions(sports.map((sport) => ({ value: sport.name })));
       onSportChange(""); // Clear the sport filter when input is empty
     }
   };
@@ -33,11 +33,19 @@ export default function SportFilter({ onSportChange }) {
     onSportChange(""); // Clear the sport filter when the input is cleared
   };
 
+  const handleFocus = () => {
+    // Show all sports when input is focused and empty
+    if (!options.length) {
+      setOptions(sports.map((sport) => ({ value: sport.name })));
+    }
+  };
+
   return (
     <AutoComplete
       options={options}
       onSearch={handleSearch}
       onSelect={handleSelect}
+      onFocus={handleFocus}
       placeholder="Type and select a sport"
       size="large"
       className="w-40 sm:w-44"

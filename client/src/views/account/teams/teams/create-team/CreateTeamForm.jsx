@@ -62,69 +62,46 @@ function CreateTeamForm() {
 
   const sports = useSports();
   const [options, setOptions] = useState([]);
-
   const handleSportSearch = (text) => {
-    setSelectedSport(text); // Update the selected sport text
     if (text) {
       const filteredOptions = sports
         .filter((sport) =>
           sport.name.toLowerCase().includes(text.toLowerCase())
         )
         .map((sport) => ({
-          value: sport.name, // Display the sport's name in the dropdown
-          id: sport.id, // Attach the sport's ID to the option
+          value: sport.name,
+          id: sport.id,
         }));
 
       setOptions(filteredOptions);
 
-      // Check if typed text exactly matches any sport
       const exactMatch = filteredOptions.find(
         (option) => option.value.toLowerCase() === text.toLowerCase()
       );
 
       if (exactMatch) {
-        // If there's an exact match, set the sportId automatically
         setTeamForm({ ...teamForm, sportId: exactMatch.id });
-        createTeamStore.setState({
-          errors: {
-            ...errors,
-            sportError: "",
-          },
-        });
-      } else if (filteredOptions.length === 0) {
-        setTeamForm({ ...teamForm, sportId: "" }); // Clear sportId if no valid options
+        createTeamStore.setState({ errors: { ...errors, sportError: "" } });
+      } else {
+        setTeamForm({ ...teamForm, sportId: "" });
         createTeamStore.setState({
           errors: {
             ...errors,
             sportError: "Please select a valid sport from the list.",
           },
         });
-      } else {
-        createTeamStore.setState({
-          errors: {
-            ...errors,
-            sportError: "",
-          },
-        });
       }
     } else {
       setOptions([]);
-      setTeamForm({ ...teamForm, sportId: "" }); // Clear sportId when input is empty
-      createTeamStore.setState({
-        errors: {
-          ...errors,
-          sportError: "", // Clear the error when input is empty
-        },
-      });
+      setTeamForm({ ...teamForm, sportId: "" });
+      createTeamStore.setState({ errors: { ...errors, sportError: "" } });
     }
   };
 
   const handleSportSelect = (value, option) => {
-    setSelectedSport(value); // Set selected sport name for display
-    setTeamForm({ ...teamForm, sportId: option.id }); // Update form with selected sport ID
-    setOptions([]); // Clear options after selection
-
-    // Clear sport error when a valid option is selected
+    setSelectedSport(value);
+    setTeamForm({ ...teamForm, sportId: option.id });
+    setOptions([]);
     createTeamStore.setState((state) => ({
       errors: {
         ...state.errors,
@@ -133,17 +110,23 @@ function CreateTeamForm() {
     }));
   };
 
+  const handleFocus = () => {
+    // Display all sports when input is focused
+    setOptions(sports.map((sport) => ({ value: sport.name, id: sport.id })));
+  };
+
   const sportSelect = (
     <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Sport</label>
       <AutoComplete
         options={options}
-        value={selectedSport} // Ensure the selected sport name is displayed
-        onSearch={handleSportSearch} // Update the text being typed
+        value={selectedSport}
+        onFocus={handleFocus} // Open options on focus
+        onSearch={handleSportSearch}
         onSelect={handleSportSelect}
         onChange={(text) => {
           setSelectedSport(text);
-          handleSportSearch(text); // Update options based on input
+          handleSportSearch(text);
         }}
         placeholder="Type and select a sport"
         size="large"

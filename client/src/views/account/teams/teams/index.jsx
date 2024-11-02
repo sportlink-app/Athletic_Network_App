@@ -89,6 +89,7 @@ function Teams() {
       {teams.map((team, index) => (
         <TeamCard
           key={index}
+          teamId={team.id}
           name={team.name}
           description={team.description}
           members={team.members}

@@ -54,56 +54,49 @@ function WriteBlogForm({ onSuccess }) {
     </li>
   );
 
-  const handleSportClear = () => {
-    setBlogForm({ sportId: "" });
-    setSelectedSport("");
-    setSportError(""); // Clear sport error when cleared
-  };
-
   const sports = useSports();
-  const getPanelValue = (searchText) =>
-    sports
-      .filter((sport) =>
-        sport.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-      .map((sport) => ({ value: sport.name, id: sport.id }));
-
   const [options, setOptions] = useState([]);
-  const handleSearch = (text) => {
-    setOptions(getPanelValue(text));
+
+  const handleSportSearch = (text) => {
+    if (text) {
+      const filteredOptions = sports
+        .filter((sport) =>
+          sport.name.toLowerCase().includes(text.toLowerCase())
+        )
+        .map((sport) => ({
+          value: sport.name,
+          id: sport.id,
+        }));
+
+      setOptions(filteredOptions);
+
+      const exactMatch = filteredOptions.find(
+        (option) => option.value.toLowerCase() === text.toLowerCase()
+      );
+
+      if (exactMatch) {
+        setBlogForm({ sportId: exactMatch.id });
+        setSportError("");
+      } else {
+        setBlogForm({ sportId: "" });
+        setSportError("Please select a valid sport from the list.");
+      }
+    } else {
+      setOptions([]);
+      setBlogForm({ sportId: "" });
+      setSportError("");
+    }
   };
 
   const handleSportSelect = (value, option) => {
-    setBlogForm({ sportId: option.id });
     setSelectedSport(value);
-    setSportError(""); // Clear error on valid selection
+    setBlogForm({ sportId: option.id });
+    setOptions([]);
+    setSportError("");
   };
 
-  const handleSportInputChange = (text) => {
-    setSelectedSport(text);
-
-    if (text === "") {
-      handleSportClear(); // Clear the sport when input is empty
-    } else {
-      // Check if there is any sport that matches the typed text (partially or fully)
-      const matchingSports = sports.filter((sport) =>
-        sport.name.toLowerCase().startsWith(text.toLowerCase())
-      );
-
-      if (matchingSports.length === 0) {
-        // If no sports match the typed text, show an error
-        setSportError("Please select a valid sport from the list.");
-        setBlogForm({ sportId: "" }); // Clear sportId if input is invalid
-      } else {
-        // If there is a valid match, clear the error
-        setSportError("");
-        // Optionally, you could set the sportId if there is an exact match
-        const exactMatch = matchingSports.find(
-          (sport) => sport.name.toLowerCase() === text.toLowerCase()
-        );
-        setBlogForm({ sportId: exactMatch ? exactMatch.id : "" });
-      }
-    }
+  const handleFocus = () => {
+    setOptions(sports.map((sport) => ({ value: sport.name, id: sport.id })));
   };
 
   const sportSelect = (
@@ -114,14 +107,17 @@ function WriteBlogForm({ onSuccess }) {
       <AutoComplete
         options={options}
         value={selectedSport}
-        onSearch={handleSearch}
+        onSearch={handleSportSearch}
         onSelect={handleSportSelect}
-        onChange={handleSportInputChange} // Updated to handle input change
+        onFocus={handleFocus}
+        onChange={(text) => {
+          setSelectedSport(text);
+          handleSportSearch(text);
+        }}
         placeholder="Type and select a sport"
         size="large"
         className="w-44 text-left"
       />
-
       {sportError && (
         <p className="text-sm text-red-500 !leading-5 mt-1 max-w-[11rem]">
           {sportError}

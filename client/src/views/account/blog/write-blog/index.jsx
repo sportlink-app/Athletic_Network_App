@@ -5,11 +5,15 @@ import WriteBlogForm from "./WriteBlogForm";
 import blogStore from "../../../../store/blogStore";
 
 function WriteBlog() {
-  const { getBlogs } = blogStore(); // Destructure getBlogs from the blog store
+  const { getBlogs, clearFields } = blogStore(); // Destructure getBlogs and clearFields from the blog store
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
+
+  const handleCancel = () => {
+    clearFields(); // Clear form fields
+    setIsModalOpen(false); // Close modal
+  };
 
   const handleSuccess = async () => {
     setIsModalOpen(false); // Close modal on successful blog creation
@@ -37,10 +41,9 @@ function WriteBlog() {
         footer={null}
         style={{ borderRadius: "100px", textAlign: "center" }}
       >
-        <WriteBlogForm onSuccess={handleSuccess} />
+        <WriteBlogForm onSuccess={handleSuccess} onCancel={handleCancel} />
       </Modal>
     </>
   );
 }
-
 export default WriteBlog;
