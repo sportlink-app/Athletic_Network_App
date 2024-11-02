@@ -5,7 +5,7 @@ import authStore from "./authStore";
 
 const userInfoStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       username: "",
       gender: "",
       bio: "",
@@ -13,20 +13,17 @@ const userInfoStore = create(
       email: "",
       city: "",
       tel: "",
-      availability: null,
+      availability: false,
 
       getProfile: async () => {
         try {
-          if (!get().username) {
-            const response = await axios.get("/profile", {
-              headers: {
-                Authorization: `Bearer ${authStore.getState().token}`,
-                "Content-Type": "application/json",
-              },
-            });
-
-            set({ ...response.data });
-          }
+          const response = await axios.get("/profile", {
+            headers: {
+              Authorization: `Bearer ${authStore.getState().token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          set({ ...response.data });
         } catch (error) {
           console.error("Error in getProfile:", error.message);
         }
@@ -41,11 +38,8 @@ const userInfoStore = create(
             },
           });
           set({ availability: response.data.availability });
-          return response.data;
         } catch (error) {
-          throw new Error(
-            "An unexpected error occurred, please refresh the page or try again later"
-          );
+          console.error("Error fetching availability:", error.message);
         }
       },
 
@@ -61,7 +55,12 @@ const userInfoStore = create(
               },
             }
           );
-          set({ availability: response.data.availability });
+
+          // Update only availability without affecting local storage
+          set((state) => ({
+            ...state,
+            availability: response.data.availability || newAvailability, // Ensure we always set the availability correctly
+          }));
         } catch (error) {
           console.error("Error updating availability:", error.message);
         }
@@ -75,8 +74,7 @@ const userInfoStore = create(
               "Content-Type": "application/json",
             },
           });
-
-          // Clear state
+          // Clear all state after deletion
           set({
             username: "",
             gender: "",
@@ -85,15 +83,11 @@ const userInfoStore = create(
             email: "",
             city: "",
             tel: "",
-            availability: null,
+            availability: false,
           });
-
-          // Properly clear zustand-persist localStorage
           userInfoStore.persist.clearStorage();
         } catch (error) {
-          throw new Error(
-            "Error deleting profile, please refresh the page or try again later"
-          );
+          console.error("Error deleting profile:", error.message);
         }
       },
 
@@ -106,9 +100,8 @@ const userInfoStore = create(
           email: "",
           city: "",
           tel: "",
-          availability: null,
+          availability: false,
         });
-        localStorage.removeItem("user-info");
       },
     }),
     {

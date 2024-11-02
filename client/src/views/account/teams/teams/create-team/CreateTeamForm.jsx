@@ -7,6 +7,7 @@ import createTeamStore from "../../../../../store/team/createTeamStore";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import userInfoStore from "../../../../../store/user/userInfoStore";
 
 function CreateTeamForm() {
   const {
@@ -24,6 +25,8 @@ function CreateTeamForm() {
     createTeam: state.createTeam,
     isFormInvalid: state.isFormInvalid,
   }));
+
+  const availability = userInfoStore((state) => state.availability);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -244,6 +247,12 @@ function CreateTeamForm() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-2 lg:gap-3 max-w-lg mx-auto py-4 text-left"
     >
+      {!availability && (
+        <Alert
+          message="You must be available to create a team. Please update your availability in your profile."
+          type="warning"
+        />
+      )}
       <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
         {nameInput}
         {sportSelect}
@@ -264,7 +273,7 @@ function CreateTeamForm() {
       )}
       <Button
         htmlType="submit"
-        disabled={isLoading || isFormInvalid()}
+        disabled={isLoading || isFormInvalid() || !availability}
         type="primary"
         shape="round"
         size="large"

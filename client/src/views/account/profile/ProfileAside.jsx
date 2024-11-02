@@ -30,7 +30,7 @@ const ProfileAside = ({ username, gender }) => {
           setLoading(false);
         }
       } else {
-        setAvailability(storeAvailability); // Use existing availability
+        setAvailability(storeAvailability);
         setLoading(false);
       }
     };
