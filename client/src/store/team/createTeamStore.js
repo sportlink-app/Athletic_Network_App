@@ -9,7 +9,6 @@ const createTeamStore = create((set, get) => ({
     sportId: "",
     membersCount: "",
     description: "",
-    city: "",
     date: "",
   },
   errors: {
@@ -34,7 +33,6 @@ const createTeamStore = create((set, get) => ({
         sportId: "",
         membersCount: "",
         description: "",
-        city: "",
         date: "",
       },
       errors: {
@@ -115,10 +113,10 @@ const createTeamStore = create((set, get) => ({
 
   isFormInvalid: () => {
     const { teamForm, errors } = get();
-    const { name, sportId, membersCount, description, city, date } = teamForm;
+    const { name, sportId, membersCount, description, date } = teamForm;
 
     const isFieldEmpty =
-      !name || !sportId || !membersCount || !description || !city || !date;
+      !name || !sportId || !membersCount || !description || !date;
 
     // Check if any error messages are set
     const hasErrors =
@@ -129,8 +127,7 @@ const createTeamStore = create((set, get) => ({
   },
 
   createTeam: async () => {
-    const { name, sportId, membersCount, description, city, date } =
-      get().teamForm;
+    const { name, sportId, membersCount, description, date } = get().teamForm;
 
     try {
       const response = await axios.post(
@@ -140,7 +137,6 @@ const createTeamStore = create((set, get) => ({
           sport_id: sportId,
           members_count: Number(membersCount),
           description,
-          city: city.toLowerCase(),
           date,
         },
         {

@@ -50,7 +50,7 @@ function CreateTeamForm() {
   };
 
   const nameInput = (
-    <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Name</label>
       <Input
         name="name"
@@ -119,7 +119,7 @@ function CreateTeamForm() {
   };
 
   const sportSelect = (
-    <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Sport</label>
       <AutoComplete
         options={options}
@@ -143,7 +143,7 @@ function CreateTeamForm() {
   );
 
   const membersCountInput = (
-    <li className="sm:col-span-2 mt-2 flex flex-col gap-1">
+    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">
         Members Count
       </label>
@@ -228,20 +228,6 @@ function CreateTeamForm() {
     </li>
   );
 
-  const cityInput = (
-    <li className="sm:col-span-3 mt-2 flex flex-col gap-1">
-      <label className="ml-2 font-medium leading-6 text-gray-900">City</label>
-      <Input
-        name="city"
-        value={teamForm.city}
-        onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-        placeholder="Enter the city"
-        size="large"
-        className="rounded-full"
-      />
-    </li>
-  );
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -256,9 +242,8 @@ function CreateTeamForm() {
       <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
         {nameInput}
         {sportSelect}
-        {membersCountInput}
         {descriptionInput}
-        {cityInput}
+        {membersCountInput}
         {dateInput}
       </ul>
       {errorMessage && (

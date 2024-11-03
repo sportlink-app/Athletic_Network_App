@@ -14,13 +14,12 @@ def create_team(current_user):
     data = request.get_json()
     name = data.get('name')
     sport_id = data.get('sport_id')
-    city = data.get('city')
     date = data.get('date')
     description = data.get('description')  
     members_count = data.get('members_count')  
 
     # Validate data
-    if not name or not sport_id or not city or not date:
+    if not name or not sport_id or not date:
         return jsonify({"message": "Missing required fields"}), 400
 
     # Check if the team name already exists
@@ -28,7 +27,7 @@ def create_team(current_user):
     if existing_team:
         return jsonify({"message": "Team name already exists"}), 404
     
-    # Optionally, you can also validate the description length
+    # Optionally, validate the description length
     if description and len(description) > 500:
         return jsonify({"message": "Description is too long, max 500 characters allowed"}), 400
 
@@ -36,7 +35,7 @@ def create_team(current_user):
     team = Team(
         name=name,
         sport_id=sport_id,
-        city=city,
+        city=current_user.city,  # Use the current user's city
         date=date,
         description=description,  
         members_count=members_count,  
