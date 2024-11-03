@@ -1,6 +1,6 @@
 import Text from "../../components/static/Text";
 import Star from "../../components/static/Star";
-import { ArrowRightOutlined, QuestionOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Avatar, Button, Tag } from "antd";
 import { useEffect } from "react";
@@ -299,9 +299,9 @@ export default function Header() {
             type="default"
             shape="round"
             size="large"
-            icon={<QuestionOutlined />}
+            icon={<QuestionCircleOutlined />}
             iconPosition="end"
-            className="font-semibold !bg-transparent border-[1.3px] !border-cyan !text-cyan hover:!text-cyan hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
+            className="font-semibold !bg-transparent border-[1.3px] !border-cyan !text-cyan hover:!text-cyan hover:!bg-white hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
           >
             How It Works
           </Button>
