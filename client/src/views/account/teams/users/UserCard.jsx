@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { Button, message, Spin } from "antd";
 import teamStore from "../../../../store/team/teamStore";
 import { useState } from "react";
+import userInfoStore from "../../../../store/user/userInfoStore";
 
 export default function UserCard({
   id,
@@ -30,18 +31,28 @@ export default function UserCard({
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
+  const { availability } = userInfoStore();
   const handleInviteClick = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setLoading(true);
-    try {
-      await teamInvite(teamId, id);
-      messageApi.success("User invited successfully");
-      onInviteSuccess(id); // Call the callback to update state in Users component
-    } catch (error) {
-      messageApi.error(error.message);
-    } finally {
-      setLoading(false);
+    if (!availability) {
+      messageApi.open({
+        type: "warning",
+        content:
+          "You must be available to create a team. Please update your availability in your profile.",
+        duration: 5,
+      });
+    } else {
+      setLoading(true);
+      try {
+        await teamInvite(teamId, id);
+        messageApi.success("User invited successfully");
+        onInviteSuccess(id); // Call the callback to update state in Users component
+      } catch (error) {
+        messageApi.error(error.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

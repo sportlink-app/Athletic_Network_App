@@ -36,7 +36,7 @@ export default function TeamCard({
   const availability = userInfoStore((state) => state.availability);
 
   // Handle button click without triggering the link navigation
-  const handleInviteClick = (e) => {
+  const handleJoinClick = (e) => {
     e.stopPropagation(); // Prevent link from being triggered
     e.preventDefault(); // Prevent default link behavior
     if (!availability) {
@@ -127,7 +127,7 @@ export default function TeamCard({
             </Link>
           ) : (
             <Button
-              onClick={handleInviteClick}
+              onClick={handleJoinClick}
               type="primary"
               shape="round"
               size="large"

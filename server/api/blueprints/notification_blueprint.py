@@ -68,7 +68,7 @@ def get_all_notifications(current_user):
                         }
                     })
 
-        elif notification.type in ['join_request', 'join_request_response']: 
+        elif notification.type in ['team_join', 'join_request_response']: 
             join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
             if join_request:
                 team = Team.query.filter_by(id=join_request.team_id).first()

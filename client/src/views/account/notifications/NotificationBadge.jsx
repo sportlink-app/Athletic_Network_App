@@ -19,9 +19,12 @@ export default function NotificationBadge() {
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleCountUpdate = useCallback(async () => {
-    await setCount(0);
-  }, [setCount]);
+  const handleCountUpdate = useCallback(
+    async (newCount) => {
+      await setCount(newCount);
+    },
+    [setCount]
+  );
 
   useEffect(() => {
     if (authenticatedId) {
@@ -62,7 +65,6 @@ export default function NotificationBadge() {
   }, []);
 
   useEffect(() => {
-    setCount(0);
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";

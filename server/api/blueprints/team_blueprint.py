@@ -181,6 +181,49 @@ def invite_member(current_user):
 
     return jsonify({"message": "Invitation sent successfully"}), 201
 
+# Request to Join Team API
+@team_blueprint.route('/team/join', methods=['POST'])
+@token_required()
+def request_to_join_team(current_user):
+    team_id = request.args.get('team_id', type=int)
+
+    if not team_id:
+        return jsonify({"message": "team_id is required"}), 400
+
+    # Check if the team exists
+    team = Team.query.get(team_id)
+    if not team:
+        return jsonify({"message": "Team not found"}), 404
+
+    # Check if the current user is already a member
+    is_member = db.session.query(team_members).filter_by(team_id=team_id, user_id=current_user.id).first()
+    if is_member:
+        return jsonify({"message": "You are already a member of this team"}), 400
+
+    # Create a new team join request (TeamInvite)
+    join_request = TeamInvite(
+        team_id=team.id,
+        user_id=current_user.id,
+        owner_id=team.owner_id,
+        status='pending'  # Set status as pending initially
+    )
+    db.session.add(join_request)
+    db.session.flush()  # Flush to get the join_request ID
+
+    # Create a notification for the team owner
+    notification = Notification(
+        user_id=team.owner_id,
+        reference_id=join_request.id,
+        type='team_join'
+    )
+    db.session.add(notification)
+    db.session.commit()
+
+    # Notify the team owner
+    notify_new_notification(team.owner_id, socketio, connected_users)
+
+    return jsonify({"message": "Join request sent successfully"}), 201
+
 # Respond to Invite API
 @team_blueprint.route('/team/invite/response', methods=['POST'])
 @token_required()

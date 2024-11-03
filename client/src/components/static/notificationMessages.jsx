@@ -3,9 +3,9 @@ export const notificationMessages = {
     `${sender.username} has invited you to join ${teamName}`,
   team_invite_response: (sender, teamName) =>
     `${sender.username} has accepted your invite to join ${teamName}`,
-  join_request: (sender, teamName) =>
+  team_join: (sender, teamName) =>
     `${sender.username} has requested to join ${teamName}`,
-  join_request_response: (sender, teamName) =>
+  team_join_response: (sender, teamName) =>
     `${sender.username} has accepted your request to join ${teamName}`,
   team_completion: (teamName) => `${teamName} is completed now!`,
 };
