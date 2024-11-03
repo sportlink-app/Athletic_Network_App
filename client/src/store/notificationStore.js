@@ -1,4 +1,3 @@
-// notificationStore.js
 import { create } from "zustand";
 import axios from "axios";
 import authStore from "./user/authStore";

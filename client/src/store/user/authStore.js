@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import notificationStore from "../notificationStore"; // Import the notification store
 
 // Regex patterns for validation
 const usernameRegex = /^[a-zA-Z0-9_]{6,16}$/; // 6 to 16 alphanumeric characters or underscores
@@ -113,13 +114,18 @@ const authStore = create((set, get) => {
         set({
           token: response.data.token,
           authenticatedUsername: response.data.username,
+          authenticatedId: jwtDecode(response.data.token).id,
         });
+
         // Set cookie to expire in 1 year
         Cookies.set("token", response.data.token, { expires: 365 }); // 1 year
 
         set({ isAuthenticated: true });
         const decodedToken = jwtDecode(response.data.token);
         set({ isProfileCompleted: decodedToken.isProfileCompleted });
+
+        // Update unread notifications count after sign up
+        await notificationStore.getState().getUnreadCount(); // Ensure notification count is updated
 
         set({
           signUpForm: {
@@ -176,17 +182,16 @@ const authStore = create((set, get) => {
           { headers: { "Content-Type": "application/json" } }
         );
 
-        // Set authentication state
         set({
           token: response.data.token,
-          authenticatedUsername: response.data.username,
+          authenticatedId: jwtDecode(response.data.token).id, // Ensure authenticatedId is set
         });
-        // Set cookie to expire in 1 year
-        Cookies.set("token", response.data.token, { expires: 365 }); // 1 year
 
+        Cookies.set("token", response.data.token, { expires: 365 }); // 1 year
         set({ isAuthenticated: true });
-        const decodedToken = jwtDecode(response.data.token);
-        set({ isProfileCompleted: decodedToken.isProfileCompleted });
+
+        // Update unread notifications count after login
+        await notificationStore.getState().getUnreadCount(); // Ensure notification count is updated
 
         set({
           signInForm: {
@@ -210,5 +215,4 @@ const authStore = create((set, get) => {
     },
   };
 });
-
 export default authStore;

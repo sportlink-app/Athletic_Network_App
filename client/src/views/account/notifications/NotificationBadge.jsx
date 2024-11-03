@@ -28,6 +28,9 @@ export default function NotificationBadge() {
 
   useEffect(() => {
     if (authenticatedId) {
+      // Fetch unread count on login
+      getUnreadCount();
+
       const socket = io(import.meta.env.VITE_SERVER_URL, {
         transports: ["websocket"],
         query: { user_id: authenticatedId },
@@ -37,12 +40,18 @@ export default function NotificationBadge() {
         handleCountUpdate(data.count);
       });
 
+      // Fetch notifications when the badge is opened
+      socket.on("new_notification", () => {
+        getUnreadCount(); // Update count whenever a new notification is received
+      });
+
       return () => {
         socket.off("unread_notifications_count");
+        socket.off("new_notification"); // Clean up the listener
         socket.disconnect();
       };
     }
-  }, [authenticatedId, handleCountUpdate]);
+  }, [authenticatedId, handleCountUpdate, getUnreadCount]);
 
   const handleOpenChange = async (newOpen) => {
     setOpen(newOpen);
@@ -59,17 +68,6 @@ export default function NotificationBadge() {
       }
     }
   };
-
-  useEffect(() => {
-    getUnreadCount();
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
 
   return (
     <>
