@@ -54,7 +54,7 @@ function UserBlogs() {
 
   // Render blog list or EmptyData based on data status
   const userBlogsList = userBlogs.length > 0 && (
-    <section className="mt-20 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
+    <section className="mt-24 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
       {userBlogs.map((blog) => (
         <BlogCard
           key={blog.id}
@@ -91,7 +91,7 @@ function UserBlogs() {
           {!isLoading && isDataFetched && userBlogs.length === 0 && (
             <EmptyData text="No blog posts found!" />
           )}
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center">
             {!isLoading && userBlogs.length < userBlogsTotalItems && (
               <Button
                 onClick={handleLoadMore}

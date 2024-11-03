@@ -1,18 +1,28 @@
 import DataField from "../../../../../components/static/DataField";
 import { Divider } from "antd";
 import Tags from "../../../../../components/static/Tags";
-import { BulbOutlined, HeartOutlined } from "@ant-design/icons";
+import {
+  BulbOutlined,
+  HeartOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 
-function ProfileContent({ bio, sports }) {
+function ProfileContent({ city, bio, sports }) {
   return (
-    <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 mt-36 mb-8">
+    <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 mt-32 mb-8">
+      <DataField
+        title={city}
+        icon={<EnvironmentOutlined className="text-sm pt-[2px]" />}
+      />
+      <Divider type="horizontal" className="w-full border-gray-200 my-2" />
+
       <DataField
         title="Bio"
         content={bio}
         icon={<BulbOutlined className="text-sm pt-[2px]" />}
       />
-      <Divider type="horizontal" className="w-full border-gray-200 my-4" />
+      <Divider type="horizontal" className="w-full border-gray-200 my-2" />
       <li>
         <span className="w-fit flex justify-center items-center gap-[.35rem]">
           <HeartOutlined className="text-sm pt-[2px]" />
@@ -28,12 +38,13 @@ function ProfileContent({ bio, sports }) {
         </div>
       </li>
 
-      <Divider type="horizontal" className="w-full border-gray-200 my-4" />
+      <Divider type="horizontal" className="w-full border-gray-200 my-2" />
     </div>
   );
 }
 
 ProfileContent.propTypes = {
+  city: PropTypes.string,
   bio: PropTypes.string,
   sports: PropTypes.array,
 };

@@ -6,7 +6,7 @@ const DataField = ({ content, title, icon }) => {
     <li className="text-gray-600">
       <span className=" w-fit flex justify-center items-center gap-[.35rem]">
         {icon}
-        <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+        <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl capitalize">
           {title}
         </p>
       </span>

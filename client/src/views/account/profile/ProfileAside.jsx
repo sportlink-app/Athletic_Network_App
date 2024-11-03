@@ -16,27 +16,25 @@ const ProfileAside = ({ username, gender }) => {
   const [availability, setAvailability] = useState(storeAvailability);
   const [loading, setLoading] = useState(true);
 
+  // Sync availability state with storeAvailability
+  useEffect(() => {
+    setAvailability(storeAvailability);
+  }, [storeAvailability]);
+
   useEffect(() => {
     const fetchAvailability = async () => {
-      if (storeAvailability === null) {
-        // Prevent unnecessary calls
-        setLoading(true);
-        try {
-          const response = await getAvailability(username);
-          setAvailability(response.availability);
-        } catch (error) {
-          console.error("Error fetching availability:", error.message);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setAvailability(storeAvailability);
+      setLoading(true);
+      try {
+        await getAvailability(username);
+      } catch (error) {
+        console.error("Error fetching availability:", error.message);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchAvailability();
-  }, [getAvailability, storeAvailability, username]);
+  }, [getAvailability, username]);
 
   const handleAvailabilityChange = async (checked) => {
     if (!loading) {

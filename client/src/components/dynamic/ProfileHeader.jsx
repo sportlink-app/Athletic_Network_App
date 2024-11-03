@@ -1,9 +1,8 @@
 import Text from "../static/Text";
 import ProfileAvatar from "./Avatar";
-import { EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
-function ProfileHeader({ username, gender, city, availability }) {
+function ProfileHeader({ username, gender, availability = null }) {
   const availabilityStatus = (isAvailable) => {
     return (
       <li className="flex gap-2 justify-center items-center">
@@ -36,16 +35,9 @@ function ProfileHeader({ username, gender, city, availability }) {
           <h2 className="text-gray-600 text-4xl font-medium capitalize">
             {username}
           </h2>
-          <span className="w-fit flex justify-center items-center gap-[.35rem] h-6">
-            {city && (
-              <>
-                <EnvironmentOutlined className="text-sm" />
-                <p className="text-slate-500"> {city}</p>
-              </>
-            )}
-          </span>
+
           <span className="h-6">
-            {city && availabilityStatus(availability)}
+            {availability !== null && availabilityStatus(availability)}
           </span>
         </ul>
       </div>

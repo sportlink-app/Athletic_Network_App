@@ -13,7 +13,7 @@ const userInfoStore = create(
       email: "",
       city: "",
       tel: "",
-      availability: false,
+      availability: null,
 
       getProfile: async () => {
         try {

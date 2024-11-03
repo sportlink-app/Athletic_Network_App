@@ -74,7 +74,6 @@ function UserProfile() {
               <ProfileHeader
                 username={username}
                 gender={gender}
-                city={city}
                 availability={availability}
               />
               <ProfileContent bio={bio} sports={sports} city={city} />
