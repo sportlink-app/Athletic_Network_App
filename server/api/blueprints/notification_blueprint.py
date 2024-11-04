@@ -101,8 +101,6 @@ def get_all_notifications(current_user):
 
         notifications_data.append(notification_data)
 
-    # Optionally mark all notifications as visited/read
-    Notification.query.filter_by(user_id=current_user.id).update({'is_visited': True, 'is_read': True})
     db.session.commit()
 
     return jsonify(notifications_data), 200
@@ -196,6 +194,7 @@ def get_specific_notification(current_user, notification_id):
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
                         
                         notification_data.update({
+                            "is_team_completed": team.isCompleted,
                             "team_id": team.id,
                             "team_name": team.name,
                             "city": team.city,
@@ -229,15 +228,17 @@ def get_specific_notification(current_user, notification_id):
                             }
                         })
 
-            elif notification.type in ['join_request', 'join_request_response']: 
-                join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
-                if join_request:
-                    team = Team.query.filter_by(id=join_request.team_id).first()
-                    sender = Myusers.query.filter_by(id=join_request.user_id).first()
+            elif notification.type == 'team_join':
+                join = JoinRequest.query.filter_by(id=notification.reference_id).first()
+                if join:
+                    team = Team.query.filter_by(id=join.team_id).first()
+                    sender = Myusers.query.filter_by(id=join.user_id).first()
                     if team and sender:
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
-
+                        
                         notification_data.update({
+                            "is_team_completed": team.isCompleted,
+                            "team_id": team.id,
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
@@ -249,6 +250,28 @@ def get_specific_notification(current_user, notification_id):
                             }
                         })
 
+            elif notification.type == 'team_join_response':
+                join = JoinRequest.query.filter_by(id=notification.reference_id).first()
+                if join:
+                    team = Team.query.filter_by(id=join.team_id).first()
+                    sender = Myusers.query.filter_by(id=join.owner_id).first()  # Set sender as owner_id
+                    if team and sender:
+                        sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
+                        
+                        notification_data.update({
+                            "team_id": team.id,
+                            "team_name": team.name,
+                            "city": team.city,
+                            "description": team.description,
+                            "date": team.date.strftime('%Y-%m-%d'),
+                            "sport": sport.name if sport else "N/A",  # Add sport name if available
+                            "sender": {
+                                "username": sender.username,
+                                "gender": sender.gender
+                            }
+                        })
+
+            
             
         return jsonify(notification_data), 200
 

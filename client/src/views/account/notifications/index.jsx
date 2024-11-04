@@ -1,4 +1,4 @@
-import { Button, message, Spin } from "antd";
+import { Button, message, Spin, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   CloseOutlined,
   CheckOutlined,
   ArrowRightOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Tags from "../../../components/static/Tags";
 import Footer from "../../../components/static/Footer";
@@ -36,6 +37,7 @@ export default function Notifications() {
   }, [id, getNotification, navigate]);
 
   const {
+    is_team_completed: isTeamCompleted,
     reference_id: referenceId,
     team_name: teamName,
     created_at: createdAt,
@@ -52,16 +54,42 @@ export default function Notifications() {
     ? formatDistanceToNow(parseISO(createdAt), { addSuffix: true })
     : "Date not available";
 
-  const { inviteRespond } = teamStore();
+  const { inviteRespond, joinRespond } = teamStore();
   const [isDisabled, setDisabled] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const handleInviteRespond = async (action) => {
     setDisabled(true);
     try {
       await inviteRespond(referenceId, action);
-      messageApi.success(`Invite ${action}ed successfully`);
+      navigate("/teams");
     } catch (error) {
-      messageApi.error(error.message);
+      if (error.message === "401") {
+        messageApi.warning(
+          "The team is already completed. You cannot accept this invitation."
+        );
+      } else {
+        messageApi.error(
+          "Failed to respond to invitation, please refresh the page or try again later"
+        );
+      }
+    }
+  };
+
+  const handleJoinRespond = async (action) => {
+    setDisabled(true);
+    try {
+      await joinRespond(referenceId, action);
+      navigate("/teams");
+    } catch (error) {
+      if (error.message === "401") {
+        messageApi.warning(
+          "The team is already completed. You cannot accept this request."
+        );
+      } else {
+        messageApi.error(
+          "Failed to respond to join request, please refresh the page or try again later"
+        );
+      }
     }
   };
 
@@ -78,15 +106,20 @@ export default function Notifications() {
             <p className="text-sm text-gray-600">{formattedDate}</p>
             <div
               className={`w-full flex flex-col ${
-                type === "team_invite" || type === "join_request"
+                type === "team_invite" || type === "team_join"
                   ? "md:flex-row-reverse"
                   : "md:flex-row"
               } gap-5 justify-between`}
             >
-              {(type === "team_invite" || type === "join_request") && (
+              {((!isTeamCompleted && type === "team_invite") ||
+                type === "team_join") && (
                 <div className="flex gap-2 md:gap-4 self-end">
                   <Button
-                    onClick={() => handleInviteRespond("reject")}
+                    onClick={
+                      type === "team_invite"
+                        ? () => handleInviteRespond("reject")
+                        : () => handleJoinRespond("reject")
+                    }
                     disabled={isDisabled}
                     type="primary"
                     shape="round"
@@ -97,7 +130,11 @@ export default function Notifications() {
                     Reject
                   </Button>
                   <Button
-                    onClick={() => handleInviteRespond("accept")}
+                    onClick={
+                      type === "team_invite"
+                        ? () => handleInviteRespond("accept")
+                        : () => handleJoinRespond("accept")
+                    }
                     disabled={isDisabled}
                     type="primary"
                     shape="round"
@@ -109,6 +146,17 @@ export default function Notifications() {
                   </Button>
                 </div>
               )}
+              {isTeamCompleted &&
+                (type === "team_invite" || type === "team_join") && (
+                  <Tag
+                    bordered={false}
+                    color="warning"
+                    className="py-2 px-4 text-base rounded-full"
+                    icon={<ExclamationCircleOutlined />}
+                  >
+                    Team is completed
+                  </Tag>
+                )}
               <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
                 {getNotificationMessage(type, sender, teamName)}
               </h3>

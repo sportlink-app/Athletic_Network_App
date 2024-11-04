@@ -106,7 +106,7 @@ export default function NotificationCard({
             <h3 className="text-base text-gray-900">
               {getNotificationMessage(type, sender, teamName)}
             </h3>
-            <p className="text-xs text-slate-600 ">{formattedDate}</p>
+            <p className="text-xs text-slate-600">{formattedDate}</p>
           </div>
           <div className="flex flex-col justify-between items-end gap-5">
             <Button
@@ -150,16 +150,17 @@ export default function NotificationCard({
                 </Tooltip>
               </div>
             )}
-            {type === "team_invite" && isTeamCompleted && (
-              <Tag
-                bordered={false}
-                color="warning"
-                className="py-1 px-2 rounded-full"
-                icon={<ExclamationCircleOutlined />}
-              >
-                Team is completed
-              </Tag>
-            )}
+            {isTeamCompleted &&
+              (type === "team_invite" || type === "team_join") && (
+                <Tag
+                  bordered={false}
+                  color="warning"
+                  className="py-1 px-2 rounded-full"
+                  icon={<ExclamationCircleOutlined />}
+                >
+                  Team is completed
+                </Tag>
+              )}
           </div>
         </Card>
       </Link>
