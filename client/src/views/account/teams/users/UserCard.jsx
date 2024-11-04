@@ -47,7 +47,7 @@ export default function UserCard({
       try {
         await teamInvite(teamId, id);
         messageApi.success("User invited successfully");
-        onInviteSuccess(id); // Call the callback to update state in Users component
+        onInviteSuccess(id);
       } catch (error) {
         messageApi.error(error.message);
       } finally {

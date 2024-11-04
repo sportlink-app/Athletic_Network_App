@@ -81,7 +81,6 @@ const notificationStore = create((set) => ({
       });
       set({ notification: response.data });
     } catch (error) {
-      console.error("Failed to get notification details:", error);
       throw new Error("Failed to get notification details");
     }
   },

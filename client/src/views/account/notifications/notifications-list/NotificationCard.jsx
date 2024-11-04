@@ -26,7 +26,7 @@ export default function NotificationCard({
   hide,
 }) {
   const { deleteNotification } = notificationStore();
-  const { inviteRespond } = teamStore();
+  const { inviteRespond, joinRespond } = teamStore();
 
   const formattedDate = formatDistanceToNow(parseISO(createdAt), {
     addSuffix: true,
@@ -46,7 +46,7 @@ export default function NotificationCard({
     }
   };
 
-  const handleRespondClick = async (e, action) => {
+  const handleInviteRespond = async (e, action) => {
     e.stopPropagation();
     e.preventDefault();
     setLoading(true);
@@ -61,6 +61,28 @@ export default function NotificationCard({
       } else {
         messageApi.error(
           "Failed to respond to invitation, please refresh the page or try again later"
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleJoinRespond = async (e, action) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await joinRespond(referenceId, action);
+      messageApi.success(`Join request ${action}ed successfully`);
+    } catch (error) {
+      if (error.message === "401") {
+        messageApi.warning(
+          "The team is already completed. You cannot accept this request."
+        );
+      } else {
+        messageApi.error(
+          "Failed to respond to join request, please refresh the page or try again later"
         );
       }
     } finally {
@@ -100,7 +122,11 @@ export default function NotificationCard({
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button
-                    onClick={(e) => handleRespondClick(e, "accept")}
+                    onClick={
+                      type === "team_invite"
+                        ? (e) => handleInviteRespond(e, "accept")
+                        : (e) => handleJoinRespond(e, "accept")
+                    }
                     disabled={isLoading}
                     type="primary"
                     shape="circle"
@@ -110,7 +136,11 @@ export default function NotificationCard({
                 </Tooltip>
                 <Tooltip title="Reject" color="red">
                   <Button
-                    onClick={(e) => handleRespondClick(e, "reject")}
+                    onClick={
+                      type === "team_invite"
+                        ? (e) => handleInviteRespond(e, "reject")
+                        : (e) => handleJoinRespond(e, "reject")
+                    }
                     disabled={isLoading}
                     type="primary"
                     shape="circle"

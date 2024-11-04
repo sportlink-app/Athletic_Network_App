@@ -264,7 +264,6 @@ def respond_to_invitation(current_user):
     return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200
 
 # Request to Join Team API
-# Request to Join Team API
 @team_blueprint.route('/team/join', methods=['POST'])
 @token_required()
 def request_to_join_team(current_user):
@@ -281,13 +280,15 @@ def request_to_join_team(current_user):
     # Check if the current user is already a member
     is_member = db.session.query(team_members).filter_by(team_id=team_id, user_id=current_user.id).first()
     if is_member:
-        return jsonify({"message": "You are already a member of this team"}), 401
+        return jsonify({"message": "You are already a member of this team"}), 404
 
     # Check if a join request has already been sent and is pending
     existing_request = JoinRequest.query.filter_by(team_id=team_id, user_id=current_user.id, status='pending').first()
     if existing_request:
         return jsonify({"message": "Join request already sent and is pending"}), 400
 
+    if team.isCompleted:
+        return jsonify({"message": "The team is already completed"}), 401
     # Create a new team join request (TeamInvite)
     join_request = JoinRequest(
         team_id=team.id,
@@ -337,6 +338,11 @@ def respond_to_join_request(current_user):
     if join_request.owner_id != current_user.id:
         return jsonify({"message": "You are not authorized to respond to this join request."}), 403
 
+    # Check if the team is already completed
+    team = Team.query.get(join_request.team_id)
+    if team and team.isCompleted:
+        return jsonify({"message": "The team is already completed. You cannot accept this invitation."}), 401
+    
     # Update the status of the join request
     join_request.status = 'accepted' if action == 'accept' else 'rejected'
 

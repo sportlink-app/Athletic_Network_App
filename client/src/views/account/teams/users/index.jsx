@@ -19,7 +19,6 @@ export default function Users() {
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [invitedUsers, setInvitedUsers] = useState(new Set());
 
   const navigate = useNavigate();
   const fetchUsersData = useCallback(async () => {
@@ -73,6 +72,7 @@ export default function Users() {
     scrollToTop();
   };
 
+  const [invitedUsers, setInvitedUsers] = useState(new Set());
   // Function to update invited users state
   const handleInviteSuccess = (id) => {
     setInvitedUsers((prev) => new Set(prev).add(id));
@@ -90,9 +90,9 @@ export default function Users() {
           city={user.city}
           sports={user.sports}
           teamId={teamId}
-          isInvited={invitedUsers.has(user.id) || user.isInvited} // Check if user is invited
+          isInvited={invitedUsers.has(user.id) || user.isInvited}
           isMember={user.isMember}
-          onInviteSuccess={handleInviteSuccess} // Pass down the function
+          onInviteSuccess={handleInviteSuccess}
         />
       ))}
     </div>

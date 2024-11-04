@@ -30,6 +30,7 @@ export default function TeamCard({
   date,
   isMember,
   isRequested,
+  onJoinSuccess,
 }) {
   const avatarGroupRandomColor = getRandomColor(name);
   const avatarGroupColor = darkenColor(avatarGroupRandomColor, 30);
@@ -58,8 +59,17 @@ export default function TeamCard({
       try {
         await teamJoin(teamId);
         messageApi.success("Join request sent successfully");
+        onJoinSuccess(teamId);
       } catch (error) {
-        messageApi.error(error.message);
+        if (error.message === "400") {
+          messageApi.error("Join request already sent and is pending");
+        } else if (error.message === "401") {
+          messageApi.warning("The team is already completed");
+        } else {
+          messageApi.error(
+            "Failed to join team, please refresh the page or try again later"
+          );
+        }
       } finally {
         setLoading(false);
       }
@@ -143,7 +153,7 @@ export default function TeamCard({
           ) : (
             <Button
               onClick={handleJoinClick}
-              disabled={isRequested}
+              disabled={isRequested || isLoading}
               type="primary"
               shape="round"
               size="large"
@@ -170,4 +180,5 @@ TeamCard.propTypes = {
   sport: PropTypes.string,
   isMember: PropTypes.bool,
   isRequested: PropTypes.bool,
+  onJoinSuccess: PropTypes.func,
 };

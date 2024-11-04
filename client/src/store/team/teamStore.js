@@ -48,7 +48,7 @@ const teamStore = create((set) => ({
     try {
       await axios.post(
         `/team/join?team_id=${teamId}`,
-        {}, // Leave data empty if there's no payload
+        {},
         {
           headers: {
             Authorization: `Bearer ${authStore.getState().token}`,
@@ -57,17 +57,7 @@ const teamStore = create((set) => ({
         }
       );
     } catch (error) {
-      console.log(error);
-
-      if (error.response && error.response.status === 400) {
-        throw new Error("Join request already sent and is pending");
-      } else if (error.response && error.response.status === 401) {
-        throw new Error("You are already a member of this team");
-      } else {
-        throw new Error(
-          "Failed to invite user, please refresh the page or try again later"
-        );
-      }
+      throw new Error(error.status);
     }
   },
 
@@ -85,7 +75,7 @@ const teamStore = create((set) => ({
       );
       await notificationStore.getState().getNotifications();
     } catch (error) {
-      console.log(error);
+      throw new Error(error.status);
     }
   },
 

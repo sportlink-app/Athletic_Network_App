@@ -84,6 +84,11 @@ function Teams() {
     setSportFilter(sport); // Update sport filter in store
   };
 
+  const [joinedTeams, setJoinedTeams] = useState(new Set());
+  const handleJoinSuccess = (teamId) => {
+    setJoinedTeams((prev) => new Set(prev).add(teamId));
+  };
+
   const teamsList = teams.length > 0 && (
     <div className="mt-6 grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
       {teams.map((team, index) => (
@@ -98,7 +103,8 @@ function Teams() {
           city={team.city}
           sport={team.sport}
           isMember={team.isMember}
-          isRequested={team.isRequested}
+          isRequested={joinedTeams.has(team.id) || team.isRequested}
+          onJoinSuccess={handleJoinSuccess}
         />
       ))}
     </div>
