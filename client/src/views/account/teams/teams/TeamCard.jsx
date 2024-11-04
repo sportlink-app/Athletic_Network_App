@@ -16,6 +16,8 @@ import { Avatar, Button, message, Tag } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import userInfoStore from "../../../../store/user/userInfoStore";
+import teamStore from "../../../../store/team/teamStore";
+import { useState } from "react";
 
 export default function TeamCard({
   teamId,
@@ -27,6 +29,7 @@ export default function TeamCard({
   city,
   date,
   isMember,
+  isRequested,
 }) {
   const avatarGroupRandomColor = getRandomColor(name);
   const avatarGroupColor = darkenColor(avatarGroupRandomColor, 30);
@@ -35,19 +38,31 @@ export default function TeamCard({
   const [messageApi, contextHolder] = message.useMessage();
   const availability = userInfoStore((state) => state.availability);
 
+  const { teamJoin } = teamStore();
+
+  const [isLoading, setLoading] = useState(false);
+
   // Handle button click without triggering the link navigation
-  const handleJoinClick = (e) => {
+  const handleJoinClick = async (e) => {
     e.stopPropagation(); // Prevent link from being triggered
     e.preventDefault(); // Prevent default link behavior
     if (!availability) {
       messageApi.open({
         type: "warning",
         content:
-          "You must be available to create a team. Please update your availability in your profile.",
+          "You must be available to join a team. Please update your availability in your profile.",
         duration: 5,
       });
     } else {
-      console.log("Invite button clicked!");
+      setLoading(true);
+      try {
+        await teamJoin(teamId);
+        messageApi.success("Join request sent successfully");
+      } catch (error) {
+        messageApi.error(error.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -128,13 +143,14 @@ export default function TeamCard({
           ) : (
             <Button
               onClick={handleJoinClick}
+              disabled={isRequested}
               type="primary"
               shape="round"
               size="large"
               className="w-fit self-end !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
-              icon={<UserAddOutlined size={16} />}
+              icon={!isRequested && <UserAddOutlined size={16} />}
             >
-              Join
+              {isRequested ? "Requested" : "Join"}
             </Button>
           )}
         </div>
@@ -153,4 +169,5 @@ TeamCard.propTypes = {
   rest: PropTypes.number,
   sport: PropTypes.string,
   isMember: PropTypes.bool,
+  isRequested: PropTypes.bool,
 };

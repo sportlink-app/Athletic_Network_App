@@ -80,11 +80,11 @@ export default function NotificationCard({
             !isVisited ? "!bg-green/5 hover:!bg-green/10 !border-green" : ""
           }  border-transparent rounded-2xl p-5 flex gap-5 justify-between hover:bg-slate-50 hover:scale-[1.02] !border-gray-300 hover:shadow-lg duration-500 cursor-pointer`}
         >
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between gap-2">
             <h3 className="text-base text-gray-900">
               {getNotificationMessage(type, sender, teamName)}
             </h3>
-            <p className="text-xs text-slate-600">{formattedDate}</p>
+            <p className="text-xs text-slate-600 ">{formattedDate}</p>
           </div>
           <div className="flex flex-col justify-between items-end gap-5">
             <Button

@@ -99,7 +99,11 @@ def get_teams(current_user):
         # Check if the current user is a member or the owner of the team
         is_member = any(member.id == current_user.id for member in team.members)
         
-        # Prepare team data with isMember flag for the current user
+        # Check if the current user has already requested to join this team
+        join_request = JoinRequest.query.filter_by(team_id=team.id, user_id=current_user.id).first()
+        is_requested = join_request is not None  # True if there's a join request, otherwise False
+        
+        # Prepare team data with isMember and isRequested flags for the current user
         team_data = {
             "id": team.id,
             "name": team.name,
@@ -109,7 +113,8 @@ def get_teams(current_user):
             "date": team.date,
             "city": team.city,
             "sport": team.sport.name,
-            "isMember": is_member
+            "isMember": is_member,
+            "isRequested": is_requested  # Add isRequested flag
         }
         
         teams_data.append(team_data)
@@ -259,13 +264,14 @@ def respond_to_invitation(current_user):
     return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200
 
 # Request to Join Team API
+# Request to Join Team API
 @team_blueprint.route('/team/join', methods=['POST'])
 @token_required()
 def request_to_join_team(current_user):
     team_id = request.args.get('team_id', type=int)
 
     if not team_id:
-        return jsonify({"message": "team_id is required"}), 400
+        return jsonify({"message": "team_id is required"}), 404
 
     # Check if the team exists
     team = Team.query.get(team_id)
@@ -275,7 +281,12 @@ def request_to_join_team(current_user):
     # Check if the current user is already a member
     is_member = db.session.query(team_members).filter_by(team_id=team_id, user_id=current_user.id).first()
     if is_member:
-        return jsonify({"message": "You are already a member of this team"}), 400
+        return jsonify({"message": "You are already a member of this team"}), 401
+
+    # Check if a join request has already been sent and is pending
+    existing_request = JoinRequest.query.filter_by(team_id=team_id, user_id=current_user.id, status='pending').first()
+    if existing_request:
+        return jsonify({"message": "Join request already sent and is pending"}), 400
 
     # Create a new team join request (TeamInvite)
     join_request = JoinRequest(
@@ -300,7 +311,7 @@ def request_to_join_team(current_user):
     # Notify the team owner
     notify_new_notification(team.owner_id, socketio, connected_users)
 
-    return jsonify({"message": "Join request sent successfully"}), 201
+    return jsonify({"message": "Join request sent successfully"}), 201 
 
 # Respond to Join Request API
 @team_blueprint.route('/team/join/response', methods=['POST'])

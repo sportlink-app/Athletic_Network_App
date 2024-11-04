@@ -44,6 +44,51 @@ const teamStore = create((set) => ({
     }
   },
 
+  teamJoin: async (teamId) => {
+    try {
+      await axios.post(
+        `/team/join?team_id=${teamId}`,
+        {}, // Leave data empty if there's no payload
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.getState().token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+
+      if (error.response && error.response.status === 400) {
+        throw new Error("Join request already sent and is pending");
+      } else if (error.response && error.response.status === 401) {
+        throw new Error("You are already a member of this team");
+      } else {
+        throw new Error(
+          "Failed to invite user, please refresh the page or try again later"
+        );
+      }
+    }
+  },
+
+  joinRespond: async (referenceId, action) => {
+    try {
+      await axios.post(
+        `/team/join/response?reference_id=${referenceId}`,
+        { action: action },
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.getState().token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      await notificationStore.getState().getNotifications();
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   teams: [],
   totalTeams: 0,
   currentPage: 1,

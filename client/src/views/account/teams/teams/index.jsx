@@ -98,6 +98,7 @@ function Teams() {
           city={team.city}
           sport={team.sport}
           isMember={team.isMember}
+          isRequested={team.isRequested}
         />
       ))}
     </div>
