@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers, Team, team_members, TeamInvite, Notification
+from ..models import db, Myusers, Team, team_members, TeamInvite, JoinRequest, Notification
 from .user_blueprint import token_required
 from sqlalchemy import func
 from ..utils.notification_utils import notify_new_notification
@@ -180,49 +180,6 @@ def invite_member(current_user):
 
     return jsonify({"message": "Invitation sent successfully"}), 201
 
-# Request to Join Team API
-@team_blueprint.route('/team/join', methods=['POST'])
-@token_required()
-def request_to_join_team(current_user):
-    team_id = request.args.get('team_id', type=int)
-
-    if not team_id:
-        return jsonify({"message": "team_id is required"}), 400
-
-    # Check if the team exists
-    team = Team.query.get(team_id)
-    if not team:
-        return jsonify({"message": "Team not found"}), 404
-
-    # Check if the current user is already a member
-    is_member = db.session.query(team_members).filter_by(team_id=team_id, user_id=current_user.id).first()
-    if is_member:
-        return jsonify({"message": "You are already a member of this team"}), 400
-
-    # Create a new team join request (TeamInvite)
-    join_request = TeamInvite(
-        team_id=team.id,
-        user_id=current_user.id,
-        owner_id=team.owner_id,
-        status='pending'  # Set status as pending initially
-    )
-    db.session.add(join_request)
-    db.session.flush()  # Flush to get the join_request ID
-
-    # Create a notification for the team owner
-    notification = Notification(
-        user_id=team.owner_id,
-        reference_id=join_request.id,
-        type='team_join'
-    )
-    db.session.add(notification)
-    db.session.commit()
-
-    # Notify the team owner
-    notify_new_notification(team.owner_id, socketio, connected_users)
-
-    return jsonify({"message": "Join request sent successfully"}), 201
-
 # Respond to Invite API
 @team_blueprint.route('/team/invite/response', methods=['POST'])
 @token_required()
@@ -300,3 +257,122 @@ def respond_to_invitation(current_user):
     db.session.commit()
 
     return jsonify({"message": f"Invitation {invite.status.lower()} successfully."}), 200
+
+# Request to Join Team API
+@team_blueprint.route('/team/join', methods=['POST'])
+@token_required()
+def request_to_join_team(current_user):
+    team_id = request.args.get('team_id', type=int)
+
+    if not team_id:
+        return jsonify({"message": "team_id is required"}), 400
+
+    # Check if the team exists
+    team = Team.query.get(team_id)
+    if not team:
+        return jsonify({"message": "Team not found"}), 404
+
+    # Check if the current user is already a member
+    is_member = db.session.query(team_members).filter_by(team_id=team_id, user_id=current_user.id).first()
+    if is_member:
+        return jsonify({"message": "You are already a member of this team"}), 400
+
+    # Create a new team join request (TeamInvite)
+    join_request = JoinRequest(
+        team_id=team.id,
+        user_id=current_user.id,
+        owner_id=team.owner_id,
+        status='pending'  # Set status as pending initially
+    )
+    db.session.add(join_request)
+    db.session.flush()  # Flush to get the join_request ID
+
+    # Create a notification for the team owner
+    notification = Notification(
+        user_id=team.owner_id,
+        reference_id=join_request.id,
+        type='team_join'
+    )
+
+    db.session.add(notification)
+    db.session.commit()
+
+    # Notify the team owner
+    notify_new_notification(team.owner_id, socketio, connected_users)
+
+    return jsonify({"message": "Join request sent successfully"}), 201
+
+# Respond to Join Request API
+@team_blueprint.route('/team/join/response', methods=['POST'])
+@token_required()
+def respond_to_join_request(current_user):
+    reference_id = request.args.get('reference_id', type=int)
+    if not reference_id:
+        return jsonify({"message": "reference_id query parameter is required"}), 400
+
+    data = request.get_json()
+    action = data.get('action')  # 'accept' or 'reject'
+
+    # Check if action is valid
+    if action not in ['accept', 'reject']:
+        return jsonify({"message": "Invalid action. Use 'accept' or 'reject'."}), 400
+
+    # Check if the join request exists
+    join_request = JoinRequest.query.filter_by(id=reference_id).first()
+    if not join_request:
+        return jsonify({"message": "Join request not found."}), 404
+
+    # Check if the current user is the team owner
+    if join_request.owner_id != current_user.id:
+        return jsonify({"message": "You are not authorized to respond to this join request."}), 403
+
+    # Update the status of the join request
+    join_request.status = 'accepted' if action == 'accept' else 'rejected'
+
+    # Delete any notification associated with the join request
+    notification = Notification.query.filter_by(reference_id=join_request.id, type='team_join').first()
+    if notification:
+        db.session.delete(notification)
+
+    # If the action is 'accept', add the user to the team members
+    team = Team.query.get(join_request.team_id)
+    if action == 'accept' and team:
+        # Add the user to team members
+        new_member = Myusers.query.get(join_request.user_id)
+        team.members.append(new_member)
+
+        # Send notification to the user about the acceptance
+        user_notification = Notification(
+            user_id=join_request.user_id,
+            reference_id=join_request.id,
+            type='team_join_response'
+        )
+        db.session.add(user_notification)
+
+        # Notify the user if they are connected
+        notify_new_notification(join_request.user_id, socketio, connected_users)
+
+        # Count actual members in the team_members table
+        actual_member_count = db.session.query(team_members).filter_by(team_id=team.id).count()
+
+        # Check if the actual member count meets the required members_count
+        if actual_member_count >= team.members_count:
+            # Mark the team as completed
+            team.isCompleted = True
+
+            # Send a "team_completion" notification to all team members
+            for member in team.members:
+                completion_notification = Notification(
+                    user_id=member.id,
+                    reference_id=team.id,
+                    type='team_completion'
+                )
+                db.session.add(completion_notification)
+
+                # Notify connected users
+                notify_new_notification(member.id, socketio, connected_users)
+
+    # Commit changes to the database
+    db.session.commit()
+
+    return jsonify({"message": f"Join request {join_request.status.lower()} successfully."}), 200

@@ -96,7 +96,7 @@ export default function NotificationCard({
               onClick={handleNotificationDelete}
             />
             {((!isTeamCompleted && type === "team_invite") ||
-              type === "join_request") && (
+              type === "team_join") && (
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="green">
                   <Button

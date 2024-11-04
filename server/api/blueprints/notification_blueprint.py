@@ -26,9 +26,15 @@ def get_unread_notifications_count(current_user):
 @notification_blueprint.route('/notifications', methods=['GET'])
 @token_required()
 def get_all_notifications(current_user):
+    # Retrieve and order notifications by creation date (descending)
     notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
     
     notifications_data = []
+
+    # Helper function to get sender details
+    def get_sender_details(user_id):
+        sender = Myusers.query.filter_by(id=user_id).first()
+        return {"username": sender.username, "gender": sender.gender} if sender else None
 
     for notification in notifications:
         notification_data = {
@@ -38,52 +44,55 @@ def get_all_notifications(current_user):
             "reference_id": notification.reference_id,
             "created_at": notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         }
-        
+
+        # Populate data based on notification type
         if notification.type == 'team_invite':
             invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
             if invite:
                 team = Team.query.filter_by(id=invite.team_id).first()
-                sender = Myusers.query.filter_by(id=invite.owner_id).first()
-                if team and sender:
+                sender_details = get_sender_details(invite.owner_id)
+                if team and sender_details:
                     notification_data.update({
                         "team_name": team.name,
-                        "sender": {
-                            "username": sender.username,
-                            "gender": sender.gender
-                        },
+                        "sender": sender_details,
                         "is_team_completed": team.isCompleted
                     })
-        
+
         elif notification.type == 'team_invite_response':
             invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
             if invite:
                 team = Team.query.filter_by(id=invite.team_id).first()
-                sender = Myusers.query.filter_by(id=invite.user_id).first()
-                if team:
+                sender_details = get_sender_details(invite.user_id)
+                if team and sender_details:
                     notification_data.update({
                         "team_name": team.name,
-                        "sender": {
-                            "username": sender.username,  
-                            "gender": sender.gender       
-                        }
+                        "sender": sender_details
                     })
 
-        elif notification.type in ['team_join', 'join_request_response']: 
-            join_request = JoinRequest.query.filter_by(id=notification.reference_id).first()
-            if join_request:
-                team = Team.query.filter_by(id=join_request.team_id).first()
-                sender = Myusers.query.filter_by(id=join_request.user_id).first()
-                if team and sender:
+        elif notification.type == 'team_join':
+            join = JoinRequest.query.filter_by(id=notification.reference_id).first()
+            if join:
+                team = Team.query.filter_by(id=join.team_id).first()
+                sender_details = get_sender_details(join.user_id)  
+                if team and sender_details:
+                    notification_data.update({
+                    "team_name": team.name,
+                    "sender": sender_details,
+                    "is_team_completed": team.isCompleted
+                })
+
+        elif notification.type == 'team_join_response':
+            join = JoinRequest.query.filter_by(id=notification.reference_id).first()
+            if join:
+                team = Team.query.filter_by(id=join.team_id).first()
+                sender_details = get_sender_details(join.owner_id)
+                if team and sender_details:
                     notification_data.update({
                         "team_name": team.name,
-                        "sender": {
-                            "username": sender.username,
-                            "gender": sender.gender
-                        }
+                        "sender": sender_details
                     })
 
         elif notification.type == 'team_completion':
-
             team = Team.query.filter_by(id=notification.reference_id).first()
             if team:
                 notification_data.update({
@@ -92,7 +101,8 @@ def get_all_notifications(current_user):
 
         notifications_data.append(notification_data)
 
-    # Commit changes to mark notifications as read
+    # Optionally mark all notifications as visited/read
+    Notification.query.filter_by(user_id=current_user.id).update({'is_visited': True, 'is_read': True})
     db.session.commit()
 
     return jsonify(notifications_data), 200
