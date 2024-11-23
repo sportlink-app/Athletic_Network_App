@@ -306,7 +306,7 @@ export default function Header() {
             How It Works
           </Button>
         </Link>
-        <Link to="/sign-up">
+        <Link to="/account/sign-up">
           <Button
             type="primary"
             shape="round"

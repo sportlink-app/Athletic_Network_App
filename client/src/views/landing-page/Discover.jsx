@@ -25,7 +25,7 @@ function Discover() {
 
       <motion.div
         initial={{ opacity: 0.5, scale: 0.95, rotate: 0 }}
-        whileInView={{ opacity: 1, scale: 1, rotate: 2 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 1.2 }}
         transition={{ ease: "easeOut", duration: 0.5, delay: 0.05 }}
         whileHover={{ scale: 1.02 }}
         viewport={{ once: true }}
