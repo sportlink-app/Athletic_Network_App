@@ -56,7 +56,7 @@ function CompleteProfileForm() {
   };
 
   const bioTextArea = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Bio
       </label>
@@ -69,7 +69,7 @@ function CompleteProfileForm() {
         maxLength={180}
         rows={4}
         autoSize={{ minRows: 3, maxRows: 5 }}
-        style={{ borderRadius: "15px" }}
+        style={{ borderRadius: "15px", paddingTop: "8px" }}
       />
       {errors.bio && <p className="text-sm ml-2 text-red-500">{errors.bio}</p>}
     </li>
@@ -77,7 +77,7 @@ function CompleteProfileForm() {
 
   const sports = useSports();
   const sportsSelect = (
-    <li className="mt-2 flex flex-col gap-1 w-full">
+    <li className="flex flex-col gap-1 w-full">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Sports
       </label>
@@ -119,7 +119,7 @@ function CompleteProfileForm() {
   );
 
   const cityInput = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         City
       </label>
@@ -136,7 +136,7 @@ function CompleteProfileForm() {
   );
 
   const telInput = (
-    <li className="mt-2 flex flex-col gap-1">
+    <li className="flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Tel
       </label>
@@ -160,7 +160,7 @@ function CompleteProfileForm() {
   );
 
   const genderSelect = (
-    <li className="w-32 mt-2 flex flex-col gap-1">
+    <li className="w-32 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Gender
       </label>
@@ -186,13 +186,13 @@ function CompleteProfileForm() {
       onSubmit={handleCompleteProfile}
       action="#"
       method="POST"
-      className="flex flex-col gap-3 text-left"
+      className="flex flex-col gap-6 xl:gap-3 text-left"
     >
-      <ul className="sm:flex gap-6">
+      <ul className="flex flex-col sm:flex-row gap-6">
         {cityInput}
         {telInput}
       </ul>
-      <ul className="sm:flex gap-6">
+      <ul className="flex flex-col sm:flex-row  gap-6">
         {sportsSelect} {genderSelect}
       </ul>
       {bioTextArea}
