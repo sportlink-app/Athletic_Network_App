@@ -60,13 +60,15 @@ export default function Features({
             variants={itemAnimationVariables()}
             className="relative pl-16 text-left"
           >
-            <dt className="text-base font-semibold leading-7 text-gray-900 capitalize">
+            <dt>
               <div className="absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-cyan to-green ">
                 {feature.icon}
               </div>
-              {feature.title}
+              <h1 className="text-base xl:text-[1.15rem]  font-semibold leading-7 text-gray-600 capitalize">
+                {feature.title}
+              </h1>
             </dt>
-            <dd className="mt-2 text-base leading-7 text-gray-600">
+            <dd className="mt-1 text-sm xl:text-base leading-7 text-gray-500">
               {feature.description}
             </dd>
           </motion.li>

@@ -42,39 +42,43 @@ function SignInForm() {
         onSubmit={handleLogin}
         method="POST"
         action="#"
-        className="flex flex-col gap-3 text-left"
+        className="flex flex-col gap-5 text-left"
       >
-        <label
-          htmlFor="email"
-          className="ml-2 font-medium leading-6 text-gray-900 capitalize"
-        >
-          Email Address
-        </label>
-        <Input
-          name="email"
-          value={signInForm.email}
-          onChange={handleSignInForm}
-          placeholder="Enter your email address"
-          size="large"
-          style={{ borderRadius: "50px" }}
-        />
-        <label
-          htmlFor="password"
-          className="ml-2 font-medium leading-6 text-gray-900 capitalize"
-        >
-          Password
-        </label>
-        <Input.Password
-          name="password"
-          value={signInForm.password}
-          onChange={handleSignInForm}
-          placeholder="Enter your password"
-          iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-          }
-          size="large"
-          style={{ borderRadius: "50px" }}
-        />
+        <li className="flex flex-col gap-2">
+          <label
+            htmlFor="email"
+            className="ml-2 font-medium leading-6 text-gray-800 capitalize"
+          >
+            Email Address
+          </label>
+          <Input
+            name="email"
+            value={signInForm.email}
+            onChange={handleSignInForm}
+            placeholder="Enter your email address"
+            size="large"
+            style={{ borderRadius: "50px" }}
+          />
+        </li>
+        <li className="flex flex-col gap-2">
+          <label
+            htmlFor="password"
+            className="ml-2 font-medium leading-6 text-gray-800 capitalize"
+          >
+            Password
+          </label>
+          <Input.Password
+            name="password"
+            value={signInForm.password}
+            onChange={handleSignInForm}
+            placeholder="Enter your password"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+            size="large"
+            style={{ borderRadius: "50px" }}
+          />
+        </li>
         {errorMessage && (
           <Alert
             message={errorMessage}

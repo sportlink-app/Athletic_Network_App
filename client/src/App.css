@@ -9,7 +9,7 @@ html {
 }
 
 * :not(h1, h1 span) {
-  @apply font-main;
+  @apply font-main !important;
 }
 
 ::selection {
@@ -32,7 +32,7 @@ p {
 input::placeholder,
 textarea::placeholder,
 .ant-select-selection-placeholder {
-  @apply text-[.8rem] text-gray-400 font-normal !important;
+  @apply text-[.8rem] text-gray-400 font-normal font-main pl-1 !important;
 }
 
 /* Navbar toggle */

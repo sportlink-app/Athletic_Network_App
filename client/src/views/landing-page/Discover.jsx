@@ -36,7 +36,7 @@ function Discover() {
           <h2 className="text-xl sm:text-3xl font-bold tracking-tight">
             Building Teams, Connecting Players, Sharing Stories
           </h2>
-          <p className="mt-6 text-lg leading-6">
+          <p className="mt-6 text-base lg:text-lg leading-6">
             Join a community of athletes, form teams, and compete in your
             favorite sports. Find partners based on your skill level, create or
             join teams, and share your experiences. Play anytime, anywhere, and

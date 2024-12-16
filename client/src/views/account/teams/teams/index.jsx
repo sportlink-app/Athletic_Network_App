@@ -96,7 +96,6 @@ function Teams() {
           key={index}
           teamId={team.id}
           name={team.name}
-          description={team.description}
           members={team.members}
           rest={team.rest}
           date={team.date}

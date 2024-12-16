@@ -44,12 +44,12 @@ function SignUpForm() {
       onSubmit={handleSignUp}
       method="POST"
       action="#"
-      className="flex flex-col gap-3 text-left"
+      className="flex flex-col gap-5 text-left"
     >
-      <li className="flex flex-col gap-1">
+      <li className="flex flex-col gap-2">
         <label
           htmlFor="username"
-          className="ml-2 font-medium leading-6 text-gray-900 capitalize"
+          className="ml-2 leading-6 text-gray-800 capitalize"
         >
           username
         </label>
@@ -66,10 +66,10 @@ function SignUpForm() {
           <p className="text-sm ml-2 text-red-500">{errors.username}</p>
         )}
       </li>
-      <li className="flex flex-col gap-1">
+      <li className="flex flex-col gap-2">
         <label
           htmlFor="email"
-          className="ml-2 font-medium leading-6 text-gray-900 capitalize"
+          className="ml-2  leading-6 text-gray-800 capitalize"
         >
           email address
         </label>
@@ -86,10 +86,10 @@ function SignUpForm() {
           <p className="text-sm ml-2 text-red-500">{errors.email}</p>
         )}
       </li>
-      <li className="flex flex-col gap-1">
+      <li className="flex flex-col gap-2">
         <label
           htmlFor="password"
-          className="ml-2 font-medium leading-6 text-gray-900 capitalize"
+          className="ml-2 leading-6 text-gray-800 capitalize"
         >
           password
         </label>

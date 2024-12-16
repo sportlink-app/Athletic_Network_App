@@ -3,7 +3,7 @@ import DeactivateAccount from "./DeactivateAccount";
 import DataField from "../../../components/static/DataField";
 import Tags from "../../../components/static/Tags";
 import {
-  BulbOutlined,
+  PushpinOutlined,
   EnvironmentOutlined,
   PhoneOutlined,
   MailOutlined,
@@ -18,16 +18,16 @@ function ProfileContent({ bio, sports, email, city, tel }) {
         <DataField
           title="Bio"
           content={bio}
-          icon={<BulbOutlined className="text-sm pt-[2px]" />}
+          icon={<PushpinOutlined className="text-sm pt-[3px]" />}
         />
         <Divider
           type="horizontal"
           className="w-full border-gray-200 my-6 xl:my-8"
         />
         <li>
-          <span className="w-fit flex justify-center items-center gap-[.35rem] text-gray-600">
-            <HeartOutlined className="text-sm pt-[2px]" />
-            <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+          <span className="w-fit flex justify-center items-center gap-2 text-gray-600">
+            <HeartOutlined className="text-sm pt-[3px]" />
+            <p className="text-base  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
               Sports
             </p>
           </span>
@@ -46,17 +46,17 @@ function ProfileContent({ bio, sports, email, city, tel }) {
           <DataField
             title="Email"
             content={email}
-            icon={<MailOutlined className="text-sm pt-[2px]" />}
+            icon={<MailOutlined className="text-sm pt-[3px]" />}
           />
           <DataField
             title="City"
             content={city}
-            icon={<EnvironmentOutlined className="text-sm pt-[2px]" />}
+            icon={<EnvironmentOutlined className="text-sm pt-[3px]" />}
           />
           <DataField
             title="Tel"
             content={tel}
-            icon={<PhoneOutlined className="text-sm pt-[2px]" />}
+            icon={<PhoneOutlined className="text-sm pt-[3px]" />}
           />
         </ul>
         <Divider

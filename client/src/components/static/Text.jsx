@@ -11,7 +11,7 @@ const Text = ({
     style =
       "text-3xl md:text-4xl xl:text-[2.5rem] font-bold capitalize tracking-tight";
   } else if (type === "subtitle") {
-    style = " text-lg leading-8 ";
+    style = "text-slate-500 text-base lg:text-[1.12rem] leading-7";
   }
 
   return <h2 className={`${style} ${color} ${className}`}>{text}</h2>;

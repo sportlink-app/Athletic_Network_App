@@ -24,7 +24,7 @@ function ProfileContent({ city, bio, sports }) {
       />
       <Divider type="horizontal" className="w-full border-gray-200 my-2" />
       <li>
-        <span className="w-fit flex justify-center items-center gap-[.35rem]">
+        <span className="w-fit flex justify-center items-center gap-2">
           <HeartOutlined className="text-sm pt-[2px]" />
           <p className="text-sm  mt-1 md:max-w-sm lg:max-w-lg xl:max-w-xl">
             Sports
@@ -33,7 +33,7 @@ function ProfileContent({ city, bio, sports }) {
         <div className="flex flex-wrap gap-x-1 gap-y-3 mt-2">
           <Tags
             list={sports.length > 0 ? sports : ["No sports available"]}
-            className="py-1 px-4 text-sm"
+            className="py-1 px-4 text-sm mt-1"
           />
         </div>
       </li>

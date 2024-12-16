@@ -51,7 +51,7 @@ function DeactivateAccount() {
           <div className="text-base font-semibold leading-6 text-gray-900">
             Deactivate Account
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 mt-1">
             Once you deactivate your account, there is no going back. Please be
             certain.
           </p>
@@ -69,14 +69,10 @@ function DeactivateAccount() {
           </Button>
         </div>
       </Card>
-      <Modal
-        open={isModalOpen}
-        onCancel={handleCancel}
-        title="Deactivate Account"
-        footer={null}
-      >
+      <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
         <div className="p-2">
-          <p className="text-sm text-gray-500">
+          <h1 className="text-slate-800 text-lg">Deactivate Account</h1>
+          <p className="text-sm text-gray-500 mt-2">
             Are you sure you want to deactivate your account? This action cannot
             be undone. Once you deactivate your account, there is no going back.
           </p>

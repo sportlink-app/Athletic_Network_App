@@ -50,23 +50,23 @@ export default function Testimonials({
           <motion.li
             key={index}
             variants={itemAnimationVariables(rotationDegree)}
-            className="flex flex-col items-start justify-between bg-white p-4 sm:p-6 rounded-2xl border-gray-200 border-[1px]"
+            className="flex flex-col items-start justify-between bg-white p-6 rounded-2xl border-gray-200 border-[1px]"
           >
             <div className="relative flex items-center gap-x-4 text-left">
               <Avatar src={review.src} size={54} />
 
               <div className="text-base leading-6">
-                <p className="font-semibold text-gray-900 capitalize">
+                <p className="font-semibold text-gray-600 capitalize">
                   {review.name}
                 </p>
                 <Tags
                   list={review.sports}
-                  className="py-[.1rem] px-[.6rem] text-xs"
+                  className="py-[.1rem] px-[.6rem] text-xs mt-1"
                 />
               </div>
             </div>
             <div className="group relative">
-              <p className="mt-5 text-left text-base leading-6 text-gray-600">
+              <p className="mt-5 text-left text-sm lg:text-base leading-6 text-gray-500">
                 {review.review}
               </p>
             </div>
