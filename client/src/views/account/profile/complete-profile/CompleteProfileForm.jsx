@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import { Alert, Button, Input, Select, Spin, Tag } from "antd";
+import { Alert, Button, Input, message, Select, Spin, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import completeProfileStore from "../../../../store/user/completeProfileStore";
@@ -34,6 +34,8 @@ function CompleteProfileForm() {
   const errors = updateValidationErrors();
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleCompleteProfile = async (e) => {
     e.preventDefault();
@@ -118,19 +120,121 @@ function CompleteProfileForm() {
     </li>
   );
 
+  const [countries, setCountries] = useState([]);
+  const [countriesLoading, setCountriesLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(false);
+
+  const [cities, setCities] = useState([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+
+  useEffect(() => {
+    setCountriesLoading(true);
+
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch(
+          "https://countriesnow.space/api/v0.1/countries/flag/unicode"
+        );
+        const result = await response.json();
+
+        if (!result.error) {
+          setCountries(
+            result.data.map((country) => ({
+              value: country.name, // Value passed on selection
+              label: `${country.unicodeFlag} ${country.name}`, // Displayed in the dropdown
+            }))
+          );
+        }
+      } catch (error) {
+        messageApi.error(
+          "Error fetching countries list, please refresh the page or try again later"
+        );
+      } finally {
+        setCountriesLoading(false);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  // Handle country selection
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country);
+    setCities([]); // Reset cities
+    if (country) fetchCities(country); // Fetch cities for the selected country
+  };
+
+  const countrySelect = (
+    <li className="flex flex-col gap-2 sm:min-w-36">
+      <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
+        Country
+      </label>
+      <Select
+        name="country"
+        size="large"
+        showSearch
+        allowClear
+        placeholder="Select your country"
+        optionFilterProp="label"
+        onChange={handleCountryChange}
+        options={countries}
+        loading={countriesLoading}
+        style={{ borderRadius: "50px" }}
+        className="w-full"
+      />
+    </li>
+  );
+
+  const fetchCities = async (country) => {
+    setCitiesLoading(true);
+
+    try {
+      const response = await fetch(
+        "https://countriesnow.space/api/v0.1/countries/cities",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ country }),
+        }
+      );
+      const result = await response.json();
+
+      if (!result.error) {
+        setCities(
+          result.data.map((city) => ({
+            value: city, // Value passed on selection
+            label: city, // Displayed in the dropdown
+          }))
+        );
+      }
+    } catch (error) {
+      messageApi.error(
+        "Error fetching cities list, please refresh the page or try again later"
+      );
+    } finally {
+      setCitiesLoading(false);
+    }
+  };
+
   const cityInput = (
-    <li className="flex flex-col gap-2">
+    <li className="flex flex-col gap-2 sm:min-w-36">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         City
       </label>
-      <Input
+      <Select
         name="city"
-        value={updateForm.city}
-        onChange={handleUpdateFieldChange}
-        maxLength={14}
-        placeholder="Your city"
         size="large"
-        style={{ borderRadius: "50px" }}
+        showSearch
+        allowClear
+        placeholder="Select your city"
+        optionFilterProp="label"
+        options={cities}
+        onChange={(city) =>
+          handleUpdateFieldChange({ target: { name: "city", value: city } })
+        }
+        value={updateForm.city}
+        loading={citiesLoading}
+        className="w-full"
+        disabled={!selectedCountry}
       />
     </li>
   );
@@ -182,49 +286,53 @@ function CompleteProfileForm() {
   );
 
   return (
-    <form
-      onSubmit={handleCompleteProfile}
-      action="#"
-      method="POST"
-      className="flex flex-col gap-6 sm:gap-4 lg:gap-5 text-left"
-    >
-      <ul className="flex flex-col sm:flex-row gap-6">
-        {cityInput}
-        {telInput}
-      </ul>
-      <ul className="flex flex-col sm:flex-row  gap-6">
-        {sportsSelect} {genderSelect}
-      </ul>
-      {bioTextArea}
-      {errorMessage && (
-        <Alert
-          message={errorMessage}
-          type="error"
-          className="rounded-xl p-3"
-          showIcon
-          closable
-          onClose={() => setErrorMessage("")}
-        />
-      )}
-      <Button
-        htmlType="submit"
-        disabled={!isFormComplete() || isLoading}
-        type="primary"
-        shape="round"
-        size="large"
-        className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
-        icon={
-          isLoading ? (
-            <Spin size="small" className="white-spin" />
-          ) : (
-            <ArrowRightOutlined size={16} />
-          )
-        }
-        iconPosition="end"
+    <>
+      {contextHolder}
+      <form
+        onSubmit={handleCompleteProfile}
+        action="#"
+        method="POST"
+        className="flex flex-col gap-6 sm:gap-4 lg:gap-5 text-left"
       >
-        Next
-      </Button>
-    </form>
+        <ul className="flex flex-col sm:flex-row gap-6">
+          {countrySelect}
+          {cityInput}
+          {telInput}
+        </ul>
+        <ul className="flex flex-col sm:flex-row  gap-6">
+          {sportsSelect} {genderSelect}
+        </ul>
+        {bioTextArea}
+        {errorMessage && (
+          <Alert
+            message={errorMessage}
+            type="error"
+            className="rounded-xl p-3"
+            showIcon
+            closable
+            onClose={() => setErrorMessage("")}
+          />
+        )}
+        <Button
+          htmlType="submit"
+          disabled={!isFormComplete() || isLoading}
+          type="primary"
+          shape="round"
+          size="large"
+          className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green mx-auto mt-4"
+          icon={
+            isLoading ? (
+              <Spin size="small" className="white-spin" />
+            ) : (
+              <ArrowRightOutlined size={16} />
+            )
+          }
+          iconPosition="end"
+        >
+          Next
+        </Button>
+      </form>
+    </>
   );
 }
 

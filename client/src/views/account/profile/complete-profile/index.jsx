@@ -25,7 +25,7 @@ function CompleteProfile() {
     <div className="min-h-[calc(100vh-59.19px)] relative flex justify-center items-center overflow-hidden">
       <Container>
         <Text text="complete your profile" />
-        <div className="mt-12 lg:mt-16 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="mt-12 lg:mt-16 sm:mx-auto sm:w-full sm:max-w-lg xl:w-[38rem]">
           <CompleteProfileForm />
         </div>
       </Container>

@@ -24,7 +24,7 @@ const completeProfileStore = create((set, get) => ({
     const bioValid = bio.split(/\s+/).length >= bioMinWords; // Check for minimum word count
     const telValid = telRegex.test(tel);
     const sportsValid = sports.length > 0; // Ensure sports is not empty
-    const cityValid = city.trim() !== ""; // Ensure city is not empty
+    const cityValid = city !== ""; // Ensure city is not empty
     const genderValid = gender !== ""; // Ensure gender is selected
 
     return bioValid && telValid && sportsValid && cityValid && genderValid;
@@ -45,7 +45,7 @@ const completeProfileStore = create((set, get) => ({
           : "Phone number must start with 0 and contain at least 8 digits."
         : "",
       sports: sports.length > 0 ? "" : "Please select at least one sport.",
-      city: city.trim() !== "" ? "" : "City field cannot be empty.",
+      city: city !== "" ? "" : "City field cannot be empty.",
       gender: gender !== "" ? "" : "Gender field cannot be empty.", // Gender validation
     };
 
@@ -53,11 +53,11 @@ const completeProfileStore = create((set, get) => ({
   },
 
   handleUpdateFieldChange: (e) => {
-    const { value, name } = e.target;
+    const { value, name } = e.target; // Correctly destructure the value
     set((state) => ({
       updateForm: {
         ...state.updateForm,
-        [name]: value,
+        [name]: value, // Dynamically update the field
       },
     }));
   },
@@ -74,11 +74,7 @@ const completeProfileStore = create((set, get) => ({
   completeProfile: async () => {
     try {
       const { updateForm } = get();
-
-      // Ensure city is not null or undefined before applying toLowerCase()
-      const cityLowerCase = updateForm.city
-        ? updateForm.city.trim().toLowerCase()
-        : "";
+      console.log(updateForm);
 
       const response = await axios.post(
         "/complete-profile",
@@ -86,7 +82,7 @@ const completeProfileStore = create((set, get) => ({
           gender: updateForm.gender,
           bio: updateForm.bio,
           sports: updateForm.sports.map((sport) => sport.id), // Send only the sport IDs
-          city: cityLowerCase, // Apply the correction here
+          city: updateForm.city, // Apply the correction here
           tel: updateForm.tel,
         },
         {
