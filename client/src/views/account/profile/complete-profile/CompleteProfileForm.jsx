@@ -56,7 +56,7 @@ function CompleteProfileForm() {
   };
 
   const bioTextArea = (
-    <li className="flex flex-col gap-1">
+    <li className="flex flex-col gap-2">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Bio
       </label>
@@ -77,7 +77,7 @@ function CompleteProfileForm() {
 
   const sports = useSports();
   const sportsSelect = (
-    <li className="flex flex-col gap-1 w-full">
+    <li className="flex flex-col gap-2 w-full">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Sports
       </label>
@@ -119,7 +119,7 @@ function CompleteProfileForm() {
   );
 
   const cityInput = (
-    <li className="flex flex-col gap-1">
+    <li className="flex flex-col gap-2">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         City
       </label>
@@ -136,7 +136,7 @@ function CompleteProfileForm() {
   );
 
   const telInput = (
-    <li className="flex flex-col gap-1">
+    <li className="flex flex-col gap-2">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Tel
       </label>
@@ -160,7 +160,7 @@ function CompleteProfileForm() {
   );
 
   const genderSelect = (
-    <li className="w-32 flex flex-col gap-1">
+    <li className="w-32 flex flex-col gap-2">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Gender
       </label>
@@ -186,7 +186,7 @@ function CompleteProfileForm() {
       onSubmit={handleCompleteProfile}
       action="#"
       method="POST"
-      className="flex flex-col gap-6 xl:gap-3 text-left"
+      className="flex flex-col gap-6 sm:gap-4 lg:gap-5 text-left"
     >
       <ul className="flex flex-col sm:flex-row gap-6">
         {cityInput}

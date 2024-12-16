@@ -50,7 +50,7 @@ export default function Testimonials({
           <motion.li
             key={index}
             variants={itemAnimationVariables(rotationDegree)}
-            className="flex flex-col items-start justify-between bg-white p-6 rounded-2xl border-gray-200 border-[1px]"
+            className="flex flex-col items-start justify-between bg-white p-6 lg:p-7 xl:p-8 rounded-3xl border-gray-200 border-[1px]"
           >
             <div className="relative flex items-center gap-x-4 text-left">
               <Avatar src={review.src} size={54} />
