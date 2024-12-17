@@ -12,20 +12,21 @@ const completeProfileStore = create((set, get) => ({
   token: authStore.getState().token || null,
 
   updateForm: {
-    gender: "",
+    gender: null,
     bio: "",
     sports: [], // Store as array of { id, name } objects
-    city: "",
-    tel: "",
+    city: null,
+    tel: null,
   },
 
   isFormComplete: () => {
     const { bio, tel, sports, city, gender } = get().updateForm;
+
     const bioValid = bio.split(/\s+/).length >= bioMinWords; // Check for minimum word count
-    const telValid = tel !== "";
+    const telValid = tel && telRegex.test(tel); // Check if phone number is valid using regex
     const sportsValid = sports.length > 0; // Ensure sports is not empty
-    const cityValid = city !== ""; // Ensure city is not empty
-    const genderValid = gender !== ""; // Ensure gender is selected
+    const cityValid = city !== null; // Ensure city is not empty
+    const genderValid = gender !== null; // Ensure gender is selected
 
     return bioValid && telValid && sportsValid && cityValid && genderValid;
   },
@@ -45,8 +46,8 @@ const completeProfileStore = create((set, get) => ({
           : "Phone number must contain at least 6 digits."
         : "",
       sports: sports.length > 0 ? "" : "Please select at least one sport.",
-      city: city !== "" ? "" : "City field cannot be empty.",
-      gender: gender !== "" ? "" : "Gender field cannot be empty.", // Gender validation
+      city: city !== null ? "" : "City field cannot be empty.",
+      gender: gender !== null ? "" : "Gender field cannot be empty.",
     };
 
     return errors;

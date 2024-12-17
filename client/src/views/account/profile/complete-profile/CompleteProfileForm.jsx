@@ -186,7 +186,8 @@ function CompleteProfileForm() {
       fetchCountryCode(country); // Fetch and set the country code
     } else {
       setSelectedCode("###");
-      handleUpdateFieldChange({ target: { name: "city", value: "" } });
+      handleUpdateFieldChange({ target: { name: "tel", value: null } });
+      handleUpdateFieldChange({ target: { name: "city", value: null } });
     }
   };
 
@@ -251,7 +252,6 @@ function CompleteProfileForm() {
         name="city"
         size="large"
         showSearch
-        allowClear
         placeholder="Select your city"
         optionFilterProp="label"
         options={cities}
@@ -302,8 +302,8 @@ function CompleteProfileForm() {
       <Select
         placeholder="Select your gender"
         value={updateForm.gender}
-        onChange={(value) =>
-          handleUpdateFieldChange({ target: { name: "gender", value } })
+        onChange={(gender) =>
+          handleUpdateFieldChange({ target: { name: "gender", value: gender } })
         }
         style={{ borderRadius: "15px" }}
         options={[
@@ -323,7 +323,7 @@ function CompleteProfileForm() {
         onSubmit={handleCompleteProfile}
         action="#"
         method="POST"
-        className="flex flex-col gap-6 sm:gap-4 lg:gap-5 text-left"
+        className="flex flex-col gap-6 sm:gap-4 lg:gap-5 xl:gap-6 text-left"
       >
         <ul className="flex flex-col sm:flex-row gap-6">
           {countrySelect}

@@ -44,7 +44,7 @@ function SignUpForm() {
       onSubmit={handleSignUp}
       method="POST"
       action="#"
-      className="flex flex-col gap-5 text-left"
+      className="flex flex-col gap-5 xl:gap-6 text-left"
     >
       <li className="flex flex-col gap-2">
         <label
