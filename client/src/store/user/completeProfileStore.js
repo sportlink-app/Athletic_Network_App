@@ -10,7 +10,10 @@ const telRegex = /^\d{6,}$/;
 
 const completeProfileStore = create((set, get) => ({
   token: authStore.getState().token || null,
-
+  selectedCode: "###",
+  setSelectedCode: (code) => {
+    set({ selectedCode: code });
+  },
   updateForm: {
     gender: null,
     bio: "",
@@ -74,8 +77,8 @@ const completeProfileStore = create((set, get) => ({
 
   completeProfile: async () => {
     try {
-      const { updateForm } = get();
-      console.log(updateForm);
+      const { updateForm, selectedCode } = get();
+      console.log(selectedCode + updateForm.tel);
 
       const response = await axios.post(
         "/complete-profile",
@@ -84,7 +87,7 @@ const completeProfileStore = create((set, get) => ({
           bio: updateForm.bio,
           sports: updateForm.sports.map((sport) => sport.id), // Send only the sport IDs
           city: updateForm.city, // Apply the correction here
-          tel: updateForm.tel,
+          tel: selectedCode + updateForm.tel,
         },
         {
           headers: {

@@ -28,6 +28,7 @@ function CompleteProfileForm() {
     updateValidationErrors: state.updateValidationErrors,
     completeProfile: state.completeProfile,
   }));
+  const { selectedCode, setSelectedCode } = completeProfileStore();
 
   const navigate = useNavigate();
 
@@ -265,8 +266,6 @@ function CompleteProfileForm() {
       />
     </li>
   );
-
-  const [selectedCode, setSelectedCode] = useState("###");
 
   const telInput = (
     <li className="flex flex-col gap-2">
