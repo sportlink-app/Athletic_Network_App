@@ -22,7 +22,7 @@ function Login() {
     <div className="min-h-[calc(100vh-59.19px)] relative flex justify-center items-center overflow-hidden">
       <Container>
         <Text text="sign in to your account" />
-        <div className=" mt-12 lg:mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className=" mt-12 sm:mx-auto sm:w-full sm:max-w-sm">
           <LoginForm />
 
           <div className="flex gap-2 mt-8 justify-center">

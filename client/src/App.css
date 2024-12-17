@@ -91,6 +91,13 @@ textarea::placeholder,
 .ant-picker-panel-container {
   border-radius: 18px !important;
 }
+:where(.css-dev-only-do-not-override-14qglws).ant-input-lg {
+  @apply rounded-r-full;
+}
+:where(.css-dev-only-do-not-override-14qglws).ant-input-group-wrapper-lg
+  .ant-input-group-addon {
+  @apply rounded-l-full;
+}
 
 .ant-pagination .ant-pagination-item-active a,
 .ant-picker-dropdown,

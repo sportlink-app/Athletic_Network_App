@@ -127,6 +127,7 @@ function CompleteProfileForm() {
   const [cities, setCities] = useState([]);
   const [citiesLoading, setCitiesLoading] = useState(false);
 
+  // Fetch list of countries
   useEffect(() => {
     setCountriesLoading(true);
 
@@ -156,15 +157,41 @@ function CompleteProfileForm() {
     fetchCountries();
   }, []);
 
+  // Fetch country code based on selected country
+  const fetchCountryCode = async (countryName) => {
+    try {
+      const response = await fetch(
+        `https://restcountries.com/v3.1/name/${countryName}`
+      );
+      const result = await response.json();
+
+      if (result && result[0]?.idd) {
+        const root = result[0].idd.root || "";
+        const suffixes = result[0].idd.suffixes?.[0] || "";
+        setSelectedCode(`${root}${suffixes}`); // Set the country code
+      } else {
+        setSelectedCode("###"); // Fallback code if not found
+      }
+    } catch (error) {
+      messageApi.error("Error fetching country code");
+      setSelectedCode("###");
+    }
+  };
+
   // Handle country selection
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
-    setCities([]); // Reset cities
-    if (country) fetchCities(country); // Fetch cities for the selected country
+    if (country) {
+      fetchCities(country); // Fetch cities for the selected country
+      fetchCountryCode(country); // Fetch and set the country code
+    } else {
+      setSelectedCode("###");
+      handleUpdateFieldChange({ target: { name: "city", value: "" } });
+    }
   };
 
   const countrySelect = (
-    <li className="flex flex-col gap-2 sm:min-w-36">
+    <li className="flex flex-col gap-2 sm:min-w-36 max-w-36">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Country
       </label>
@@ -239,12 +266,15 @@ function CompleteProfileForm() {
     </li>
   );
 
+  const [selectedCode, setSelectedCode] = useState("###");
+
   const telInput = (
     <li className="flex flex-col gap-2">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Tel
       </label>
       <Input
+        addonBefore={selectedCode || ""} // Dynamically set the phone code or clear it
         name="tel"
         value={updateForm.tel}
         onChange={handleUpdateFieldChange}
@@ -253,6 +283,7 @@ function CompleteProfileForm() {
         type="number"
         placeholder="Your phone number"
         size="large"
+        disabled={!selectedCountry} // Disable the input when no country is selected
         style={{ borderRadius: "50px" }}
       />
       {errors.tel && (

@@ -6,7 +6,7 @@ import authStore from "./authStore";
 // Minimum bio word count validation
 const bioMinWords = 10;
 // Phone number validation regex
-const telRegex = /^0\d{8,}$/;
+const telRegex = /^\d{6,}$/;
 
 const completeProfileStore = create((set, get) => ({
   token: authStore.getState().token || null,
@@ -22,7 +22,7 @@ const completeProfileStore = create((set, get) => ({
   isFormComplete: () => {
     const { bio, tel, sports, city, gender } = get().updateForm;
     const bioValid = bio.split(/\s+/).length >= bioMinWords; // Check for minimum word count
-    const telValid = telRegex.test(tel);
+    const telValid = tel !== "";
     const sportsValid = sports.length > 0; // Ensure sports is not empty
     const cityValid = city !== ""; // Ensure city is not empty
     const genderValid = gender !== ""; // Ensure gender is selected
@@ -42,7 +42,7 @@ const completeProfileStore = create((set, get) => ({
       tel: tel
         ? telRegex.test(tel)
           ? ""
-          : "Phone number must start with 0 and contain at least 8 digits."
+          : "Phone number must contain at least 6 digits."
         : "",
       sports: sports.length > 0 ? "" : "Please select at least one sport.",
       city: city !== "" ? "" : "City field cannot be empty.",

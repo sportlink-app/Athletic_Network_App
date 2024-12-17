@@ -22,7 +22,7 @@ function SignUp() {
     <div className="min-h-[calc(100vh-59.19px)] relative flex justify-center items-center overflow-hidden">
       <Container>
         <Text text="create a new account" />
-        <div className="mt-12 lg:mt-16 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-12 sm:mx-auto sm:w-full sm:max-w-sm">
           <SignUpForm />
           <div className="flex gap-4 mt-8 justify-center">
             <p className="text-center text-gray-500">
