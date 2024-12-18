@@ -14,10 +14,11 @@ const completeProfileStore = create((set, get) => ({
   setSelectedCode: (code) => {
     set({ selectedCode: code });
   },
+  phoneVerified: false,
   updateForm: {
     gender: null,
     bio: "",
-    sports: [], // Store as array of { id, name } objects
+    sports: [],
     city: null,
     tel: null,
   },

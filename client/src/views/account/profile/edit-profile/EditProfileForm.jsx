@@ -129,33 +129,6 @@ function EditProfileForm({ onSuccess }) {
 
   const sports = useSports(); // Call the hook to get the sports array
 
-  // const sportsSelect = (
-  //   <li className="mt-2 flex flex-col gap-1">
-  //     <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
-  //       Sports
-  //     </label>
-  //     <Select
-  //       value={editForm.sports}
-  //       placeholder="Select your favorite sports"
-  //       mode="multiple"
-  //       tagRender={tagRender}
-  //       maxCount={8}
-  //       maxTagCount={2}
-  //       style={{
-  //         width: "100%",
-  //         borderRadius: "10px",
-  //       }}
-  //       options={sports.map((name) => ({
-  //         value: name,
-  //         label: name,
-  //       }))}
-  //       size="large"
-  //       allowClear
-  //       onChange={handleSportsChange}
-  //     />
-  //   </li>
-  // );
-
   const sportsSelect = (
     <li className="mt-2 flex flex-col gap-1 w-full">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
@@ -205,7 +178,6 @@ function EditProfileForm({ onSuccess }) {
     <li className="mt-2 flex flex-col gap-1">
       <label className="ml-2 font-medium leading-6 text-gray-900">Tel</label>
       <Input
-        type="number"
         name="tel"
         value={editForm.tel}
         onChange={handleUpdateFieldChange}

@@ -140,7 +140,7 @@ function WriteBlogForm({ onSuccess }) {
         autoSize={{
           minRows: 6,
         }}
-        style={{ borderRadius: "15px" }}
+        style={{ borderRadius: "15px", paddingTop: "8px" }}
       />
     </li>
   );

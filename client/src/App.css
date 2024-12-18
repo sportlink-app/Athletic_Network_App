@@ -91,7 +91,7 @@ textarea::placeholder,
 .ant-picker-panel-container {
   border-radius: 18px !important;
 }
-:where(.css-dev-only-do-not-override-14qglws).ant-input-lg {
+.input-tel :where(.css-dev-only-do-not-override-14qglws).ant-input-lg {
   @apply rounded-r-full;
 }
 :where(.css-dev-only-do-not-override-14qglws).ant-input-group-wrapper-lg

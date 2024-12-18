@@ -29,7 +29,7 @@ function ProfileHeader({ username, gender, availability = null }) {
   };
   return (
     <div className="!w-1/2 lg:!w-1/3 xl:!w-1/5 self-center mt-4 md:mt-0 relative">
-      <div className="absolute left-1/2 flex -translate-x-1/2 -translate-y-[53%] flex-col items-center">
+      <div className="absolute left-1/2 flex -translate-x-1/2 -translate-y-[60%] flex-col items-center">
         <ProfileAvatar username={username} gender={gender} size={120} />
         <ul className="flex flex-col gap-2 justify-center items-center mt-4">
           <h2 className="text-gray-600 text-4xl font-medium capitalize">

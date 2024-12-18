@@ -7,6 +7,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import completeProfileStore from "../../../../store/user/completeProfileStore";
 import authStore from "../../../../store/user/authStore"; // Adjust path as needed
 import useSports from "../../../../components/dynamic/SportsNames";
+import PhoneVerification from "./PhoneVerification";
 
 function CompleteProfileForm() {
   const { setProfileCompletedState } = authStore((state) => ({
@@ -28,7 +29,8 @@ function CompleteProfileForm() {
     updateValidationErrors: state.updateValidationErrors,
     completeProfile: state.completeProfile,
   }));
-  const { selectedCode, setSelectedCode } = completeProfileStore();
+  const { selectedCode, setSelectedCode, phoneVerified } =
+    completeProfileStore();
 
   const navigate = useNavigate();
 
@@ -156,7 +158,7 @@ function CompleteProfileForm() {
       }
     };
     fetchCountries();
-  }, []);
+  }, [messageApi]);
 
   // Fetch country code based on selected country
   const fetchCountryCode = async (countryName) => {
@@ -283,7 +285,7 @@ function CompleteProfileForm() {
         placeholder="Your phone number"
         size="large"
         disabled={!selectedCountry} // Disable the input when no country is selected
-        style={{ borderRadius: "50px" }}
+        className="input-tel"
       />
       {errors.tel && (
         <p className="text-sm ml-2 text-red-500 max-w-60 sm:max-w-44">
@@ -327,7 +329,10 @@ function CompleteProfileForm() {
         <ul className="flex flex-col sm:flex-row gap-6">
           {countrySelect}
           {cityInput}
-          {telInput}
+          <div className="flex justify-center items-end gap-6">
+            {telInput}
+            <PhoneVerification />
+          </div>
         </ul>
         <ul className="flex flex-col sm:flex-row  gap-6">
           {sportsSelect} {genderSelect}
@@ -343,9 +348,17 @@ function CompleteProfileForm() {
             onClose={() => setErrorMessage("")}
           />
         )}
+        {isFormComplete() && !phoneVerified && (
+          <Alert
+            message="Please verify your phone number before submitting the form."
+            type="warning"
+            className="rounded-xl p-3"
+            showIcon
+          />
+        )}
         <Button
           htmlType="submit"
-          disabled={!isFormComplete() || isLoading}
+          disabled={!isFormComplete() || isLoading || !phoneVerified}
           type="primary"
           shape="round"
           size="large"
@@ -359,7 +372,7 @@ function CompleteProfileForm() {
           }
           iconPosition="end"
         >
-          Next
+          Finish
         </Button>
       </form>
     </>

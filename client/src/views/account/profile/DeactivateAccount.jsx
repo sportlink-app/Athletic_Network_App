@@ -70,14 +70,14 @@ function DeactivateAccount() {
         </div>
       </Card>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
-        <div className="p-2">
+        <div className="py-2 px-3">
           <h1 className="text-slate-800 text-lg">Deactivate Account</h1>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500 mt-3">
             Are you sure you want to deactivate your account? This action cannot
             be undone. Once you deactivate your account, there is no going back.
           </p>
 
-          <div className="mt-6 sm:flex sm:flex-row-reverse">
+          <div className="mt-4 sm:flex sm:flex-row-reverse">
             <Button
               onClick={handleDeactivate}
               danger
