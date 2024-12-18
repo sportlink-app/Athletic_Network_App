@@ -247,7 +247,7 @@ function CompleteProfileForm() {
   };
 
   const cityInput = (
-    <li className="flex flex-col gap-2 sm:min-w-36">
+    <li className="flex flex-col gap-2 sm:min-w-32">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         City
       </label>
