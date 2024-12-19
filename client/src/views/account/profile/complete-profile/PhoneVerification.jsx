@@ -7,7 +7,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
   PhoneAuthProvider,
-  signInWithCredential, // Importing signInWithCredential here
+  signInWithCredential,
 } from "firebase/auth";
 
 export default function PhoneVerification() {
@@ -25,21 +25,25 @@ export default function PhoneVerification() {
   const [verificationCode, setVerificationCode] = useState("");
 
   const [messageApi, contextHolder] = message.useMessage();
+
   const showModal = () => {
     setIsModalOpen(true);
 
     // Ensure that reCAPTCHA is initialized once
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container", // The ID of the element where reCAPTCHA will be rendered
+        "recaptcha-container",
         {
-          size: "invisible", // Invisible reCAPTCHA
+          size: "invisible",
           callback: (response) => {
-            console.log("Recaptcha solved:", response);
+            console.log("reCAPTCHA solved:", response);
           },
         },
         auth
       );
+
+      // Disable app verification for testing (set directly on auth instance)
+      auth.settings.appVerificationDisabledForTesting = true;
     }
   };
 
@@ -48,24 +52,29 @@ export default function PhoneVerification() {
   };
 
   const handleSendCode = () => {
+    if (!updateForm.tel) {
+      messageApi.error("Phone number is missing.");
+      return;
+    }
+
     const phoneNumber = selectedCode + updateForm.tel; // Full phone number
     const appVerifier = window.recaptchaVerifier;
 
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
-        // Store the verification ID here
         setVerificationId(confirmationResult.verificationId);
-        messageApi.success("Code sent successfully");
+        messageApi.success("Code sent successfully.");
       })
-      .catch(() => {
-        messageApi.error("Error during phone number sign-in");
+      .catch((error) => {
+        console.error("Error during phone number sign-in:", error);
+        messageApi.error("Failed to send verification code. Check reCAPTCHA.");
       });
   };
 
   const handleVerifyCode = () => {
-    if (!verificationId) {
-      console.error("Verification ID is missing!");
-      return; // Early exit if verification ID is not available
+    if (!verificationId || !verificationCode) {
+      messageApi.error("Verification code or ID is missing.");
+      return;
     }
 
     const credential = PhoneAuthProvider.credential(
@@ -75,29 +84,13 @@ export default function PhoneVerification() {
 
     signInWithCredential(auth, credential)
       .then((userCredential) => {
-        messageApi.success(
-          "Phone number verified successfully",
-          userCredential
-        );
-
+        messageApi.success("Phone number verified successfully.");
         // Handle further actions, like updating phoneVerified status
       })
-      .catch(() => {
-        messageApi.error("Error verifying code");
+      .catch((error) => {
+        console.error("Error verifying code:", error);
+        messageApi.error("Failed to verify code. Please try again.");
       });
-  };
-
-  const onChange = (text) => {
-    console.log("onChange:", text);
-  };
-
-  const onInput = (value) => {
-    console.log("onInput:", value);
-  };
-
-  const sharedProps = {
-    onChange,
-    onInput,
   };
 
   return (
@@ -127,12 +120,11 @@ export default function PhoneVerification() {
             . Please enter the code below to complete the verification process.
           </p>
           <div className="flex justify-center mt-4">
-            <Input.OTP
+            <Input
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
               size="large"
-              length={6}
-              {...sharedProps}
+              placeholder="Enter verification code"
             />
           </div>
           <div className="mt-6 sm:flex sm:flex-row-reverse">
@@ -140,8 +132,17 @@ export default function PhoneVerification() {
               type="primary"
               shape="round"
               size="large"
-              onClick={handleSendCode}
+              onClick={handleVerifyCode}
               className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green"
+            >
+              Verify Code
+            </Button>
+            <Button
+              type="default"
+              shape="round"
+              size="large"
+              onClick={handleSendCode}
+              className="mr-3"
             >
               Send Code
             </Button>

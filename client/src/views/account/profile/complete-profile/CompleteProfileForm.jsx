@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import completeProfileStore from "../../../../store/user/completeProfileStore";
-import authStore from "../../../../store/user/authStore"; // Adjust path as needed
+import authStore from "../../../../store/user/authStore";
 import useSports from "../../../../components/dynamic/SportsNames";
 import PhoneVerification from "./PhoneVerification";
 
@@ -184,13 +184,14 @@ function CompleteProfileForm() {
   // Handle country selection
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
+    handleUpdateFieldChange({ target: { name: "city", value: null } });
+
     if (country) {
       fetchCities(country); // Fetch cities for the selected country
       fetchCountryCode(country); // Fetch and set the country code
     } else {
       setSelectedCode("###");
       handleUpdateFieldChange({ target: { name: "tel", value: null } });
-      handleUpdateFieldChange({ target: { name: "city", value: null } });
     }
   };
 
