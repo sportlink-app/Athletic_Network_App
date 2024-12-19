@@ -115,13 +115,13 @@ const completeProfileStore = create((set, get) => ({
       return response.data;
     } catch (error) {
       // Handle different error statuses
-      if (error.response && error.response.status === 400) {
-        throw new Error("Failed to update your profile");
-      } else if (error.response && error.response.status === 500) {
-        throw new Error("Update profile failed, please try again");
+      if (error.response && error.response.status === 404) {
+        throw new Error("Profile is already completed");
+      } else if (error.response && error.response.status === 400) {
+        throw new Error("Phone number is already in use");
       } else {
         throw new Error(
-          "An unexpected error occurred, please refresh the page or try again later"
+          "Failed to update your profile, please try again later"
         );
       }
     }
