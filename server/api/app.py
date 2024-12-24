@@ -10,7 +10,8 @@ from .blueprints.sports_blueprint import sports_blueprint
 from .blueprints.blog_blueprint import blog_blueprint
 from .blueprints.team_blueprint import team_blueprint
 from .blueprints.notification_blueprint import notification_blueprint, register_socketio_events
-from .utils.socketio import socketio  
+from .utils.socketio import socketio
+from .blueprints.phone_confirmation_blueprint import phone_confirmation_blueprint
 
 migrate = Migrate()
 
@@ -33,6 +34,7 @@ def create_app():
     app.register_blueprint(blog_blueprint)
     app.register_blueprint(team_blueprint)
     app.register_blueprint(notification_blueprint)
+    app.register_blueprint(phone_confirmation_blueprint)
 
     # Register socketio event handlers
     register_socketio_events(socketio)

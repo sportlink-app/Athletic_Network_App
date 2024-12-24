@@ -25,11 +25,11 @@ class Myusers(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     isProfileCompleted = db.Column(db.Boolean, default=False)
+    tel = db.Column(db.String(15))
     availability = db.Column(db.Boolean, default=True)
     bio = db.Column(db.String(500))
     gender = db.Column(db.String(10))
     city = db.Column(db.String(100))
-    tel = db.Column(db.String(15))
 
     # Relationships
     owned_teams = db.relationship('Team', back_populates='owner', cascade='all, delete-orphan')

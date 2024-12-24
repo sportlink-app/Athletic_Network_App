@@ -30,7 +30,7 @@ function Discover() {
         whileHover={{ scale: 1.02 }}
         viewport={{ once: true }}
         id="discover"
-        className="mx-2 bg-gradient-to-r from-cyan to-green max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-[52rem] rounded-3xl shadow-xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"
+        className="mx-2 bg-gradient-to-r from-cyan to-green max-w-md sm:max-w-lg md:max-w-xl lg:max-w-3xl xl:max-w-[54rem] rounded-3xl shadow-xl ring-1 ring-gray-200 p-10 md:p-12 lg:p-14 xl:p-16 text-center text-white overflow-hidden"
       >
         <div className="relative z-10">
           <h2 className="text-xl sm:text-3xl font-bold tracking-tight">

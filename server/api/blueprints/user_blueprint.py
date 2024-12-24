@@ -105,7 +105,7 @@ def complete_profile(current_user):
 
         # Check if profile is already completed
         if user.isProfileCompleted:
-            return jsonify({"message": "Profile is already completed"}), 400
+            return jsonify({"message": "Profile is already completed"}), 404
 
         data = request.get_json()
 
@@ -117,7 +117,12 @@ def complete_profile(current_user):
             return jsonify({
                 "message": "Missing or empty required fields",
                 "missing_fields": missing_fields
-            }), 400
+            }), 500
+
+        # Check if 'tel' already exists for another user
+        existing_user = Myusers.query.filter_by(tel=data.get('tel')).first()
+        if existing_user and existing_user.id != user.id:
+            return jsonify({"message": "Phone number is already in use"}), 400
 
         # Set basic profile details
         user.gender = data.get('gender')
@@ -134,7 +139,7 @@ def complete_profile(current_user):
             if sport:
                 user.sports.append(sport)
             else:
-                return jsonify({"message": f"Sport with ID {sport_id} not found"}), 404
+                return jsonify({"message": f"Sport with ID {sport_id} not found"}), 500
 
         # Mark the profile as completed
         user.isProfileCompleted = True

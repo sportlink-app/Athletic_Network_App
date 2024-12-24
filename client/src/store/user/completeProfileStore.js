@@ -14,7 +14,7 @@ const completeProfileStore = create((set, get) => ({
   setSelectedCode: (code) => {
     set({ selectedCode: code });
   },
-  phoneVerified: true,
+
   updateForm: {
     gender: null,
     bio: "",

@@ -13,12 +13,12 @@ const useSports = () => {
         const sportsData = await getSports();
         setSports(sportsData);
       } catch (error) {
-        navigate("/server-error");
+        // navigate("/server-error");
       }
     };
 
     fetchSports();
-  }, [getSports]);
+  }, [getSports, navigate]);
 
   return sports;
 };

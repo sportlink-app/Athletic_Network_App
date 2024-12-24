@@ -1,13 +1,12 @@
 import PropTypes from "prop-types";
 import { Alert, Button, Input, message, Select, Spin, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import completeProfileStore from "../../../../store/user/completeProfileStore";
 import authStore from "../../../../store/user/authStore";
 import useSports from "../../../../components/dynamic/SportsNames";
-import PhoneVerification from "./PhoneVerification";
 
 function CompleteProfileForm() {
   const { setProfileCompletedState } = authStore((state) => ({
@@ -126,39 +125,42 @@ function CompleteProfileForm() {
   const [countries, setCountries] = useState([]);
   const [countriesLoading, setCountriesLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(false);
+  const [countriesFetched, setCountriesFetched] = useState(false);
 
   const [cities, setCities] = useState([]);
   const [citiesLoading, setCitiesLoading] = useState(false);
 
-  // Fetch list of countries
-  useEffect(() => {
-    setCountriesLoading(true);
-
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch(
-          "https://countriesnow.space/api/v0.1/countries/flag/unicode"
-        );
-        const result = await response.json();
-
-        if (!result.error) {
-          setCountries(
-            result.data.map((country) => ({
-              value: country.name, // Value passed on selection
-              label: `${country.unicodeFlag} ${country.name}`, // Displayed in the dropdown
-            }))
+  // Fetch list of countries when dropdown is opened
+  const handleCountryDropdownOpen = () => {
+    if (!countriesFetched) {
+      setCountriesLoading(true);
+      const fetchCountries = async () => {
+        try {
+          const response = await fetch(
+            "https://countriesnow.space/api/v0.1/countries/flag/unicode"
           );
+          const result = await response.json();
+
+          if (!result.error) {
+            setCountries(
+              result.data.map((country) => ({
+                value: country.name, // Value passed on selection
+                label: `${country.unicodeFlag} ${country.name}`, // Displayed in the dropdown
+              }))
+            );
+            setCountriesFetched(true); // Mark countries as fetched
+          }
+        } catch (error) {
+          messageApi.error(
+            "Error fetching countries list, please refresh the page or try again later"
+          );
+        } finally {
+          setCountriesLoading(false);
         }
-      } catch (error) {
-        messageApi.error(
-          "Error fetching countries list, please refresh the page or try again later"
-        );
-      } finally {
-        setCountriesLoading(false);
-      }
-    };
-    fetchCountries();
-  }, [messageApi]);
+      };
+      fetchCountries();
+    }
+  };
 
   // Fetch country code based on selected country
   const fetchCountryCode = async (countryName) => {
@@ -176,7 +178,9 @@ function CompleteProfileForm() {
         setSelectedCode("###"); // Fallback code if not found
       }
     } catch (error) {
-      messageApi.error("Error fetching country code");
+      messageApi.error(
+        "Error fetching country code, please refresh the page or try again later"
+      );
       setSelectedCode("###");
     }
   };
@@ -196,7 +200,7 @@ function CompleteProfileForm() {
   };
 
   const countrySelect = (
-    <li className="flex flex-col gap-2 sm:min-w-36 max-w-36">
+    <li className="flex flex-col gap-2 min-w-40 md:max-w-40">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Country
       </label>
@@ -207,6 +211,7 @@ function CompleteProfileForm() {
         allowClear
         placeholder="Select your country"
         optionFilterProp="label"
+        onDropdownVisibleChange={handleCountryDropdownOpen}
         onChange={handleCountryChange}
         options={countries}
         loading={countriesLoading}
@@ -248,7 +253,7 @@ function CompleteProfileForm() {
   };
 
   const cityInput = (
-    <li className="flex flex-col gap-2 sm:min-w-32">
+    <li className="flex flex-col gap-2 min-w-40">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         City
       </label>
@@ -271,7 +276,7 @@ function CompleteProfileForm() {
   );
 
   const telInput = (
-    <li className="flex flex-col gap-2">
+    <li className="flex flex-col gap-2 min-w-40">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Tel
       </label>
@@ -297,7 +302,7 @@ function CompleteProfileForm() {
   );
 
   const genderSelect = (
-    <li className="w-32 flex flex-col gap-2">
+    <li className=" flex flex-col gap-2 md:w-32">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
         Gender
       </label>
@@ -313,7 +318,6 @@ function CompleteProfileForm() {
           { value: "female", label: "Female" },
         ]}
         size="large"
-        className="w-32"
       />
     </li>
   );
@@ -330,10 +334,7 @@ function CompleteProfileForm() {
         <ul className="flex flex-col sm:flex-row gap-6">
           {countrySelect}
           {cityInput}
-          <div className="flex justify-center items-end gap-6">
-            {telInput}
-            <PhoneVerification />
-          </div>
+          {telInput}
         </ul>
         <ul className="flex flex-col sm:flex-row  gap-6">
           {sportsSelect} {genderSelect}

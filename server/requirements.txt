@@ -13,4 +13,4 @@ PyJWT==2.6.0
 python-dotenv==0.21.0
 Werkzeug==2.2.3
 Flask-SocketIO==5.3.3
-
+twilio==8.2.0

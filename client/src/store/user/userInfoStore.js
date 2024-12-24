@@ -56,10 +56,9 @@ const userInfoStore = create(
             }
           );
 
-          // Update only availability without affecting local storage
           set((state) => ({
             ...state,
-            availability: response.data.availability || newAvailability, // Ensure we always set the availability correctly
+            availability: response.data.availability || newAvailability,
           }));
         } catch (error) {
           console.error("Error updating availability:", error.message);
@@ -106,7 +105,12 @@ const userInfoStore = create(
     }),
     {
       name: "user-info",
-      getStorage: () => localStorage,
+      storage: {
+        getItem: (name) => Promise.resolve(localStorage.getItem(name)),
+        setItem: (name, value) =>
+          Promise.resolve(localStorage.setItem(name, value)),
+        removeItem: (name) => Promise.resolve(localStorage.removeItem(name)),
+      },
     }
   )
 );
