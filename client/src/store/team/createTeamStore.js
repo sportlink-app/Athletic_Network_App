@@ -10,6 +10,7 @@ const createTeamStore = create((set, get) => ({
     membersCount: "",
     description: "",
     date: "",
+    location: "",
   },
   errors: {
     membersCountError: "",
@@ -17,6 +18,14 @@ const createTeamStore = create((set, get) => ({
     dateError: "",
   },
   teamId: "",
+
+  setLocation: (location) =>
+    set((state) => ({
+      teamForm: {
+        ...state.teamForm,
+        location, // This correctly updates the location
+      },
+    })),
 
   setTeamForm: (formData) =>
     set((state) => ({
@@ -34,9 +43,11 @@ const createTeamStore = create((set, get) => ({
         membersCount: "",
         description: "",
         date: "",
+        location: "",
       },
       errors: {
         membersCountError: "",
+        dateError: "",
         sportError: "",
       },
     }),
@@ -113,10 +124,11 @@ const createTeamStore = create((set, get) => ({
 
   isFormInvalid: () => {
     const { teamForm, errors } = get();
-    const { name, sportId, membersCount, description, date } = teamForm;
+    const { name, sportId, membersCount, description, date, location } =
+      teamForm;
 
     const isFieldEmpty =
-      !name || !sportId || !membersCount || !description || !date;
+      !name || !sportId || !membersCount || !description || !date || !location;
 
     // Check if any error messages are set
     const hasErrors =
@@ -127,7 +139,8 @@ const createTeamStore = create((set, get) => ({
   },
 
   createTeam: async () => {
-    const { name, sportId, membersCount, description, date } = get().teamForm;
+    const { name, sportId, membersCount, description, date, location } =
+      get().teamForm;
 
     try {
       const response = await axios.post(
@@ -138,6 +151,7 @@ const createTeamStore = create((set, get) => ({
           members_count: Number(membersCount),
           description,
           date,
+          location,
         },
         {
           headers: {
@@ -147,7 +161,6 @@ const createTeamStore = create((set, get) => ({
         }
       );
       set({ teamId: response.data.team_id });
-      console.log(date);
 
       get().clearFields();
     } catch (error) {

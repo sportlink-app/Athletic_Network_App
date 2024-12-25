@@ -84,6 +84,7 @@ class Team(db.Model):
     name = db.Column(db.String(100), nullable=False)
     sport_id = db.Column(db.Integer, db.ForeignKey('sports.id'), nullable=False)
     city = db.Column(db.String(100), nullable=False)
+    location = db.Column(db.String(500), nullable=False)
     description = db.Column(db.String(500))
     date = db.Column(db.DateTime, nullable=False)
     members_count = db.Column(db.Integer, default=0)

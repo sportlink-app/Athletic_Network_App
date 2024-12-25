@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert, AutoComplete, Button, DatePicker, Input, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
 import createTeamStore from "../../../../../store/team/createTeamStore";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import userInfoStore from "../../../../../store/user/userInfoStore";
-import L from "leaflet";
 
 function CreateTeamForm() {
   const {
     teamForm,
     errors,
+    setLocation,
     setTeamForm,
     handleInputChange,
     createTeam,
@@ -21,6 +21,7 @@ function CreateTeamForm() {
   } = createTeamStore((state) => ({
     teamForm: state.teamForm,
     errors: state.errors,
+    setLocation: state.setLocation,
     setTeamForm: state.setTeamForm,
     handleInputChange: state.handleInputChange,
     createTeam: state.createTeam,
@@ -28,6 +29,7 @@ function CreateTeamForm() {
   }));
 
   const availability = userInfoStore((state) => state.availability);
+  const city = userInfoStore((state) => state.city);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +51,8 @@ function CreateTeamForm() {
       setIsLoading(false);
     }
   };
+
+  const [currentStep, setCurrentStep] = useState(1);
 
   const nameInput = (
     <li className="sm:col-span-3 mt-2 flex flex-col gap-2">
@@ -229,33 +233,42 @@ function CreateTeamForm() {
     </li>
   );
 
-  const [search, setSearch] = useState(""); // Input value
-  const [suggestions, setSuggestions] = useState([]); // List of location suggestions
-  const [selectedLocation, setSelectedLocation] = useState(null); // Selected location
+  const [locationSuggestions, setLocationSuggestions] = useState([]); // Suggestions list
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [locationValue, setLocationValue] = useState("");
 
-  const handleSearch = async (e) => {
-    const value = e.target.value;
-    setSearch(value);
+  // Handle input change and search location data
+  const handleSearch = async (value) => {
+    setLocationLoading(value); // Update search state on input change
 
     if (value.length > 2) {
       try {
+        // Fetch location data from the OpenStreetMap API
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${value}`
+          `https://nominatim.openstreetmap.org/search?format=json&q=${city}+${value}`
         );
         const data = await response.json();
-        setSuggestions(data);
+        setLocationSuggestions(data); // Set the fetched suggestions
+        setLocationLoading(false);
       } catch (error) {
-        console.error("Error fetching location data:", error);
+        setLocationLoading(false);
       }
     } else {
-      setSuggestions([]);
+      setLocationSuggestions([]); // Clear suggestions if input is less than 3 characters
     }
   };
 
-  const handleSelect = (location) => {
-    setSelectedLocation(location);
-    setSearch(location.display_name); // Update input with selected location
-    setSuggestions([]); // Clear suggestions
+  // Handle selection of a location suggestion
+
+  const handleSelect = (value) => {
+    setLocationSuggestions([]); // Clear suggestions
+    setLocation(value); // Update the store
+    setLocationValue(value);
+  };
+
+  // Handle clearing the input or changes to it
+  const handleChange = (value) => {
+    setLocationValue(value || ""); // Set location to empty if input is cleared
   };
 
   const locationInput = (
@@ -263,31 +276,33 @@ function CreateTeamForm() {
       <label className="ml-2 font-medium leading-6 text-gray-900">
         Location
       </label>
-      <input
-        type="text"
-        value={search}
-        onChange={handleSearch}
-        placeholder="Type a location (e.g., street, park)"
-        className="form-input mt-2 p-2 border rounded w-full"
-      />
-      {suggestions.length > 0 && (
-        <ul className="suggestions-list border rounded mt-1 max-h-48 overflow-y-auto">
-          {suggestions.map((item) => (
-            <li
-              key={item.place_id}
-              onClick={() => handleSelect(item)}
-              className="suggestion-item cursor-pointer p-2 hover:bg-gray-100"
-            >
+      <AutoComplete
+        onChange={handleChange}
+        onSearch={handleSearch} // Call handleSearch on input change
+        onSelect={handleSelect} // Handle selection of a suggestion
+        placeholder="Type a location (e.g., Gym, park, Stadium)"
+        allowClear
+        style={{ width: "100%" }} // Ensure the input field has enough width
+        size="large"
+      >
+        {locationLoading ? (
+          // Show loading spinner while fetching data
+          <AutoComplete.Option
+            key="loading"
+            disabled
+            className="w-full text-center"
+          >
+            <Spin className="green-spin my-4" />
+          </AutoComplete.Option>
+        ) : (
+          locationSuggestions.length > 0 &&
+          locationSuggestions.map((item) => (
+            <AutoComplete.Option key={item.place_id} value={item.display_name}>
               {item.display_name}
-            </li>
-          ))}
-        </ul>
-      )}
-      {selectedLocation && (
-        <p className="mt-2">
-          <strong>Selected Location:</strong> {selectedLocation.display_name}
-        </p>
-      )}
+            </AutoComplete.Option>
+          ))
+        )}
+      </AutoComplete>
     </li>
   );
 
@@ -302,14 +317,20 @@ function CreateTeamForm() {
           type="warning"
         />
       )}
-      <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
-        {/* {nameInput}
-        {sportSelect}
-        {descriptionInput} */}
-        {locationInput}
-        {membersCountInput}
-        {dateInput}
-      </ul>
+      {currentStep === 1 && (
+        <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
+          {nameInput}
+          {sportSelect}
+          {descriptionInput}
+        </ul>
+      )}
+      {currentStep === 2 && (
+        <ul className="grid grid-cols-1 sm:grid-cols-6 gap-2 md:gap-4">
+          {locationInput}
+          {membersCountInput}
+          {dateInput}
+        </ul>
+      )}
       {errorMessage && (
         <Alert
           message={errorMessage}
@@ -320,24 +341,55 @@ function CreateTeamForm() {
           onClose={() => setErrorMessage("")} // Clear the error on close
         />
       )}
-      <Button
-        htmlType="submit"
-        disabled={isLoading || isFormInvalid() || !availability}
-        type="primary"
-        shape="round"
-        size="large"
-        className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
-        icon={
-          isLoading ? (
-            <Spin size="small" className="white-spin" />
-          ) : (
-            <ArrowRightOutlined size={16} />
-          )
-        }
-        iconPosition="end"
-      >
-        Next
-      </Button>
+
+      {currentStep === 1 && (
+        <Button
+          onClick={() => setCurrentStep(2)}
+          type="primary"
+          shape="round"
+          size="large"
+          className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80 mt-4"
+          icon={<ArrowRightOutlined size={16} />}
+          iconPosition="end"
+        >
+          Next
+        </Button>
+      )}
+
+      {currentStep === 2 && (
+        <div className="flex justify-between items-center mt-4">
+          <Button
+            onClick={() => setCurrentStep(1)}
+            type="default"
+            shape="round"
+            size="large"
+            icon={<ArrowLeftOutlined size={16} />}
+            className="hover:!text-green hover:!border-green"
+          >
+            Back
+          </Button>
+          <Button
+            htmlType="submit"
+            disabled={
+              isLoading || isFormInvalid() || !availability || !locationValue
+            }
+            type="primary"
+            shape="round"
+            size="large"
+            className="w-fit self-end !bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green/80"
+            icon={
+              isLoading ? (
+                <Spin size="small" className="white-spin" />
+              ) : (
+                <ArrowRightOutlined size={16} />
+              )
+            }
+            iconPosition="end"
+          >
+            Create
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

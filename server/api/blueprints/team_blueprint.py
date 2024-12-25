@@ -15,6 +15,7 @@ def create_team(current_user):
     name = data.get('name')
     sport_id = data.get('sport_id')
     date = data.get('date')
+    location = data.get('location')  
     description = data.get('description')  
     members_count = data.get('members_count')  
 
@@ -37,6 +38,7 @@ def create_team(current_user):
         sport_id=sport_id,
         city=current_user.city,  # Use the current user's city
         date=date,
+        location=location,
         description=description,  
         members_count=members_count,  
         owner_id=current_user.id
