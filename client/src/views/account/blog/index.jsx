@@ -48,15 +48,16 @@ export default function Blogs() {
   const blogsList = blogs.length > 0 && (
     <section className="mt-6 lg:mt-10 gap-x-[1em] sm:columns-2 lg:columns-3 2xl:columns-4">
       {blogs.map((blog) => (
-        <BlogCard
-          key={blog.id} // Ensure each blog has a unique id
-          username={blog.author}
-          gender={blog.gender}
-          date={blog.created_at}
-          sport={blog.sport}
-          title={blog.title}
-          content={blog.content}
-        />
+        <div key={blog.id}>
+          <BlogCard
+            username={blog.author}
+            gender={blog.gender}
+            date={blog.created_at}
+            sport={blog.sport}
+            title={blog.title}
+            content={blog.content}
+          />
+        </div>
       ))}
     </section>
   );

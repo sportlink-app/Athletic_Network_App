@@ -44,18 +44,17 @@ function ProfileAvatar({
 
   const bgColor = getRandomColor(username, gender).replace("#", "");
 
-  const getAvatarUrl = (username, hairStyle, mouthStyle) => {
-    return `https://api.dicebear.com/9.x/micah/svg?seed=${username}&hair=${hairStyle}&backgroundColor=${bgColor}&mouth=${mouthStyle}&facialHairProbability=0`;
-  };
-
   useEffect(() => {
+    const getAvatarUrl = (username, hairStyle, mouthStyle) => {
+      return `https://api.dicebear.com/9.x/micah/svg?seed=${username}&hair=${hairStyle}&backgroundColor=${bgColor}&mouth=${mouthStyle}&facialHairProbability=0`;
+    };
     // Simulate a loading delay for fetching avatar URL
     const url = getAvatarUrl(username, hairStyle, mouthStyle);
     setTimeout(() => {
       setAvatarUrl(url);
       setLoading(false);
     }, 1000); // Simulate a 1-second loading delay
-  }, [username, hairStyle, mouthStyle]);
+  }, [username, hairStyle, mouthStyle, bgColor]);
 
   return (
     <Badge

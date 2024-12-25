@@ -106,10 +106,18 @@ const userInfoStore = create(
     {
       name: "user-info",
       storage: {
-        getItem: (name) => Promise.resolve(localStorage.getItem(name)),
-        setItem: (name, value) =>
-          Promise.resolve(localStorage.setItem(name, value)),
-        removeItem: (name) => Promise.resolve(localStorage.removeItem(name)),
+        getItem: (name) => {
+          const item = localStorage.getItem(name);
+          return item ? JSON.parse(item) : null; // Parse the JSON data if it exists
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value)); // Stringify the value before saving
+          return Promise.resolve(); // Return a resolved promise
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+          return Promise.resolve(); // Return a resolved promise
+        },
       },
     }
   )
