@@ -28,8 +28,7 @@ function CompleteProfileForm() {
     updateValidationErrors: state.updateValidationErrors,
     completeProfile: state.completeProfile,
   }));
-  const { selectedCode, setSelectedCode, phoneVerified } =
-    completeProfileStore();
+  const { selectedCode, setSelectedCode } = completeProfileStore();
 
   const navigate = useNavigate();
 
@@ -350,17 +349,10 @@ function CompleteProfileForm() {
             onClose={() => setErrorMessage("")}
           />
         )}
-        {isFormComplete() && !phoneVerified && (
-          <Alert
-            message="Please verify your phone number before submitting the form."
-            type="warning"
-            className="rounded-xl p-3"
-            showIcon
-          />
-        )}
+
         <Button
           htmlType="submit"
-          disabled={!isFormComplete() || isLoading || !phoneVerified}
+          disabled={!isFormComplete() || isLoading}
           type="primary"
           shape="round"
           size="large"

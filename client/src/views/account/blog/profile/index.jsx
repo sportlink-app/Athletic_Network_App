@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getRandomColor } from "../../../../components/utils/randomColor";
 import ProfileHeader from "../../../../components/dynamic/ProfileHeader";
 import Footer from "../../../../components/static/Footer";
@@ -8,14 +8,16 @@ import BlogCard from "../../../../components/dynamic/BlogCard";
 import DeleteBlog from "./DeleteBlog";
 import blogStore from "../../../../store/blogStore";
 import { Button, message, Spin } from "antd";
-import { ArrowDownOutlined } from "@ant-design/icons";
+import { ArrowDownOutlined, UserOutlined } from "@ant-design/icons";
 import EmptyData from "../../../../components/static/EmptyData";
+import authStore from "../../../../store/user/authStore";
 
 function UserBlogs() {
   const { userGender } = blogStore();
   const { username } = useParams();
   const coverBgColor = getRandomColor(username);
 
+  const { authenticatedUsername } = authStore();
   const { userBlogs, getUserBlogs, userBlogsTotalItems } = blogStore();
   const [isLoading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -60,7 +62,7 @@ function UserBlogs() {
           key={blog.id}
           username={username}
           content={blog.content}
-          date={new Date(blog.created_at).toLocaleString()}
+          date={blog.created_at}
           title={blog.title}
           sport={blog.sport}
           btn={<DeleteBlog id={blog.id} />}
@@ -77,8 +79,21 @@ function UserBlogs() {
           style={{ backgroundColor: coverBgColor }}
           className="w-full h-28 md:h-32 xl:h-40 flex justify-center items-end"
         >
-          <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative ">
+          <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative">
             <BackButton />
+            {authenticatedUsername !== username && (
+              <Link to={`/user/${username}`}>
+                <Button
+                  type="primary"
+                  shape="round"
+                  size="large"
+                  className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green absolute top-5 right-2 sm:tight-4 "
+                  icon={<UserOutlined size={16} />}
+                >
+                  Profile
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 

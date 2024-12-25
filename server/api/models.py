@@ -27,7 +27,7 @@ class Myusers(db.Model):
     isProfileCompleted = db.Column(db.Boolean, default=False)
     tel = db.Column(db.String(15))
     availability = db.Column(db.Boolean, default=True)
-    bio = db.Column(db.String(500))
+    bio = db.Column(db.String(600))
     gender = db.Column(db.String(10))
     city = db.Column(db.String(100))
 

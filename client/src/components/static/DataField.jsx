@@ -13,8 +13,8 @@ const DataField = ({ content, title, icon }) => {
       <Text
         text={content}
         type="subtitle"
-        className="font-medium ml-1 mt-[.15rem]"
-        color="text-gray-600"
+        className="ml-1 mt-[.15rem] max-w-2xl"
+        color="text-gray-900"
       />
     </li>
   );

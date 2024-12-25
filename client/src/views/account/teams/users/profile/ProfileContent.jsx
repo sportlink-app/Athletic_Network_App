@@ -37,8 +37,6 @@ function ProfileContent({ city, bio, sports }) {
           />
         </div>
       </li>
-
-      <Divider type="horizontal" className="w-full border-gray-200 my-2" />
     </div>
   );
 }
