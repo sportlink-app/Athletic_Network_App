@@ -137,8 +137,6 @@ const authStore = create((set, get) => {
 
         return response.data;
       } catch (error) {
-        console.log(error);
-
         if (error.response && error.response.status === 400) {
           throw new Error("Username or email already exists!");
         } else if (error.response && error.response.status === 500) {

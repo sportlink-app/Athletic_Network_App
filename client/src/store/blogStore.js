@@ -85,9 +85,7 @@ const blogStore = create((set, get) => ({
         userBlogsCurrentPage: reset ? 2 : get().userBlogsCurrentPage + 1,
       });
     } catch (error) {
-      throw new Error(
-        "Failed to get blogs, please refresh the page or try again later"
-      );
+      return error.response ? error.response.status : 500;
     }
   },
 

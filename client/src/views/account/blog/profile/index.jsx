@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getRandomColor } from "../../../../components/utils/randomColor";
 import ProfileHeader from "../../../../components/dynamic/ProfileHeader";
 import Footer from "../../../../components/static/Footer";
@@ -23,19 +23,28 @@ function UserBlogs() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isDataFetched, setIsDataFetched] = useState(false);
 
+  const navigate = useNavigate();
   // Fetch user blogs data
   const fetchUserBlogs = useCallback(async () => {
     try {
       setLoading(true);
-      await getUserBlogs(username, true); // Fetch with reset
-      setIsDataFetched(true); // Mark data as fetched
+      const statusCode = await getUserBlogs(username, true); // Fetch with reset
+
+      if (statusCode === 404) {
+        navigate("/404");
+      } else if (statusCode === 400) {
+        messageApi.error(
+          "Failed to get blogs, please refresh the page or try again later"
+        );
+      } else {
+        setIsDataFetched(true); // Mark data as fetched if no error
+      }
     } catch (error) {
       messageApi.error("An error occurred while fetching user blogs data.");
-      console.error("Error fetching user blogs:", error);
     } finally {
       setLoading(false);
     }
-  }, [getUserBlogs, username, messageApi]);
+  }, [getUserBlogs, username, messageApi, navigate]);
 
   useEffect(() => {
     fetchUserBlogs();
