@@ -22,7 +22,7 @@ function BlogCard({ username, gender, sport, date, title, content, btn }) {
             {formattedDate}
           </p>
         </div>
-        <h3 className="text-base xl:text-lg font-medium text-gray-900 mt-1">
+        <h3 className="text-base xl:text-lg font-medium text-gray-900 mt-1 lg:mt-2">
           {title}
         </h3>
         <p className="text-sm text-gray-600">{content}</p>

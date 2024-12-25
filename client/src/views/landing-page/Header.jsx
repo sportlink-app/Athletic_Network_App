@@ -1,6 +1,6 @@
 import Text from "../../components/static/Text";
 import Star from "../../components/static/Star";
-import { ArrowRightOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Avatar, Button, Tag } from "antd";
 import { useEffect } from "react";
@@ -31,7 +31,7 @@ export default function Header() {
   const basketballIcon = (color) => (
     <svg
       style={{ animationDelay: "5s" }}
-      className="opacity-80 sm:opacity-100 absolute bottom-56 lg:bottom-52 left-[30%] lg:left-[35%] w-14 md:w-16 animate-bounce"
+      className="opacity-80 sm:opacity-100 absolute bottom-64 sm:bottom-56 md:bottom-44 lg:bottom-52 left-[30%] lg:left-[35%] w-12 md:w-16 animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
     >
@@ -64,7 +64,7 @@ export default function Header() {
   );
   const bottleIcon = (color) => (
     <svg
-      className="opacity-80 sm:opacity-100 absolute bottom-64 xl:bottom-72 left-[10%] lg:left-[20%] w-6 blur-[1.2px] animate-bounce"
+      className="opacity-80 sm:opacity-100 absolute bottom-64 xl:bottom-72 left-[10%] lg:left-[20%] w-5 md:w-6 blur-[1.2px] animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 47.19 100"
     >
@@ -117,7 +117,7 @@ export default function Header() {
   const dumbellBallIcon = (color) => (
     <svg
       style={{ animationDelay: "1s" }}
-      className="absolute bottom-64 xl:bottom-[17rem] right-[10%] lg:right-[20%] w-8 md:w-14  animate-bounce"
+      className="absolute bottom-64 xl:bottom-[17rem] right-[10%] lg:right-[20%] w-7 md:w-14  animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 66.7 100"
     >
@@ -147,7 +147,7 @@ export default function Header() {
   const dumbellIcon = (color) => (
     <svg
       style={{ animationDelay: "3s" }}
-      className="sm:opacity-100 absolute bottom-56 md:bottom-60 lg:bottom-52 right-[30%] lg:right-[35%] w-[4.5rem]  blur-[1px] animate-bounce"
+      className="sm:opacity-100 absolute bottom-56 md:bottom-44 lg:bottom-52 right-[30%] lg:right-[35%] w-12 md:w-[4.5rem]  blur-[1px] animate-bounce"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 53.83"
     >
@@ -216,7 +216,7 @@ export default function Header() {
           transition={{ ease: "easeOut", duration: 1, delay: -0.2 }}
           viewport={{ once: true }}
         >
-          <h1 className="text-[2.6rem] sm:text-7xl xl:text-[6rem] mb-8 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.9deg] !leading-snug font-title px-1 text-shadow-effect">
+          <h1 className="text-[2.75rem] sm:text-7xl xl:text-[6rem] mb-4 md:mb-8 whitespace-nowrap relative bg-clip-text text-transparent bg-gradient-to-r from-cyan to-green rotate-[-.9deg] !leading-snug font-title px-1 text-shadow-effect">
             your team awaits
           </h1>
         </motion.div>
@@ -285,7 +285,7 @@ export default function Header() {
             className=" -skew-x-3 -skew-y-6 shadow-lg border-[2px] border-white blur-[1px]"
           />
         </motion.div>
-        <article className="max-w-2xl mx-auto">
+        <article className="max-w-2xl mx-auto xl:mt-1">
           <Text
             type="subtitle"
             text="Connect with Athletes, Form Teams, and Play Anytime, Anywhere. Join, Compete, and Share Stories with Like-Minded Sports Enthusiasts."
@@ -293,32 +293,19 @@ export default function Header() {
           />
         </article>
       </div>
-      <div className="flex gap-4 sm:gap-6">
-        <Link to="/how-it-works">
-          <Button
-            type="default"
-            shape="round"
-            size="large"
-            icon={<QuestionCircleOutlined />}
-            iconPosition="end"
-            className="font-semibold !bg-transparent border-[1.3px] !border-cyan !text-cyan hover:!text-cyan hover:!bg-white hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
-          >
-            How It Works
-          </Button>
-        </Link>
-        <Link to="/account/sign-up">
-          <Button
-            type="primary"
-            shape="round"
-            size="large"
-            icon={<ArrowRightOutlined />}
-            iconPosition="end"
-            className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
-          >
-            Get Started
-          </Button>
-        </Link>
-      </div>
+
+      <Link to="/account/sign-up">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          icon={<ArrowRightOutlined />}
+          iconPosition="end"
+          className="!bg-gradient-to-r !from-cyan !to-green hover:brightness-105 hover:-translate-y-[.1rem] hover:!shadow-sm duration-500"
+        >
+          Get Started
+        </Button>
+      </Link>
     </>
   );
 
@@ -330,7 +317,7 @@ export default function Header() {
   ];
 
   const stats = (
-    <dl className="mt-32 grid gap-8 xl:gap-10 grid-cols-2 lg:grid-cols-4 text-center">
+    <dl className="mt-28 lg:mt-32 grid gap-8 xl:gap-10 grid-cols-2 md:grid-cols-4 text-center">
       {statsList.map((stat) => (
         <div key={stat.name} className="flex flex-col-reverse lg:gap-2">
           <dt className="text-base lg:text-lg leading-7 text-gray-500">
