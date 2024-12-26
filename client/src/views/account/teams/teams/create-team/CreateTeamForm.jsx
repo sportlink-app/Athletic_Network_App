@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Alert, AutoComplete, Button, DatePicker, Input, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { ArrowRightOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowRightOutlined,
+  ArrowLeftOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 import useSports from "../../../../../components/dynamic/SportsNames";
 import createTeamStore from "../../../../../store/team/createTeamStore";
 import PropTypes from "prop-types";
@@ -280,7 +284,7 @@ function CreateTeamForm() {
         onChange={handleChange}
         onSearch={handleSearch} // Call handleSearch on input change
         onSelect={handleSelect} // Handle selection of a suggestion
-        placeholder="Type a location (e.g., Gym, park, Stadium)"
+        placeholder="Type a location (e.g., gym, park, stadium)"
         allowClear
         style={{ width: "100%" }} // Ensure the input field has enough width
         size="large"
@@ -381,7 +385,7 @@ function CreateTeamForm() {
               isLoading ? (
                 <Spin size="small" className="white-spin" />
               ) : (
-                <ArrowRightOutlined size={16} />
+                <CheckOutlined size={16} />
               )
             }
             iconPosition="end"

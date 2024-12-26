@@ -4,10 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        yellow: "#FFD500",
-        green: "#31E528",
+        green: "#32dc29",
         "light-green": "#f5fff8",
-        cyan: "#00E0B5",
+        cyan: "#00e8ba",
         "light-cyan": "#b9fff1",
       },
       fontFamily: {
