@@ -117,7 +117,7 @@ export default function Newsletter({
               >
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <CalendarDaysIcon
-                    className="h-10 w-10 bg-clip-text text-green"
+                    className="h-10 w-10 bg-clip-text text-green rotate-3"
                     aria-hidden="true"
                   />
                 </div>
@@ -135,7 +135,7 @@ export default function Newsletter({
               >
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <HandRaisedIcon
-                    className="h-10 w-10 bg-clip-text text-green"
+                    className="h-10 w-10 bg-clip-text text-green -rotate-12"
                     aria-hidden="true"
                   />
                 </div>

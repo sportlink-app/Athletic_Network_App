@@ -21,7 +21,10 @@ export default function Features({
       description:
         "Easily form and manage sports teams, invite friends to join, and coordinate practice sessions and matches.",
       icon: (
-        <UsergroupAddOutlined style={{ fontSize: "20px", color: "#ffffff" }} />
+        <UsergroupAddOutlined
+          style={{ fontSize: "18px", color: "#ffffff" }}
+          className="rotate-12"
+        />
       ),
     },
     {
@@ -29,20 +32,33 @@ export default function Features({
       description:
         "Automatically connect users with compatible sports partners based on their interests, city, and availability.",
       icon: (
-        <NodeIndexOutlined style={{ fontSize: "20px", color: "#ffffff" }} />
+        <NodeIndexOutlined
+          style={{ fontSize: "20px", color: "#ffffff" }}
+          className="-rotate-6"
+        />
       ),
     },
     {
       title: "Personalized Profiles",
       description:
         "Users create profiles highlighting their sports interests and skills to connect with like-minded partners and teams.",
-      icon: <UserOutlined style={{ fontSize: "20px", color: "#ffffff" }} />,
+      icon: (
+        <UserOutlined
+          style={{ fontSize: "18px", color: "#ffffff" }}
+          className="-rotate-6"
+        />
+      ),
     },
     {
       title: "Blogging Platform",
       description:
         "Users can share sports experiences and insights through blogs while reading and commenting on others posts.",
-      icon: <FormOutlined style={{ fontSize: "20px", color: "#ffffff" }} />,
+      icon: (
+        <FormOutlined
+          style={{ fontSize: "18px", color: "#ffffff" }}
+          className="rotate-6"
+        />
+      ),
     },
   ];
   const features = (
