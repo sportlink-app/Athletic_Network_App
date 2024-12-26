@@ -6,6 +6,7 @@ import blogStore from "../../../store/blogStore";
 import { FloatButton, message, Button, Spin } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import BlogCard from "../../../components/dynamic/BlogCard";
+import EmptyData from "../../../components/static/EmptyData";
 
 export default function Blogs() {
   const { blogs, getBlogs, totalItems } = blogStore();
@@ -70,6 +71,9 @@ export default function Blogs() {
         {isLoading && <Spin size="small" className="white-spin" />}
         {isDataFetched && blogs.length !== 0 && <TopCreators />}
         {isDataFetched && blogs.length !== 0 && blogsList}
+        {isDataFetched && blogs.length === 0 && (
+          <EmptyData text="No blog posts found!" />
+        )}
         <div className="flex justify-center mt-4">
           {!isLoading && blogs.length < totalItems && (
             <Button

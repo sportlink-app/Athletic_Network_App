@@ -12,12 +12,11 @@ import BackButton from "../../../../../components/static/BackButton";
 
 function UserProfile() {
   const { username } = useParams();
-  const { getUser, gender, bio, sports, city } = usersStore((state) => ({
+  const { getUser, gender, bio, sports } = usersStore((state) => ({
     getUser: state.getUser,
     gender: state.gender,
     bio: state.bio,
     sports: state.sports,
-    city: state.city,
   }));
   const { getAvailability, availability } = userInfoStore();
   const navigate = useNavigate();
@@ -76,7 +75,11 @@ function UserProfile() {
                 gender={gender}
                 availability={availability}
               />
-              <ProfileContent bio={bio} sports={sports} city={city} />
+              <ProfileContent
+                bio={bio}
+                sports={sports}
+                joinedAt={"Thu, 26 Dec 2024 16:41:32 GMT"}
+              />
             </>
           )}
         </div>
