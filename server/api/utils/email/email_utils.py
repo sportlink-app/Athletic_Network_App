@@ -8,9 +8,9 @@ mail = Mail()
 def configure_email(app):
     """Configure email settings using app configuration."""
     # Set email configuration directly (without using environment variables)
-    mail_host = 'smtp.gmail.com'
-    mail_port = 587
-    mail_username = os.getenv('EMAIL_USERNAME')  # Your Gmail address
+    mail_host = os.getenv('EMAIL_HOST')
+    mail_port = os.getenv('EMAIL_PORT')
+    mail_username = os.getenv('EMAIL_USERNAME')
     mail_password = os.getenv('EMAIL_PASSWORD')
     mail_from = os.getenv('EMAIL_FROM')
 
