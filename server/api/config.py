@@ -12,6 +12,13 @@ class Config:
     TESTING = os.getenv('FLASK_TESTING', 'False').lower() in ['true', '1']  # Testing mode
     CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*')  # For setting up CORS (optional)
 
+    # Email configuration
+    EMAIL_HOST = os.getenv("EMAIL_HOST")
+    EMAIL_PORT = os.getenv("EMAIL_PORT")
+    EMAIL_USERNAME = os.getenv("EMAIL_USERNAME")
+    EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+    EMAIL_FROM = os.getenv("EMAIL_FROM")
+
 # Development-specific configuration
 class DevelopmentConfig(Config):
     ENV = 'development'

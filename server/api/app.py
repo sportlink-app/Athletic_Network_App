@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -12,17 +13,19 @@ from .blueprints.team_blueprint import team_blueprint
 from .blueprints.notification_blueprint import notification_blueprint, register_socketio_events
 from .utils.socketio import socketio
 from .blueprints.phone_confirmation_blueprint import phone_confirmation_blueprint
+from .utils.email.email_utils import mail
 
 migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
+
     app.config.from_object(Config)
 
     db.init_app(app)
     migrate.init_app(app, db)
-
     socketio.init_app(app)
+    mail.init_app(app)
 
     CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 

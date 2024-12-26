@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from ..models import db, NewsletterSubscriber
+from ..utils.email.email_utils import send_email
 
 newsletter_blueprint = Blueprint('newsletter_blueprint', __name__)
 
@@ -21,4 +22,16 @@ def subscribe_to_newsletter():
     db.session.add(new_subscriber)
     db.session.commit()
 
-    return jsonify({"message": "Successfully subscribed to the newsletter!"}), 201
+    # Send the welcome email with a specified template
+    try:
+        send_email(
+            subject="Welcome to Our Newsletter",
+            recipients=[email],
+            template_name='newsletter_welcome.html',
+            name="Subscriber Name"
+        )
+    except Exception as e:
+        # Handle email sending failure
+        return jsonify({"message": "Subscription succeeded, but failed to send email", "error": str(e)}), 500
+
+    return jsonify({"message": "Successfully subscribed to the newsletter and welcome email sent!"}), 201
