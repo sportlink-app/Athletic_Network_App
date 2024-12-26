@@ -169,7 +169,7 @@ def get_profile(current_user):
     try:
         user = Myusers.query.get(current_user.id)
         sports_list = [{"id": sport.id, "name": sport.name} for sport in user.sports]
-
+        # teams_created teams_joined blogs
         return jsonify({
             "username": user.username,
             "gender": user.gender,

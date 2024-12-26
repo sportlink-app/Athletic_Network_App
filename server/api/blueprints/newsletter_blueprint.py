@@ -17,21 +17,21 @@ def subscribe_to_newsletter():
     if existing_subscriber:
         return jsonify({"message": "Email is already subscribed"}), 400
 
-    # Create a new subscriber
-    new_subscriber = NewsletterSubscriber(email=email)
-    db.session.add(new_subscriber)
-    db.session.commit()
-
     # Send the welcome email with a specified template
     try:
         send_email(
             subject="Welcome to Our Newsletter",
             recipients=[email],
             template_name='newsletter_welcome.html',
-            name="Subscriber Name"
+            name="Subscriber Name"  # You can customize this to get the user's name if available
         )
     except Exception as e:
         # Handle email sending failure
-        return jsonify({"message": "Subscription succeeded, but failed to send email", "error": str(e)}), 500
+        return jsonify({"message": "Failed to send welcome email", "error": str(e)}), 500
+
+    # Create a new subscriber after the email has been sent successfully
+    new_subscriber = NewsletterSubscriber(email=email)
+    db.session.add(new_subscriber)
+    db.session.commit()
 
     return jsonify({"message": "Successfully subscribed to the newsletter and welcome email sent!"}), 201

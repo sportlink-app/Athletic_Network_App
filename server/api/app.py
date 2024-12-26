@@ -12,15 +12,15 @@ from .blueprints.blog_blueprint import blog_blueprint
 from .blueprints.team_blueprint import team_blueprint
 from .blueprints.notification_blueprint import notification_blueprint, register_socketio_events
 from .utils.socketio import socketio
-from .blueprints.phone_confirmation_blueprint import phone_confirmation_blueprint
-from .utils.email.email_utils import mail
+from .utils.email.email_utils import mail, configure_email
 
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='api/utils/email/templates')
 
     app.config.from_object(Config)
+    configure_email(app)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -37,7 +37,7 @@ def create_app():
     app.register_blueprint(blog_blueprint)
     app.register_blueprint(team_blueprint)
     app.register_blueprint(notification_blueprint)
-    app.register_blueprint(phone_confirmation_blueprint)
+
 
     # Register socketio event handlers
     register_socketio_events(socketio)
@@ -56,3 +56,4 @@ def create_app():
         return jsonify({"message": "Internal server error!"}), 500
 
     return app
+
