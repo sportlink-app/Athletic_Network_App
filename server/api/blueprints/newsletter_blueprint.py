@@ -17,13 +17,16 @@ def subscribe_to_newsletter():
     if existing_subscriber:
         return jsonify({"message": "Email is already subscribed"}), 400
 
-    # Send the welcome email with a specified template
+    # Extract the name from the email (e.g., "john" from "john@gmail.com")
+    subscriber_name = email.split('@')[0].split('.')[0].capitalize()
+
+    # Send the welcome email with the extracted name
     try:
         send_email(
             subject="Welcome to Our Newsletter",
             recipients=[email],
             template_name='newsletter_welcome.html',
-            name="Subscriber Name"  # You can customize this to get the user's name if available
+            name=subscriber_name  # Pass the extracted name to the template
         )
     except Exception as e:
         # Handle email sending failure
@@ -34,4 +37,4 @@ def subscribe_to_newsletter():
     db.session.add(new_subscriber)
     db.session.commit()
 
-    return jsonify({"message": "Successfully subscribed to the newsletter and welcome email sent!"}), 201
+    return jsonify({"message": f"Successfully subscribed to the newsletter, welcome {subscriber_name}!"}), 201

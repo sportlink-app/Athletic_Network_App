@@ -1,5 +1,5 @@
 from flask_mail import Mail, Message
-from flask import current_app
+from flask import current_app, render_template_string
 import os
 
 # Initialize Flask-Mail
@@ -10,14 +10,9 @@ def configure_email(app):
     # Set email configuration directly (without using environment variables)
     mail_host = 'smtp.gmail.com'
     mail_port = 587
-    mail_username = 'sportlink.user@gmail.com'  # Your Gmail address
-    mail_password = 'bjhk oxtj pfzx ueiz'  # Your Gmail App Password (not your regular Gmail password)
-    mail_from = 'sportlink.user@gmail.com'  # Default sender email address
-
-    # Log the email values for debugging
-    print(f"MAIL_HOST: {mail_host}")
-    print(f"MAIL_USERNAME: {mail_username}")
-    print(f"MAIL_FROM: {mail_from}")
+    mail_username = os.getenv('EMAIL_USERNAME')  # Your Gmail address
+    mail_password = os.getenv('EMAIL_PASSWORD')
+    mail_from = os.getenv('EMAIL_FROM')
 
     # Ensure all necessary values are provided
     if not all([mail_username, mail_password, mail_from]):
@@ -37,31 +32,19 @@ def configure_email(app):
     mail.init_app(app)
 
 def send_email(subject, recipients, template_name, **template_context):
-    """Send email using Flask-Mail."""
-    with current_app.app_context():
-        try:
-            # Direct HTML content for testing (ideally use a template engine like Jinja2)
-            html_body = """
-            <html>
-                <head>
-                    <title>Welcome to Our Newsletter</title>
-                </head>
-                <body>
-                    <h1>Welcome, {{ name }}!</h1>
-                    <p>Thank you for subscribing to our newsletter. Stay tuned for updates!</p>
-                </body>
-            </html>
-            """
-            # Substitute the {{ name }} placeholder with actual value from template_context
-            name = template_context.get('name', 'Subscriber')
-            html_body = html_body.replace("{{ name }}", name)
+    try:
+        # Provide the absolute path to the template
+        template_path = os.path.join(os.getcwd(), 'api/utils/email/templates', template_name)
+        with open(template_path, 'r') as file:
+            html_body = file.read()
 
-            # Create the message
-            msg = Message(subject, recipients=recipients, sender=current_app.config['MAIL_DEFAULT_SENDER'])
-            msg.html = html_body
+        # Render the template manually
+        html_body = render_template_string(html_body, **template_context)
 
-            # Send the email
-            mail.send(msg)
-        except Exception as e:
-            current_app.logger.error(f"Failed to send email. Error: {e}")
-            raise
+        # Create and send the message
+        msg = Message(subject, recipients=recipients, sender=current_app.config['MAIL_DEFAULT_SENDER'])
+        msg.html = html_body
+        mail.send(msg)
+    except Exception as e:
+        current_app.logger.error(f"Failed to send email. Error: {e}")
+        raise

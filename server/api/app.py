@@ -17,7 +17,7 @@ from .utils.email.email_utils import mail, configure_email
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__, template_folder='api/utils/email/templates')
+    app = Flask(__name__)
 
     app.config.from_object(Config)
     configure_email(app)
