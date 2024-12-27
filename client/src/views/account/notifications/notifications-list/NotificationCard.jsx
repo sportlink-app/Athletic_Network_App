@@ -128,6 +128,7 @@ export default function NotificationCard({
                         : (e) => handleJoinRespond(e, "accept")
                     }
                     disabled={isLoading}
+                    loading={isLoading}
                     type="primary"
                     shape="circle"
                     icon={<CheckOutlined />}
@@ -142,6 +143,7 @@ export default function NotificationCard({
                         : (e) => handleJoinRespond(e, "reject")
                     }
                     disabled={isLoading}
+                    loading={isLoading}
                     type="primary"
                     shape="circle"
                     icon={<CloseOutlined />}
