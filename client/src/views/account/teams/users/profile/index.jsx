@@ -76,6 +76,9 @@ function UserProfile() {
                 availability={availability}
               />
               <ProfileContent
+                teamsCreated={9}
+                teamsJoined={12}
+                blogPosts={24}
                 bio={bio}
                 sports={sports}
                 joinedAt={"Thu, 26 Dec 2024 16:41:32 GMT"}

@@ -10,17 +10,24 @@ import {
   CarryOutOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import timeAgo from "../../../../../components/utils/timeAgo";
 
-function ProfileContent({ bio, sports, joinedAt }) {
-  const formattedDate = joinedAt.split(" ").slice(0, 4).join(" ");
+function ProfileContent({
+  teamsCreated,
+  teamsJoined,
+  blogPosts,
+  bio,
+  sports,
+  joinedAt,
+}) {
   return (
     <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col gap-4 xl:gap-6 mt-32 mb-8">
       <div className="flex justify-between mt-2 xl:mt-4">
         <div className="flex flex-col items-center gap-[.15rem]">
           <div className="flex gap-1 md:gap-2">
             <TeamOutlined className="text-gray-600 md:text-lg" />
-            <span className="text-xl md:text-2xl font-medium text-gray-600">
-              28
+            <span className="text-xl md:text-2xl font-semibold text-gray-600">
+              {teamsCreated}
             </span>
           </div>
           <h2 className="text-gray-600 text-sm md:text-base">Teams Created</h2>
@@ -28,8 +35,8 @@ function ProfileContent({ bio, sports, joinedAt }) {
         <div className="flex flex-col items-center gap-[.15rem]">
           <div className="flex gap-1 md:gap-2">
             <UserAddOutlined className="text-gray-600 md:text-lg" />
-            <span className="text-xl md:text-2xl font-medium text-gray-600">
-              8
+            <span className="text-xl md:text-2xl font-semibold text-gray-600">
+              {teamsJoined}
             </span>
           </div>
           <h2 className="text-gray-600 text-sm md:text-base">Teams Joined</h2>
@@ -37,11 +44,11 @@ function ProfileContent({ bio, sports, joinedAt }) {
         <div className="flex flex-col items-center gap-[.15rem]">
           <div className="flex gap-1 md:gap-2">
             <FormOutlined className="text-gray-600 text-sm md:text-base" />
-            <span className="text-xl md:text-2xl font-medium text-gray-600">
-              2
+            <span className="text-xl md:text-2xl font-semibold text-gray-600">
+              {blogPosts}
             </span>
           </div>
-          <h2 className="text-gray-600 text-sm md:text-base">Blog Posted</h2>
+          <h2 className="text-gray-600 text-sm md:text-base">Blog Posts</h2>
         </div>
       </div>
 
@@ -70,15 +77,18 @@ function ProfileContent({ bio, sports, joinedAt }) {
       </li>
       <Divider type="horizontal" className="w-full border-gray-200 my-2" />
 
-      <div className=" w-fit flex justify-center items-center gap-2 text-gray-800">
+      <div className=" w-fit flex justify-center items-center gap-2 text-gray-900">
         <CarryOutOutlined className="text-[.95rem] pt-[2px]" />
-        <p className="text-sm mt-1">Joined in {formattedDate}</p>
+        <p className="text-sm mt-1">Joined {timeAgo(joinedAt)} </p>
       </div>
     </div>
   );
 }
 
 ProfileContent.propTypes = {
+  teamsCreated: PropTypes.number,
+  teamsJoined: PropTypes.number,
+  blogPosts: PropTypes.number,
   city: PropTypes.string,
   bio: PropTypes.string,
   sports: PropTypes.array,

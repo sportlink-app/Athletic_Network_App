@@ -168,8 +168,18 @@ def complete_profile(current_user):
 def get_profile(current_user):
     try:
         user = Myusers.query.get(current_user.id)
+        
+        # Count the number of teams created
+        teams_created = len(user.owned_teams)
+        
+        # Count the number of teams joined (where the user is a member but not the owner)
+        teams_joined = len([team for team in user.teams if team.owner_id != user.id])
+        
+        # Count the number of blog posts
+        blog_posts = len(user.blogs)
+        
         sports_list = [{"id": sport.id, "name": sport.name} for sport in user.sports]
-        # teams_created teams_joined blogs
+        
         return jsonify({
             "username": user.username,
             "gender": user.gender,
@@ -178,6 +188,9 @@ def get_profile(current_user):
             "sports": sports_list,
             "city": user.city,
             "tel": user.tel,
+            "teams_created": teams_created,
+            "teams_joined": teams_joined,
+            "blog_posts": blog_posts,
         }), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
