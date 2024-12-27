@@ -276,6 +276,7 @@ def get_specific_user(current_user, username):
             "teams_created": teams_created,
             "teams_joined": teams_joined,
             "blog_posts": blog_posts,
+            "created_at": user.created_at,
         }), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500

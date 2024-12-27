@@ -1,5 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import Footer from "../../../../components/static/Footer";
 import { Button, Pagination, message } from "antd";
 import UsernameFilter from "./UsernameFilter"; // Updated import
@@ -104,22 +109,24 @@ export default function Users() {
 
       <section className="min-h-screen container mx-auto px-4 my-10 ">
         <div className="flex flex-col sm:flex-row-reverse justify-between gap-4">
-          <Button
-            type="primary"
-            shape="round"
-            size="large"
-            className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green w-fit self-end"
-            icon={<CheckOutlined />}
-          >
-            Done
-          </Button>
+          <Link to={`/team/${teamId}`}>
+            <Button
+              type="primary"
+              shape="round"
+              size="large"
+              className="!bg-green hover:!bg-green hover:brightness-105 disabled:!bg-green w-fit self-end"
+              icon={<CheckOutlined />}
+            >
+              Done
+            </Button>
+          </Link>
           <UsernameFilter
             onUsernameSearch={handleUsernameSearch}
             initialUsername={usernameFromParams}
           />
         </div>
         {!isLoading && isDataFetched && users.length === 0 ? (
-          <EmptyData text="No users found!" />
+          <EmptyData text="No users found in your city for the selected sport! Try choosing a different sport or city." />
         ) : (
           usersList
         )}

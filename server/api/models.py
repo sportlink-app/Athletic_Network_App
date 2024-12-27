@@ -30,7 +30,7 @@ class Myusers(db.Model):
     bio = db.Column(db.String(600))
     gender = db.Column(db.String(10))
     city = db.Column(db.String(100))
-    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
     owned_teams = db.relationship('Team', back_populates='owner', cascade='all, delete-orphan')

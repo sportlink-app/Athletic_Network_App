@@ -14,6 +14,7 @@ const usersStore = create((set) => ({
   teamsCreated: "",
   teamsJoined: "",
   blogPosts: "",
+  createdAt: "",
 
   // Fetch user data based on username
   getUser: async (username) => {
@@ -35,6 +36,7 @@ const usersStore = create((set) => ({
         teams_created, // Assuming these keys match the API response
         teams_joined,
         blog_posts,
+        created_at,
       } = response.data;
 
       // Set user data in the store
@@ -48,6 +50,7 @@ const usersStore = create((set) => ({
         teamsCreated: teams_created,
         teamsJoined: teams_joined,
         blogPosts: blog_posts,
+        createdAt: created_at,
       });
 
       return response.data;

@@ -264,7 +264,9 @@ function CompleteProfileForm() {
         optionFilterProp="label"
         options={cities}
         onChange={(city) =>
-          handleUpdateFieldChange({ target: { name: "city", value: city } })
+          handleUpdateFieldChange({
+            target: { name: "city", value: city.toLowerCase() },
+          })
         }
         value={updateForm.city}
         loading={citiesLoading}
