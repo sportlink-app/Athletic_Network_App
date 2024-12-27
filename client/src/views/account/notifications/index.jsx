@@ -20,6 +20,8 @@ export default function Notifications() {
   const { id } = useParams();
   const { notification, getNotification } = notificationStore();
   const [isLoading, setLoading] = useState(false);
+  const [isRejectLoading, setRejectLoading] = useState(false);
+  const [isAcceptLoading, setAcceptLoading] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -59,6 +61,9 @@ export default function Notifications() {
   const [messageApi, contextHolder] = message.useMessage();
   const handleInviteRespond = async (action) => {
     setDisabled(true);
+    if (action === "accept") {
+      setAcceptLoading(true);
+    } else setRejectLoading(true);
     try {
       await inviteRespond(referenceId, action);
       navigate("/teams");
@@ -77,6 +82,9 @@ export default function Notifications() {
 
   const handleJoinRespond = async (action) => {
     setDisabled(true);
+    if (action === "accept") {
+      setAcceptLoading(true);
+    } else setRejectLoading(true);
     try {
       await joinRespond(referenceId, action);
       navigate("/teams");
@@ -120,7 +128,8 @@ export default function Notifications() {
                         ? () => handleInviteRespond("reject")
                         : () => handleJoinRespond("reject")
                     }
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
+                    loading={isRejectLoading}
                     type="primary"
                     shape="round"
                     size="large"
@@ -135,7 +144,8 @@ export default function Notifications() {
                         ? () => handleInviteRespond("accept")
                         : () => handleJoinRespond("accept")
                     }
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
+                    loading={isAcceptLoading}
                     type="primary"
                     shape="round"
                     size="large"
