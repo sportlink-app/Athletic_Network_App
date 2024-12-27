@@ -169,15 +169,6 @@ def get_profile(current_user):
     try:
         user = Myusers.query.get(current_user.id)
         
-        # Count the number of teams created
-        teams_created = len(user.owned_teams)
-        
-        # Count the number of teams joined (where the user is a member but not the owner)
-        teams_joined = len([team for team in user.teams if team.owner_id != user.id])
-        
-        # Count the number of blog posts
-        blog_posts = len(user.blogs)
-        
         sports_list = [{"id": sport.id, "name": sport.name} for sport in user.sports]
         
         return jsonify({
@@ -188,9 +179,6 @@ def get_profile(current_user):
             "sports": sports_list,
             "city": user.city,
             "tel": user.tel,
-            "teams_created": teams_created,
-            "teams_joined": teams_joined,
-            "blog_posts": blog_posts,
         }), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
@@ -268,6 +256,15 @@ def get_specific_user(current_user, username):
         if not user:
             return jsonify({"message": "User not found!"}), 404
 
+        # Count the number of teams created
+        teams_created = len(user.owned_teams)
+        
+        # Count the number of teams joined (where the user is a member but not the owner)
+        teams_joined = len([team for team in user.teams if team.owner_id != user.id])
+        
+        # Count the number of blog posts
+        blog_posts = len(user.blogs)
+
         sports_list = [sport.name for sport in user.sports]
 
         return jsonify({
@@ -276,6 +273,9 @@ def get_specific_user(current_user, username):
             "sports": sports_list,
             "city": user.city,
             "bio": user.bio,
+            "teams_created": teams_created,
+            "teams_joined": teams_joined,
+            "blog_posts": blog_posts,
         }), 200
     except Exception as e:
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
