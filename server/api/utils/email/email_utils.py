@@ -5,6 +5,7 @@ import os
 # Initialize Flask-Mail
 mail = Mail()
 
+
 def configure_email(app):
     """Configure email settings using app configuration."""
     # Set email configuration directly (without using environment variables)
@@ -13,6 +14,7 @@ def configure_email(app):
     mail_username = os.getenv('EMAIL_USERNAME')
     mail_password = os.getenv('EMAIL_PASSWORD')
     mail_from = os.getenv('EMAIL_FROM')
+    
 
     # Ensure all necessary values are provided
     if not all([mail_username, mail_password, mail_from]):
@@ -33,12 +35,15 @@ def configure_email(app):
 
 def send_email(subject, recipients, template_name, **template_context):
     try:
+        # Add client_url to the context
+        template_context['client_url'] = os.getenv('VITE_API_URL')
+
         # Provide the absolute path to the template
         template_path = os.path.join(os.getcwd(), 'api/utils/email/templates', template_name)
         with open(template_path, 'r') as file:
             html_body = file.read()
 
-        # Render the template manually
+        # Render the template manually with the added context
         html_body = render_template_string(html_body, **template_context)
 
         # Create and send the message

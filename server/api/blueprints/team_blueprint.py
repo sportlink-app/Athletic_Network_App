@@ -4,6 +4,8 @@ from .user_blueprint import token_required
 from sqlalchemy import func
 from ..utils.notification_utils import notify_new_notification
 from ..utils.socketio import socketio, connected_users
+from ..utils.email.email_utils import send_email
+from flask import current_app
 
 team_blueprint = Blueprint('team_blueprint', __name__)
 
@@ -259,6 +261,18 @@ def respond_to_invitation(current_user):
 
                 # Notify connected users
                 notify_new_notification(member.id, socketio, connected_users)
+
+            # Send email to all team members
+            for member in team.members:
+                try:
+                    send_email(
+                        subject="Your Team is completed",
+                        recipients=[member.email],
+                        template_name='completed_team.html',
+                        name = member.username  # Pass the member's name to the template
+                    )
+                except Exception as e:
+                    current_app.logger.error(f"Failed to send email to {member.email}. Error: {e}")
 
     # Commit changes
     db.session.commit()

@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Our Newsletter</title>
   </head>
   <body>
-    <h1>Welcome, {{ name }}!</h1>
-    <p>Thank you for subscribing to our newsletter. Stay tuned for updates!</p>
+    <header
+      style="
+        text-align: center;
+        background-image: linear-gradient(to right, #00e8ba, #32dc29);
+        padding: 20px 5px;
+      "
+    >
+      <img
+        src="https://res.cloudinary.com/depztpide/image/upload/v1735318789/logo_huwt00.png"
+        alt="Logo"
+        style="width: 48px; height: 48px; margin-top: 10px"
+      />
+      <h2 style="font-size: 20px; color: white">Welcome to SportLink</h2>
+    </header>
+    <div style="text-align: center; color: white; padding: 5px">
+      <h1 style="color: #32dc29; font-size: 30px">Welcome, {{ name }}!</h1>
+      <p style="color: #374151; font-size: 18px">
+        We're thrilled to have you join our community! By subscribing to our
+        newsletter, you'll be among the first to receive:
+      </p>
+      <div style="width: 100%; height: 10px"></div>
+      <a
+        href="{{ client_url }}"
+        style="
+          padding: 14px 20px;
+          border-radius: 50px;
+          color: white;
+          background-image: linear-gradient(to right, #00e8ba, #32dc29);
+          text-decoration: none;
+          font-size: 15px;
+        "
+        >Explore More</a
+      >
+    </div>
+    <footer style="text-align: center; padding: 5px; margin-top: 20px">
+      <p style="font-size: 15px; color: #525d6e">
+        You are receiving this email because you subscribed to our newsletter.
+      </p>
+
+      <p style="font-size: 13px; color: #525d6e">
+        &copy; 2024 SportLink. All rights reserved.
+      </p>
+    </footer>
   </body>
 </html>
