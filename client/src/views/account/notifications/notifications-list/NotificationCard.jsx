@@ -34,6 +34,8 @@ export default function NotificationCard({
 
   const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setLoading] = useState(false);
+  const [isRejectLoading, setRejectLoading] = useState(false);
+  const [isAcceptLoading, setAcceptLoading] = useState(false);
 
   const handleNotificationDelete = async (e) => {
     e.stopPropagation();
@@ -50,6 +52,9 @@ export default function NotificationCard({
     e.stopPropagation();
     e.preventDefault();
     setLoading(true);
+    if (action === "accept") {
+      setAcceptLoading(true);
+    } else setRejectLoading(true);
     try {
       await inviteRespond(referenceId, action);
       messageApi.success(`Invite ${action}ed successfully`);
@@ -72,6 +77,9 @@ export default function NotificationCard({
     e.stopPropagation();
     e.preventDefault();
     setLoading(true);
+    if (action === "accept") {
+      setAcceptLoading(true);
+    } else setRejectLoading(true);
     try {
       await joinRespond(referenceId, action);
       messageApi.success(`Join request ${action}ed successfully`);
@@ -128,7 +136,7 @@ export default function NotificationCard({
                         : (e) => handleJoinRespond(e, "accept")
                     }
                     disabled={isLoading}
-                    loading={isLoading}
+                    loading={isAcceptLoading}
                     type="primary"
                     shape="circle"
                     icon={<CheckOutlined />}
@@ -143,7 +151,7 @@ export default function NotificationCard({
                         : (e) => handleJoinRespond(e, "reject")
                     }
                     disabled={isLoading}
-                    loading={isLoading}
+                    loading={isRejectLoading}
                     type="primary"
                     shape="circle"
                     icon={<CloseOutlined />}
