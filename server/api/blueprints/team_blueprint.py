@@ -250,6 +250,18 @@ def respond_to_invitation(current_user):
             # Mark the team as completed
             team.isCompleted = True
 
+            # Send email to all team members
+            for member in team.members:
+                try:
+                    send_email(
+                        subject="Your Team is completed",
+                        recipients=[member.email],
+                        template_name='completed_team.html',
+                        name = member.username  # Pass the member's name to the template
+                    )
+                except Exception as e:
+                    current_app.logger.error(f"Failed to send email to {member.email}. Error: {e}")
+
             # Send a "team_completion" notification to all team members
             for member in team.members:
                 completion_notification = Notification(
@@ -262,17 +274,6 @@ def respond_to_invitation(current_user):
                 # Notify connected users
                 notify_new_notification(member.id, socketio, connected_users)
 
-            # Send email to all team members
-            for member in team.members:
-                try:
-                    send_email(
-                        subject="Your Team is completed",
-                        recipients=[member.email],
-                        template_name='completed_team.html',
-                        name = member.username  # Pass the member's name to the template
-                    )
-                except Exception as e:
-                    current_app.logger.error(f"Failed to send email to {member.email}. Error: {e}")
 
     # Commit changes
     db.session.commit()
@@ -393,6 +394,18 @@ def respond_to_join_request(current_user):
             # Mark the team as completed
             team.isCompleted = True
 
+            # Send email to all team members
+            for member in team.members:
+                try:
+                    send_email(
+                        subject="Your Team is completed",
+                        recipients=[member.email],
+                        template_name='completed_team.html',
+                        name = member.username  # Pass the member's name to the template
+                    )
+                except Exception as e:
+                    current_app.logger.error(f"Failed to send email to {member.email}. Error: {e}")
+
             # Send a "team_completion" notification to all team members
             for member in team.members:
                 completion_notification = Notification(
@@ -405,17 +418,6 @@ def respond_to_join_request(current_user):
                 # Notify connected users
                 notify_new_notification(member.id, socketio, connected_users)
 
-            # Send email to all team members
-            for member in team.members:
-                try:
-                    send_email(
-                        subject="Your Team is completed",
-                        recipients=[member.email],
-                        template_name='completed_team.html',
-                        name = member.username  # Pass the member's name to the template
-                    )
-                except Exception as e:
-                    current_app.logger.error(f"Failed to send email to {member.email}. Error: {e}")
 
     # Commit changes to the database
     db.session.commit()
