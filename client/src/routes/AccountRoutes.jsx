@@ -10,6 +10,7 @@ import UserBlogs from "../views/account/blog/profile";
 import Teams from "../views/account/teams/teams";
 import CheckAuth from "../middlewares/checkAuth";
 import ServerError from "../components/static/errors/ServerError";
+import Team from "../views/account/teams/teams/team";
 
 function AccountRoutes() {
   return (
@@ -28,6 +29,14 @@ function AccountRoutes() {
         element={
           <CheckAuth>
             <Teams />
+          </CheckAuth>
+        }
+      />
+      <Route
+        path="team/:teamId"
+        element={
+          <CheckAuth>
+            <Team />
           </CheckAuth>
         }
       />

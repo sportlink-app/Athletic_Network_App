@@ -6,6 +6,7 @@ from ..utils.notification_utils import notify_new_notification
 from ..utils.socketio import socketio, connected_users
 from ..utils.email.email_utils import send_email
 from flask import current_app
+from sqlalchemy.orm import joinedload
 
 team_blueprint = Blueprint('team_blueprint', __name__)
 
@@ -133,6 +134,54 @@ def get_teams(current_user):
     }
     
     return jsonify(response), 200
+
+# Retrieve Team API
+@team_blueprint.route('/team', methods=['GET'])
+@token_required()
+def get_team(current_user):
+    team_id = request.args.get('team_id')
+    if not team_id:
+        return jsonify({"error": "Team ID is required"}), 400
+
+    try:
+        team = Team.query.options(
+            joinedload(Team.sport),
+            joinedload(Team.owner),
+            joinedload(Team.members)
+        ).filter_by(id=team_id).first()
+
+        if not team:
+            return jsonify({"error": "Team not found"}), 404
+
+        # Check if the current user is a member of the team
+        is_current_user_member = current_user in team.members
+
+        # Prepare the response
+        team_data = {
+            "name": team.name,
+            "description": team.description,
+            "created_at": team.created_at,
+            "sport_name": team.sport.name if team.sport else None,
+            "city": team.city,
+            "location": team.location,
+            "date": team.date,
+            "is_completed": team.isCompleted,
+            "owner": {
+                "username": team.owner.username,
+                "gender": team.owner.gender
+            },
+            "members": [
+                {"username": member.username, "gender": member.gender} for member in team.members
+            ],
+            "is_current_user_member": is_current_user_member,
+            "required_members_count": max(0, team.members_count - len(team.members))
+        }
+
+        return jsonify(team_data), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 # Invite Member API
 @team_blueprint.route('/team/invite', methods=['POST'])
