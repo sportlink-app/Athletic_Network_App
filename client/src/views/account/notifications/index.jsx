@@ -66,7 +66,11 @@ export default function Notifications() {
     } else setRejectLoading(true);
     try {
       await inviteRespond(referenceId, action);
-      navigate("/teams");
+      if (action === "accept") {
+        navigate(`/team/${teamId}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
       if (error.message === "401") {
         messageApi.warning(
@@ -87,7 +91,11 @@ export default function Notifications() {
     } else setRejectLoading(true);
     try {
       await joinRespond(referenceId, action);
-      navigate("/teams");
+      if (action === "accept") {
+        navigate(`/team/${teamId}`);
+      } else {
+        navigate("/teams");
+      }
     } catch (error) {
       if (error.message === "401") {
         messageApi.warning(
@@ -120,7 +128,7 @@ export default function Notifications() {
               } gap-5 justify-between`}
             >
               {((!isTeamCompleted && type === "team_invite") ||
-                type === "team_join") && (
+                (!isTeamCompleted && type === "team_join")) && (
                 <div className="flex gap-2 md:gap-4 self-end">
                   <Button
                     onClick={

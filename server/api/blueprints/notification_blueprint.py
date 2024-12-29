@@ -53,6 +53,7 @@ def get_all_notifications(current_user):
                 sender_details = get_sender_details(invite.owner_id)
                 if team and sender_details:
                     notification_data.update({
+                        "team_id": team.id,
                         "team_name": team.name,
                         "sender": sender_details,
                         "is_team_completed": team.isCompleted
@@ -65,6 +66,7 @@ def get_all_notifications(current_user):
                 sender_details = get_sender_details(invite.user_id)
                 if team and sender_details:
                     notification_data.update({
+                        "team_id": team.id,
                         "team_name": team.name,
                         "sender": sender_details
                     })
@@ -76,10 +78,11 @@ def get_all_notifications(current_user):
                 sender_details = get_sender_details(join.user_id)  
                 if team and sender_details:
                     notification_data.update({
-                    "team_name": team.name,
-                    "sender": sender_details,
-                    "is_team_completed": team.isCompleted
-                })
+                        "team_id": team.id,
+                        "team_name": team.name,
+                        "sender": sender_details,
+                        "is_team_completed": team.isCompleted
+                    })
 
         elif notification.type == 'team_join_response':
             join = JoinRequest.query.filter_by(id=notification.reference_id).first()
@@ -88,6 +91,7 @@ def get_all_notifications(current_user):
                 sender_details = get_sender_details(join.owner_id)
                 if team and sender_details:
                     notification_data.update({
+                        "team_id": team.id,
                         "team_name": team.name,
                         "sender": sender_details
                     })
@@ -96,6 +100,7 @@ def get_all_notifications(current_user):
             team = Team.query.filter_by(id=notification.reference_id).first()
             if team:
                 notification_data.update({
+                    "team_id": team.id,
                     "team_name": team.name
                 })
 

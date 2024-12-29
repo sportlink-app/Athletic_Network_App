@@ -12,6 +12,7 @@ export default function NotificationsList({ hide }) {
         <NotificationCard
           key={index}
           id={notification.id}
+          teamId={notification.team_id}
           isVisited={notification.is_visited}
           type={notification.type}
           isTeamCompleted={notification.is_team_completed}

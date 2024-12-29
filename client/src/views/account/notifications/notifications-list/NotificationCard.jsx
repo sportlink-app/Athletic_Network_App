@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Button, message, Tag, Tooltip } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import notificationStore from "../../../../store/notificationStore";
 import { getNotificationMessage } from "../../../../components/static/notificationMessages";
@@ -16,6 +16,7 @@ import { useState } from "react";
 
 export default function NotificationCard({
   id,
+  teamId,
   isVisited,
   type,
   isTeamCompleted,
@@ -42,12 +43,13 @@ export default function NotificationCard({
     e.preventDefault();
     try {
       await deleteNotification(id);
-      messageApi.success("Notification deleted successfully!");
+      messageApi.success("Notification deleted!");
     } catch (error) {
       messageApi.error("Failed to delete notification!");
     }
   };
 
+  const navigate = useNavigate();
   const handleInviteRespond = async (e, action) => {
     e.stopPropagation();
     e.preventDefault();
@@ -57,7 +59,11 @@ export default function NotificationCard({
     } else setRejectLoading(true);
     try {
       await inviteRespond(referenceId, action);
-      messageApi.success(`Invite ${action}ed successfully`);
+      messageApi.success(`Invite ${action}ed!`);
+      if (action === "accept") {
+        hide();
+        navigate(`/team/${teamId}`);
+      }
     } catch (error) {
       if (error.message === "401") {
         messageApi.warning(
@@ -82,7 +88,11 @@ export default function NotificationCard({
     } else setRejectLoading(true);
     try {
       await joinRespond(referenceId, action);
-      messageApi.success(`Join request ${action}ed successfully`);
+      messageApi.success(`Join request ${action}ed!`);
+      if (action === "accept") {
+        hide();
+        navigate(`/team/${teamId}`);
+      }
     } catch (error) {
       if (error.message === "401") {
         messageApi.warning(
@@ -130,9 +140,9 @@ export default function NotificationCard({
               onClick={handleNotificationDelete}
             />
             {((!isTeamCompleted && type === "team_invite") ||
-              type === "team_join") && (
+              (!isTeamCompleted && type === "team_join")) && (
               <div className="flex gap-2">
-                <Tooltip title="Accept" color="green">
+                <Tooltip title="Accept" color="#32dc29">
                   <Button
                     onClick={
                       type === "team_invite"
@@ -184,6 +194,7 @@ export default function NotificationCard({
 
 NotificationCard.propTypes = {
   id: PropTypes.number.isRequired,
+  teamId: PropTypes.number,
   isVisited: PropTypes.bool,
   type: PropTypes.string.isRequired,
   isTeamCompleted: PropTypes.bool,

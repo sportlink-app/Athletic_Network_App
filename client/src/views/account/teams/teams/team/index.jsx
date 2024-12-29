@@ -72,7 +72,7 @@ export default function Team() {
         setTeamData(teamData); // Update the store with fetched data
       } catch (error) {
         console.error("Error fetching team data:", error);
-        navigate("/404");
+        // navigate("/404");
       } finally {
         setLoading(false);
       }
@@ -190,7 +190,7 @@ export default function Team() {
                   </span>
                   <Tooltip
                     title={owner.username}
-                    color="#00e8ba"
+                    color="#32dc29"
                     className="w-fit"
                   >
                     <Link
@@ -227,7 +227,7 @@ export default function Team() {
                     {members.map((member) => (
                       <Tooltip
                         title={member.username}
-                        color="#00e8ba"
+                        color="#32dc29"
                         key={member.username}
                       >
                         <Link
