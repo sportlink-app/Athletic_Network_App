@@ -204,7 +204,7 @@ def get_specific_notification(current_user, notification_id):
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
-                            "date": team.date.strftime('%Y-%m-%d'),
+                            "date": team.date,
                             "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,
@@ -225,7 +225,7 @@ def get_specific_notification(current_user, notification_id):
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
-                            "date": team.date.strftime('%Y-%m-%d'),
+                            "date": team.date,
                             "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,
@@ -247,7 +247,7 @@ def get_specific_notification(current_user, notification_id):
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
-                            "date": team.date.strftime('%Y-%m-%d'),
+                            "date": team.date,
                             "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,
@@ -268,7 +268,7 @@ def get_specific_notification(current_user, notification_id):
                             "team_name": team.name,
                             "city": team.city,
                             "description": team.description,
-                            "date": team.date.strftime('%Y-%m-%d'),
+                            "date": team.date,
                             "sport": sport.name if sport else "N/A",  # Add sport name if available
                             "sender": {
                                 "username": sender.username,

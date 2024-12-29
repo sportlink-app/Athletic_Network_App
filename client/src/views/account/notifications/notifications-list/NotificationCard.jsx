@@ -136,12 +136,13 @@ export default function NotificationCard({
           </div>
           <div className="flex flex-col justify-between items-end gap-5">
             <Button
+              onClick={handleNotificationDelete}
+              disabled={isLoading}
               type="primary"
               shape="circle"
               size="middle"
               className="!bg-slate-50 hover:!bg-slate-200 !text-slate-800"
               icon={<DeleteOutlined />}
-              onClick={handleNotificationDelete}
             />
             {((!isTeamCompleted && type === "team_invite") ||
               (!isTeamCompleted && type === "team_join")) && (

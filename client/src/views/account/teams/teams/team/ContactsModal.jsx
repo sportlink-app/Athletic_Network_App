@@ -6,8 +6,9 @@ import ProfileAvatar from "../../../../../components/dynamic/Avatar";
 import Card from "../../../../../components/static/Card";
 import { getRandomColor } from "../../../../../components/utils/randomColor";
 import { Link } from "react-router-dom";
+import userInfoStore from "../../../../../store/user/userInfoStore";
 
-export default function ContactsModal({ members, ownerUsername }) {
+export default function ContactsModal({ members }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -18,8 +19,10 @@ export default function ContactsModal({ members, ownerUsername }) {
     setIsModalOpen(false);
   };
 
+  const { username } = userInfoStore();
+
   const filteredMembers = members.filter(
-    (member) => member.username !== ownerUsername
+    (member) => member.username !== username
   );
 
   return (
