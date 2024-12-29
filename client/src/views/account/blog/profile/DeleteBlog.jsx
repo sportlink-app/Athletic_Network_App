@@ -52,32 +52,34 @@ function DeleteBlog({ id }) {
       <Modal
         open={isModalOpen}
         onCancel={handleCancel}
-        title="Delete Blog"
         footer={null}
         style={{ borderRadius: "100px" }}
       >
-        <p className="text-sm text-gray-500 ">
-          Are you sure you want to delete this blog? This action cannot be
-          undone.
-        </p>
+        <div className="p-4">
+          <h1 className="text-slate-800 text-lg">Delete Blog</h1>
+          <p className="text-sm text-gray-500 mt-2">
+            Are you sure you want to delete this blog? Once deleted, it will be
+            permanently removed, and this action cannot be undone.
+          </p>
 
-        <div className="mt-6 sm:flex sm:flex-row-reverse">
-          <Button
-            onClick={handleBlogDelete}
-            danger
-            type="primary"
-            shape="round"
-            size="large"
-            icon={
-              isLoading ? (
-                <Spin size="small" className="white-spin" />
-              ) : (
-                <CloseOutlined size={16} />
-              )
-            }
-          >
-            Delete
-          </Button>
+          <div className="mt-5 sm:flex sm:flex-row-reverse">
+            <Button
+              onClick={handleBlogDelete}
+              danger
+              type="primary"
+              shape="round"
+              size="large"
+              icon={
+                isLoading ? (
+                  <Spin size="small" className="white-spin" />
+                ) : (
+                  <CloseOutlined size={16} />
+                )
+              }
+            >
+              Delete
+            </Button>
+          </div>
         </div>
       </Modal>
     </>

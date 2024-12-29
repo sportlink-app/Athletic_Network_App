@@ -110,6 +110,68 @@ const teamStore = create((set) => ({
     }
   },
   setSportFilter: (sport) => set({ searchedSport: sport }),
+
+  teamId: "",
+  name: "Power Rangers",
+  createdAt: "Sat, 28 Dec 2024 01:01:14 GMT",
+  sport: "Basketball",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus ipsam mollitia adipisci repellendus aspernatur dolorem. Quas velit deleniti amet neque vero, quam, eos iure assumenda tempore molestiae, ipsa ab.",
+  date: "Sun, 29 Dec 2024 23:00:00 GMT",
+  city: "casablanca",
+  location:
+    "Aïn Sebaâ, Préfecture d'arrondissements d'Aïn Sebaâ-Hay Mohammadi عمالة مقاطعات عين السبع الحي المحمدي, Casablanca, Pachalik de Casablanca باشوية الدار البيضاء, Prefecture of Casablanca, Morocco",
+  isCompleted: false,
+  isMember: true,
+  members: [
+    {
+      gender: "male",
+      username: "seifAz",
+    },
+    {
+      gender: "female",
+      username: "seifAza",
+    },
+    {
+      gender: "male",
+      username: "seifAzaa",
+    },
+  ],
+  owner: {
+    gender: "male",
+    username: "seifAz",
+  },
+  membersCount: 2,
+
+  // teamId: "",
+  // name: "",
+  // createdAt: "",
+  // sport: "",
+  // description: "",
+  // date: "",
+  // city: "",
+  // location: "",
+  // isCompleted: "",
+  // isMember: "",
+  // members: [],
+  // owner: {},
+  // membersCount: "",
+
+  // Get team data based on id
+  getTeam: async (id) => {
+    try {
+      const response = await axios.get(`/team?team_id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.getState().token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.status);
+    }
+  },
 }));
 
 export default teamStore;

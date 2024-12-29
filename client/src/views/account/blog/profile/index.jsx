@@ -89,7 +89,7 @@ function UserBlogs() {
           className="w-full h-28 md:h-32 xl:h-40 flex justify-center items-end"
         >
           <div className="w-full sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-10 relative">
-            <BackButton />
+            <BackButton className="absolute top-5 left-2 sm:left-4" />
             {authenticatedUsername !== username && (
               <Link to={`/user/${username}`}>
                 <Button

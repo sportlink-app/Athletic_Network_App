@@ -74,6 +74,7 @@ export default function Blogs() {
         {isDataFetched && blogs.length === 0 && (
           <EmptyData text="No blog posts found!" />
         )}
+
         <div className="flex justify-center mt-4">
           {!isLoading && blogs.length < totalItems && (
             <Button
