@@ -12,10 +12,10 @@ import {
 import Tags from "../../../components/static/Tags";
 import Footer from "../../../components/static/Footer";
 import notificationStore from "../../../store/notificationStore";
-import { formatDistanceToNow, parseISO } from "date-fns";
 import { getNotificationMessage } from "../../../components/static/notificationMessages";
 import teamStore from "../../../store/team/teamStore";
 import BackButton from "../../../components/static/BackButton";
+import timeAgo from "../../../components/utils/timeAgo";
 
 export default function Notifications() {
   const { id } = useParams();
@@ -52,10 +52,6 @@ export default function Notifications() {
     sport,
     sender,
   } = notification || {};
-
-  const formattedDate = createdAt
-    ? formatDistanceToNow(parseISO(createdAt), { addSuffix: true })
-    : "Date not available";
 
   const { inviteRespond, joinRespond } = teamStore();
   const [isDisabled, setDisabled] = useState(false);
@@ -122,7 +118,10 @@ export default function Notifications() {
           <div className="flex flex-col gap-4 lg:gap-6">
             <BackButton />
             <div className="w-full mx-auto flex flex-col gap-4 ">
-              <p className="text-sm text-gray-600">{formattedDate}</p>
+              <p className="text-base text-gray-500">
+                About {timeAgo(createdAt)}
+              </p>
+
               <div
                 className={`w-full flex flex-col ${
                   type === "team_invite" || type === "team_join"
