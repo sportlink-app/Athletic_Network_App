@@ -102,7 +102,11 @@ export default function NotificationCard({
     <>
       {contextHolder}
       <Link
-        to={type === "team_completion" ? `/team/${id}` : `/notification/${id}`}
+        to={
+          type === "team_completion"
+            ? `/team/${referenceId}`
+            : `/notification/${id}`
+        }
         onClick={hide}
       >
         <Card

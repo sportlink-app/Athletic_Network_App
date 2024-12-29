@@ -111,53 +111,22 @@ const teamStore = create((set) => ({
   },
   setSportFilter: (sport) => set({ searchedSport: sport }),
 
-  teamId: "",
-  name: "Power Rangers",
-  createdAt: "Sat, 28 Dec 2024 01:01:14 GMT",
-  sport: "Basketball",
-  description:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus ipsam mollitia adipisci repellendus aspernatur dolorem. Quas velit deleniti amet neque vero, quam, eos iure assumenda tempore molestiae, ipsa ab.",
-  date: "Sun, 29 Dec 2024 23:00:00 GMT",
-  city: "casablanca",
-  location:
-    "Aïn Sebaâ, Préfecture d'arrondissements d'Aïn Sebaâ-Hay Mohammadi عمالة مقاطعات عين السبع الحي المحمدي, Casablanca, Pachalik de Casablanca باشوية الدار البيضاء, Prefecture of Casablanca, Morocco",
+  name: "",
+  createdAt: "",
+  sport: "",
+  description: "",
+  date: "",
+  city: "",
+  location: "",
   isCompleted: false,
-  isMember: true,
-  members: [
-    {
-      gender: "male",
-      username: "seifAz",
-    },
-    {
-      gender: "female",
-      username: "seifAza",
-    },
-    {
-      gender: "male",
-      username: "seifAzaa",
-    },
-  ],
-  owner: {
-    gender: "male",
-    username: "seifAz",
-  },
-  membersCount: 2,
+  isMember: false,
+  members: [],
+  owner: {},
+  rest: "",
+  isRequested: false,
 
-  // teamId: "",
-  // name: "",
-  // createdAt: "",
-  // sport: "",
-  // description: "",
-  // date: "",
-  // city: "",
-  // location: "",
-  // isCompleted: "",
-  // isMember: "",
-  // members: [],
-  // owner: {},
-  // membersCount: "",
+  setTeamData: (data) => set({ ...data }), // Method to set team data
 
-  // Get team data based on id
   getTeam: async (id) => {
     try {
       const response = await axios.get(`/team?team_id=${id}`, {
@@ -167,9 +136,24 @@ const teamStore = create((set) => ({
         },
       });
 
-      return response.data;
+      const teamData = response.data;
+      return {
+        name: teamData.name,
+        createdAt: teamData.created_at,
+        sport: teamData.sport_name,
+        description: teamData.description,
+        date: teamData.date,
+        city: teamData.city,
+        location: teamData.location,
+        isCompleted: teamData.is_completed,
+        isMember: teamData.is_member,
+        members: teamData.members,
+        owner: teamData.owner,
+        rest: teamData.rest,
+        isRequested: teamData.is_requested,
+      };
     } catch (error) {
-      throw new Error(error.status);
+      throw new Error(error.response ? error.response.status : error.message);
     }
   },
 }));

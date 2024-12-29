@@ -156,6 +156,10 @@ def get_team(current_user):
         # Check if the current user is a member of the team
         is_current_user_member = current_user in team.members
 
+        # Check if the current user has already requested to join this team
+        join_request = JoinRequest.query.filter_by(team_id=team.id, user_id=current_user.id).first()
+        is_requested = join_request is not None  # True if there's a join request, otherwise False
+
         # Prepare the response
         team_data = {
             "name": team.name,
@@ -171,10 +175,11 @@ def get_team(current_user):
                 "gender": team.owner.gender
             },
             "members": [
-                {"username": member.username, "gender": member.gender} for member in team.members
+                {"username": member.username, "gender": member.gender, "tel": member.tel} for member in team.members
             ],
-            "is_current_user_member": is_current_user_member,
-            "required_members_count": max(0, team.members_count - len(team.members))
+            "is_member": is_current_user_member,
+            "rest": max(0, team.members_count - len(team.members)),
+            "is_requested": is_requested
         }
 
         return jsonify(team_data), 200
