@@ -2,7 +2,7 @@ import { Button, message, Spin, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  CalendarOutlined,
+  ScheduleOutlined,
   EnvironmentOutlined,
   CloseOutlined,
   CheckOutlined,
@@ -15,6 +15,7 @@ import notificationStore from "../../../store/notificationStore";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { getNotificationMessage } from "../../../components/static/notificationMessages";
 import teamStore from "../../../store/team/teamStore";
+import BackButton from "../../../components/static/BackButton";
 
 export default function Notifications() {
   const { id } = useParams();
@@ -118,108 +119,107 @@ export default function Notifications() {
             <Spin size="large" className="green-spin mx-auto my-20" />
           </div>
         ) : notification ? ( // Check if notification is not null
-          <div className="w-full mx-auto p-5 flex flex-col gap-4 lg:gap-5">
-            <p className="text-sm text-gray-600">{formattedDate}</p>
-            <div
-              className={`w-full flex flex-col ${
-                type === "team_invite" || type === "team_join"
-                  ? "md:flex-row-reverse"
-                  : "md:flex-row"
-              } gap-5 justify-between`}
-            >
-              {((!isTeamCompleted && type === "team_invite") ||
-                (!isTeamCompleted && type === "team_join")) && (
-                <div className="flex gap-2 md:gap-4 self-end">
-                  <Button
-                    onClick={
-                      type === "team_invite"
-                        ? () => handleInviteRespond("reject")
-                        : () => handleJoinRespond("reject")
-                    }
-                    disabled={isDisabled || isLoading}
-                    loading={isRejectLoading}
-                    type="primary"
-                    shape="round"
-                    size="large"
-                    className="!bg-red-500 disabled:bg-red-500 hover:!bg-red-500 hover:brightness-105 w-fit"
-                    icon={<CloseOutlined size={16} />}
-                  >
-                    Reject
-                  </Button>
-                  <Button
-                    onClick={
-                      type === "team_invite"
-                        ? () => handleInviteRespond("accept")
-                        : () => handleJoinRespond("accept")
-                    }
-                    disabled={isDisabled || isLoading}
-                    loading={isAcceptLoading}
-                    type="primary"
-                    shape="round"
-                    size="large"
-                    className="!bg-green disabled:bg-green hover:!bg-green hover:brightness-105 w-fit"
-                    icon={<CheckOutlined size={16} />}
-                  >
-                    {type === "team_invite" ? "Join" : "Accept"}
-                  </Button>
-                </div>
-              )}
-              {isTeamCompleted &&
-                (type === "team_invite" || type === "team_join") && (
-                  <Tag
-                    bordered={false}
-                    color="warning"
-                    className="py-2 px-4 text-base rounded-full"
-                    icon={<ExclamationCircleOutlined />}
-                  >
-                    Team is completed
-                  </Tag>
-                )}
-              <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
-                {getNotificationMessage(type, sender, teamName)}
-              </h3>
-            </div>
-
-            <Tags list={sport} className="py-1 px-4 text-sm" />
-
-            <p className="text-base text-gray-600 sm:max-w-lg lg:max-w-2xl">
-              {description}
-            </p>
-
-            <div className="flex items-start flex-col md:flex-row gap-4 lg:gap-8 xl:gap-10">
-              <span className="flex justify-center items-center gap-2 text-gray-500">
-                <CalendarOutlined className="text-sm" />
-                <p className="text-base">
-                  {date
-                    ? new Date(date).toLocaleString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : "Date not available"}
-                </p>
-              </span>
-              <span className="flex justify-center items-center gap-2 text-gray-500">
-                <EnvironmentOutlined className="text-sm" />
-                <p className="text-base capitalize">
-                  {city || "City not available"}
-                </p>
-              </span>
-            </div>
-            <Link to={`/team/${teamId}`} className="mt-2">
-              <Button
-                type="primary"
-                shape="round"
-                size="large"
-                className="!bg-cyan hover:!bg-cyan hover:brightness-105 w-fit "
-                icon={<ArrowRightOutlined />}
-                iconPosition="end"
+          <div className="flex flex-col gap-4 lg:gap-6">
+            <BackButton />
+            <div className="w-full mx-auto flex flex-col gap-4 ">
+              <p className="text-sm text-gray-600">{formattedDate}</p>
+              <div
+                className={`w-full flex flex-col ${
+                  type === "team_invite" || type === "team_join"
+                    ? "md:flex-row-reverse"
+                    : "md:flex-row"
+                } gap-5 justify-between`}
               >
-                View Team
-              </Button>
-            </Link>
+                {((!isTeamCompleted && type === "team_invite") ||
+                  (!isTeamCompleted && type === "team_join")) && (
+                  <div className="flex gap-2 md:gap-4 self-end">
+                    <Button
+                      onClick={
+                        type === "team_invite"
+                          ? () => handleInviteRespond("reject")
+                          : () => handleJoinRespond("reject")
+                      }
+                      disabled={isDisabled || isLoading}
+                      loading={isRejectLoading}
+                      type="primary"
+                      shape="round"
+                      size="large"
+                      className="!bg-red-500 disabled:bg-red-500 hover:!bg-red-500 hover:brightness-105 w-fit"
+                      icon={<CloseOutlined size={16} />}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      onClick={
+                        type === "team_invite"
+                          ? () => handleInviteRespond("accept")
+                          : () => handleJoinRespond("accept")
+                      }
+                      disabled={isDisabled || isLoading}
+                      loading={isAcceptLoading}
+                      type="primary"
+                      shape="round"
+                      size="large"
+                      className="!bg-green disabled:bg-green hover:!bg-green hover:brightness-105 w-fit"
+                      icon={<CheckOutlined size={16} />}
+                    >
+                      {type === "team_invite" ? "Join" : "Accept"}
+                    </Button>
+                  </div>
+                )}
+                {isTeamCompleted &&
+                  (type === "team_invite" || type === "team_join") && (
+                    <Tag
+                      bordered={false}
+                      color="warning"
+                      className="py-2 px-4 text-base rounded-full"
+                      icon={<ExclamationCircleOutlined />}
+                    >
+                      Team is completed
+                    </Tag>
+                  )}
+                <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
+                  {getNotificationMessage(type, sender, teamName)}
+                </h3>
+              </div>
+
+              <Tags list={sport} className="py-1 px-4 text-sm" />
+
+              <p className="text-base text-gray-600 sm:max-w-lg lg:max-w-2xl">
+                {description}
+              </p>
+
+              <div className="mt-2 flex lg:flex-col gap-8 lg:gap-2">
+                <span className="flex items-center gap-2 text-gray-500">
+                  <ScheduleOutlined className="text-base pb-[.15rem]" />
+                  <p className="text-base">
+                    {new Date(date).toLocaleString(undefined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </span>
+                <span className="flex items-center gap-2 text-gray-500">
+                  <EnvironmentOutlined className="text-sm pb-[.15rem]" />
+                  <p className="text-base capitalize">{city}</p>
+                </span>
+              </div>
+              <Link to={`/team/${teamId}`} className="mt-2">
+                <Button
+                  type="primary"
+                  shape="round"
+                  size="large"
+                  className="!bg-cyan hover:!bg-cyan hover:brightness-105 w-fit "
+                  icon={<ArrowRightOutlined />}
+                  iconPosition="end"
+                >
+                  View Team
+                </Button>
+              </Link>
+            </div>
           </div>
         ) : (
           <p className="text-lg text-gray-600">Notification not found</p>
