@@ -40,7 +40,7 @@ function EditProfileForm({ onSuccess }) {
       setLoading(true);
       await updateProfile();
       onSuccess();
-      messageApi.success("Profile updated successfully");
+      messageApi.success("Profile updated!");
     } catch (error) {
       setErrorMessage(error.message);
     } finally {

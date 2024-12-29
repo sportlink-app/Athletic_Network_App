@@ -57,7 +57,7 @@ export default function TeamCard({
       setLoading(true);
       try {
         await teamJoin(teamId);
-        messageApi.success("Join request sent successfully");
+        messageApi.success("Join request sent!");
         onJoinSuccess(teamId);
       } catch (error) {
         if (error.message === "400") {

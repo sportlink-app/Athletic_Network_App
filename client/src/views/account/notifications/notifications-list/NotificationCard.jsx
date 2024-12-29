@@ -76,6 +76,8 @@ export default function NotificationCard({
       }
     } finally {
       setLoading(false);
+      setRejectLoading(false);
+      setAcceptLoading(false);
     }
   };
 
@@ -105,6 +107,8 @@ export default function NotificationCard({
       }
     } finally {
       setLoading(false);
+      setRejectLoading(false);
+      setAcceptLoading(false);
     }
   };
 

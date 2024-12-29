@@ -30,7 +30,7 @@ function WriteBlogForm({ onSuccess }) {
       await createBlog();
       setSelectedSport("");
       onSuccess();
-      messageApi.success("Blog post posted successfully!");
+      messageApi.success("Blog post posted!");
     } catch (error) {
       setErrorMessage(error.message);
     } finally {

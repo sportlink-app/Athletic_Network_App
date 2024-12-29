@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Spin, Tag, Tooltip } from "antd";
+import { Avatar, Button, Divider, message, Spin, Tag, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import {
   EnvironmentOutlined,
@@ -24,13 +24,13 @@ import teamStore from "../../../../../store/team/teamStore";
 import BackButton from "../../../../../components/static/BackButton";
 import ContactsModal from "./ContactsModal";
 import Tags from "../../../../../components/static/Tags";
+import userInfoStore from "../../../../../store/user/userInfoStore";
 
 export default function Team() {
   const { teamId } = useParams();
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(true);
-  const [isJoinLoading, setJoinLoading] = useState(false);
 
   const {
     name,
@@ -71,8 +71,7 @@ export default function Team() {
         const teamData = await teamStore.getState().getTeam(teamId); // Call the store's `getTeam` method
         setTeamData(teamData); // Update the store with fetched data
       } catch (error) {
-        console.error("Error fetching team data:", error);
-        // navigate("/404");
+        navigate("/404");
       } finally {
         setLoading(false);
       }
@@ -84,8 +83,47 @@ export default function Team() {
   const avatarGroupRandomColor = getRandomColor(name);
   const avatarGroupBgColor = lightenColor(avatarGroupRandomColor, 5);
 
+  const [messageApi, contextHolder] = message.useMessage();
+  const availability = userInfoStore((state) => state.availability);
+
+  const { teamJoin } = teamStore();
+  const [isJoined, setJoined] = useState(false);
+  const [isJoinLoading, setJoinLoading] = useState(false);
+
+  // Handle button click without triggering the link navigation
+  const handleJoinClick = async () => {
+    if (!availability) {
+      messageApi.open({
+        type: "warning",
+        content:
+          "You must be available to join a team. Please update your availability in your profile.",
+        duration: 5,
+      });
+    } else {
+      setJoinLoading(true);
+      try {
+        await teamJoin(teamId);
+        setJoined(true);
+        messageApi.success("Join request sent!");
+      } catch (error) {
+        if (error.message === "400") {
+          messageApi.error("Join request already sent and is pending");
+        } else if (error.message === "401") {
+          messageApi.warning("The team is already completed");
+        } else {
+          messageApi.error(
+            "Failed to join team, please refresh the page or try again later"
+          );
+        }
+      } finally {
+        setJoinLoading(false);
+      }
+    }
+  };
+
   return (
     <>
+      {contextHolder}
       <div className="min-h-screen container mx-auto px-4 my-10">
         {isLoading ? (
           <div className="w-full h-[70vh] flex justify-center items-center">
@@ -106,22 +144,29 @@ export default function Team() {
                 </Tag>
               ) : (
                 <Button
-                  disabled={isRequested || isMember || isJoinLoading}
+                  onClick={handleJoinClick}
+                  disabled={
+                    isRequested || isMember || isJoinLoading || isJoined
+                  }
                   type="primary"
                   shape="round"
                   size="large"
                   className="w-fit self-end !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
                   icon={
-                    isRequested ? (
+                    isJoinLoading ? (
+                      <Spin size="small" className="white-spin" />
+                    ) : (isRequested || isJoined) && !isMember ? (
                       <ClockCircleOutlined size={16} />
+                    ) : isMember ? (
+                      <UserOutlined size={16} />
                     ) : (
                       <UserAddOutlined size={16} />
                     )
                   }
                 >
-                  {isRequested && "Requested"}
+                  {(isRequested || isJoined) && !isMember && "Requested"}
                   {isMember && "Member"}
-                  {!isRequested && !isMember && "Join Team"}
+                  {!isRequested && !isJoined && !isMember && "Join Team"}
                 </Button>
               )}
             </div>

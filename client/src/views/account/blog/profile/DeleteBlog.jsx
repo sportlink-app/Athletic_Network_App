@@ -25,7 +25,7 @@ function DeleteBlog({ id }) {
       setLoading(true);
       // Call the deleteProfile function from the store
       await deleteBlog(id);
-      messageApi.success("Blog post delete successfully!");
+      messageApi.success("Blog post delete!");
       // Close the modal after success
       setIsModalOpen(false);
     } catch (error) {
