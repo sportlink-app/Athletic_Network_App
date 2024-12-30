@@ -29,6 +29,7 @@ function UserProfile() {
     teamsCreated: state.teamsCreated,
     teamsJoined: state.teamsJoined,
     blogPosts: state.blogPosts,
+    createdAt: state.createdAt,
   }));
   const { getAvailability, availability } = userInfoStore();
   const navigate = useNavigate();

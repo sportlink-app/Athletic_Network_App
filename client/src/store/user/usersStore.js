@@ -33,7 +33,7 @@ const usersStore = create((set) => ({
         bio,
         sports,
         city,
-        teams_created, // Assuming these keys match the API response
+        teams_created,
         teams_joined,
         blog_posts,
         created_at,
@@ -52,6 +52,7 @@ const usersStore = create((set) => ({
         blogPosts: blog_posts,
         createdAt: created_at,
       });
+      console.log(response.data.created_at);
 
       return response.data;
     } catch (error) {
