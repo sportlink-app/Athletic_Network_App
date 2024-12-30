@@ -7,6 +7,7 @@ import Preloader from "./components/static/Preloader";
 import AccountNavbar from "./views/account/AccountNavbar";
 import MainNavbar from "./views/landing-page/MainNavbar";
 import { preloadAssets } from "./components/utils/preloadAssets";
+import Hub from "./views/account/hub";
 
 // Lazy load components
 const AccountRoutes = lazy(() => import("./routes/AccountRoutes"));
@@ -40,6 +41,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="account/*" element={<GuestRoutes />} />
+        <Route path="hub/*" element={<Hub />} />
         <Route path="/*" element={<AccountRoutes />} />
       </Routes>
 
