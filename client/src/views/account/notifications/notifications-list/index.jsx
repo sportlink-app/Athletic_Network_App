@@ -21,6 +21,7 @@ export default function NotificationsList({ hide }) {
           sender={notification.sender}
           referenceId={notification.reference_id}
           hide={hide}
+          isDateDeprecated={notification.is_date_deprecated}
         />
       ))}
     </div>

@@ -8,6 +8,7 @@ import {
   CheckOutlined,
   ArrowRightOutlined,
   ExclamationCircleOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import Tags from "../../../components/static/Tags";
 import Footer from "../../../components/static/Footer";
@@ -51,6 +52,7 @@ export default function Notifications() {
     city,
     sport,
     sender,
+    is_date_deprecated: isDateDeprecated,
   } = notification || {};
 
   const { inviteRespond, joinRespond } = teamStore();
@@ -116,21 +118,31 @@ export default function Notifications() {
           </div>
         ) : notification ? ( // Check if notification is not null
           <div className="flex flex-col gap-4 lg:gap-6">
-            <BackButton />
-            <div className="w-full mx-auto flex flex-col gap-4 ">
-              <p className="text-base text-gray-500">
-                About {timeAgo(createdAt)}
-              </p>
-
+            <div className=" flex justify-between gap-4 ">
+              <BackButton />
               <div
-                className={`w-full flex flex-col ${
+                className={`flex flex-col ${
                   type === "team_invite" || type === "team_join"
                     ? "md:flex-row-reverse"
                     : "md:flex-row"
                 } gap-5 justify-between`}
               >
-                {((!isTeamCompleted && type === "team_invite") ||
-                  (!isTeamCompleted && type === "team_join")) && (
+                {isDateDeprecated && !isTeamCompleted && (
+                  <Tag
+                    bordered={false}
+                    color="error"
+                    className="w-fit rounded-full text-base py-1 md:py-2 px-3 md:px-4 self-end lg:self-start"
+                  >
+                    <CloseCircleOutlined />
+                    <span>Date Has Passed</span>
+                  </Tag>
+                )}
+                {((!isDateDeprecated &&
+                  !isTeamCompleted &&
+                  type === "team_invite") ||
+                  (!isDateDeprecated &&
+                    !isTeamCompleted &&
+                    type === "team_join")) && (
                   <div className="flex gap-2 md:gap-4 self-end">
                     <Button
                       onClick={
@@ -171,16 +183,21 @@ export default function Notifications() {
                     <Tag
                       bordered={false}
                       color="warning"
-                      className="py-2 px-4 text-base rounded-full"
+                      className="w-fit py-2 px-4 text-base rounded-full !mr-0"
                       icon={<ExclamationCircleOutlined />}
                     >
                       Team is completed
                     </Tag>
                   )}
-                <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
-                  {getNotificationMessage(type, sender, teamName)}
-                </h3>
               </div>
+            </div>
+            <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
+              {getNotificationMessage(type, sender, teamName)}
+            </h3>
+            <div className="w-full mx-auto flex flex-col gap-4 ">
+              <p className="text-base text-gray-500">
+                About {timeAgo(createdAt)}
+              </p>
 
               <Tags list={sport} className="py-1 px-4 text-sm" />
 
@@ -188,7 +205,7 @@ export default function Notifications() {
                 {description}
               </p>
 
-              <div className="mt-2 flex lg:flex-col gap-8 lg:gap-2">
+              <div className="mt-2 flex flex-col md:flex-row lg:flex-col gap-2 md:gap-10 lg:gap-2">
                 <span className="flex items-center gap-2 text-gray-500">
                   <ScheduleOutlined className="text-base pb-[.15rem]" />
                   <p className="text-base">

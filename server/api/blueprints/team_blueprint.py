@@ -7,6 +7,7 @@ from ..utils.socketio import socketio, connected_users
 from ..utils.email.email_utils import send_email
 from flask import current_app
 from sqlalchemy.orm import joinedload
+from datetime import datetime
 
 team_blueprint = Blueprint('team_blueprint', __name__)
 
@@ -60,7 +61,7 @@ def create_team(current_user):
         "team_id": team.id,
     }), 201
 
-# Retrieve Teams API
+
 @team_blueprint.route('/teams', methods=['GET'])
 @token_required()  # Ensure the current user is authenticated
 def get_teams(current_user):
@@ -72,8 +73,13 @@ def get_teams(current_user):
     sport_name = request.args.get('sport')  # Assume sport name is passed as a query parameter
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
     
-    # Query for teams that are not completed and in the same city
-    teams_query = Team.query.filter_by(isCompleted=False, city=current_city)
+    # Query for teams that are not completed, in the same city, and with a future date
+    current_datetime = datetime.utcnow()  # Use UTC for consistency
+    teams_query = Team.query.filter(
+        Team.isCompleted == False,
+        Team.city == current_city,
+        Team.date >= current_datetime  # Filter for future or current dates
+    )
     
     # Filter by sport if provided
     if sport_name:
@@ -160,6 +166,10 @@ def get_team(current_user):
         join_request = JoinRequest.query.filter_by(team_id=team.id, user_id=current_user.id).first()
         is_requested = join_request is not None  # True if there's a join request, otherwise False
 
+        # Check if the team's event date is in the past
+        current_datetime = datetime.utcnow() 
+        is_date_deprecated = team.date < current_datetime
+
         # Prepare the response
         team_data = {
             "name": team.name,
@@ -179,14 +189,14 @@ def get_team(current_user):
             ],
             "is_member": is_current_user_member,
             "rest": max(0, team.members_count - len(team.members)),
-            "is_requested": is_requested
+            "is_requested": is_requested,
+            "is_date_deprecated": is_date_deprecated,
         }
 
         return jsonify(team_data), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # Invite Member API
 @team_blueprint.route('/team/invite', methods=['POST'])
@@ -267,8 +277,13 @@ def respond_to_invitation(current_user):
     if invite.user_id != current_user.id:
         return jsonify({"message": "You are not authorized to respond to this invitation."}), 403
 
-    # Check if the team is already completed
     team = Team.query.get(invite.team_id)
+
+    # Check if the team's date is deprecated
+    if team.date < datetime.utcnow():
+        return jsonify({"message": "You cannot accept this invitation because the team's event date has already passed."}), 400
+
+    # Check if the team is already completed
     if team and team.isCompleted:
         return jsonify({"message": "The team is already completed. You cannot accept this invitation."}), 401
 

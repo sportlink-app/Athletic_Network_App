@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from .user_blueprint import token_required
 from ..models import db, Notification, TeamInvite, JoinRequest, Team, Myusers, Sport
 from ..utils.socketio import socketio, connected_users, handle_connect, handle_disconnect
+from datetime import datetime
 
 notification_blueprint = Blueprint('notification_blueprint', __name__)
 
@@ -44,19 +45,23 @@ def get_all_notifications(current_user):
             "reference_id": notification.reference_id,
             "created_at": notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         }
+        
+        current_date = datetime.utcnow()
 
         # Populate data based on notification type
         if notification.type == 'team_invite':
             invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
             if invite:
                 team = Team.query.filter_by(id=invite.team_id).first()
+                is_date_deprecated = team.date < current_date
                 sender_details = get_sender_details(invite.owner_id)
                 if team and sender_details:
                     notification_data.update({
                         "team_id": team.id,
                         "team_name": team.name,
                         "sender": sender_details,
-                        "is_team_completed": team.isCompleted
+                        "is_team_completed": team.isCompleted,
+                        "is_date_deprecated": is_date_deprecated,
                     })
 
         elif notification.type == 'team_invite_response':
@@ -75,13 +80,15 @@ def get_all_notifications(current_user):
             join = JoinRequest.query.filter_by(id=notification.reference_id).first()
             if join:
                 team = Team.query.filter_by(id=join.team_id).first()
+                is_date_deprecated = team.date < current_date
                 sender_details = get_sender_details(join.user_id)  
                 if team and sender_details:
                     notification_data.update({
                         "team_id": team.id,
                         "team_name": team.name,
                         "sender": sender_details,
-                        "is_team_completed": team.isCompleted
+                        "is_team_completed": team.isCompleted,
+                        "is_date_deprecated": is_date_deprecated,
                     })
 
         elif notification.type == 'team_join_response':
@@ -188,12 +195,15 @@ def get_specific_notification(current_user, notification_id):
         notification.is_visited = True
         db.session.commit()
 
+        current_date = datetime.utcnow()
+
         # Fetch additional data based on the notification type and reference_id
         if notification.reference_id:
             if notification.type == 'team_invite':
                 invite = TeamInvite.query.filter_by(id=notification.reference_id).first()
                 if invite:
                     team = Team.query.filter_by(id=invite.team_id).first()
+                    is_date_deprecated = team.date < current_date
                     sender = Myusers.query.filter_by(id=invite.owner_id).first()
                     if team and sender:
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
@@ -209,7 +219,8 @@ def get_specific_notification(current_user, notification_id):
                             "sender": {
                                 "username": sender.username,
                                 "gender": sender.gender
-                            }
+                            },
+                            "is_date_deprecated": is_date_deprecated,
                         })
 
             elif notification.type == 'team_invite_response':
@@ -237,6 +248,7 @@ def get_specific_notification(current_user, notification_id):
                 join = JoinRequest.query.filter_by(id=notification.reference_id).first()
                 if join:
                     team = Team.query.filter_by(id=join.team_id).first()
+                    is_date_deprecated = team.date < current_date
                     sender = Myusers.query.filter_by(id=join.user_id).first()
                     if team and sender:
                         sport = Sport.query.filter_by(id=team.sport_id).first() if team.sport_id else None
@@ -252,7 +264,8 @@ def get_specific_notification(current_user, notification_id):
                             "sender": {
                                 "username": sender.username,
                                 "gender": sender.gender
-                            }
+                            },
+                            "is_date_deprecated": is_date_deprecated,
                         })
 
             elif notification.type == 'team_join_response':

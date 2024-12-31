@@ -10,6 +10,7 @@ import {
   UserAddOutlined,
   ScheduleOutlined,
   CarryOutOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../../../../../components/static/Footer";
@@ -46,6 +47,7 @@ export default function Team() {
     owner,
     rest,
     isRequested,
+    isDateDeprecated,
     setTeamData,
   } = teamStore((state) => ({
     name: state.name,
@@ -61,6 +63,7 @@ export default function Team() {
     owner: state.owner,
     rest: state.rest,
     isRequested: state.isRequested,
+    isDateDeprecated: state.isDateDeprecated,
     setTeamData: state.setTeamData,
   }));
 
@@ -131,16 +134,34 @@ export default function Team() {
           </div>
         ) : (
           <div className="flex flex-col gap-4 lg:gap-6">
-            <div className="flex justify-between gap-4">
+            <div className="flex justify-between gap-4 ">
               <BackButton />
-              {isCompleted ? (
+              {isDateDeprecated && isCompleted ? (
                 <Tag
                   bordered={false}
                   color="success"
-                  className="w-fit rounded-full text-base py-1 md:py-2 px-3 md:px-4"
+                  className="w-fit rounded-full text-base py-1 md:py-2 px-3 md:px-4 self-end lg:self-start"
                 >
                   <CheckCircleOutlined />
-                  <span className="ml-1">Team is Completed</span>
+                  <span>Activity is Done</span>
+                </Tag>
+              ) : isDateDeprecated && !isCompleted ? (
+                <Tag
+                  bordered={false}
+                  color="error"
+                  className="w-fit rounded-full text-base py-1 md:py-2 px-3 md:px-4 self-end lg:self-start"
+                >
+                  <CloseCircleOutlined />
+                  <span>Date Has Passed</span>
+                </Tag>
+              ) : !isDateDeprecated && isCompleted ? (
+                <Tag
+                  bordered={false}
+                  color="success"
+                  className="w-fit rounded-full text-base py-1 md:py-2 px-3 md:px-4 self-end lg:self-start"
+                >
+                  <CheckCircleOutlined />
+                  <span>Team is Completed</span>
                 </Tag>
               ) : (
                 <Button
@@ -151,7 +172,7 @@ export default function Team() {
                   type="primary"
                   shape="round"
                   size="large"
-                  className="w-fit self-end !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
+                  className="w-fit self-end lg:self-start !bg-green disabled:bg-green hover:!bg-green hover:brightness-105"
                   icon={
                     isJoinLoading ? (
                       <Spin size="small" className="white-spin" />

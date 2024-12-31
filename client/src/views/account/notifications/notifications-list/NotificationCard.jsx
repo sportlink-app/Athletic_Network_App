@@ -4,6 +4,7 @@ import {
   CheckOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Button, message, Tag, Tooltip } from "antd";
@@ -25,6 +26,7 @@ export default function NotificationCard({
   teamName,
   sender,
   hide,
+  isDateDeprecated,
 }) {
   const { deleteNotification } = notificationStore();
   const { inviteRespond, joinRespond } = teamStore();
@@ -65,9 +67,11 @@ export default function NotificationCard({
         navigate(`/team/${teamId}`);
       }
     } catch (error) {
-      if (error.message === "401") {
+      if (error.message === "400") {
+        messageApi.error("Team's event date has already passed");
+      } else if (error.message === "401") {
         messageApi.warning(
-          "The team is already completed. You cannot accept this invitation."
+          "The team is already completed. You cannot accept this invitation"
         );
       } else {
         messageApi.error(
@@ -144,8 +148,22 @@ export default function NotificationCard({
               className="!bg-slate-50 hover:!bg-slate-200 !text-slate-800"
               icon={<DeleteOutlined />}
             />
-            {((!isTeamCompleted && type === "team_invite") ||
-              (!isTeamCompleted && type === "team_join")) && (
+            {isDateDeprecated && !isTeamCompleted && (
+              <Tag
+                bordered={false}
+                color="error"
+                className="py-1 px-2 rounded-full"
+                icon={<CloseCircleOutlined />}
+              >
+                Date Has Passed
+              </Tag>
+            )}
+            {((!isDateDeprecated &&
+              !isTeamCompleted &&
+              type === "team_invite") ||
+              (!isDateDeprecated &&
+                !isTeamCompleted &&
+                type === "team_join")) && (
               <div className="flex gap-2">
                 <Tooltip title="Accept" color="#32dc29">
                   <Button
@@ -179,7 +197,8 @@ export default function NotificationCard({
                 </Tooltip>
               </div>
             )}
-            {isTeamCompleted &&
+            {!isDateDeprecated &&
+              isTeamCompleted &&
               (type === "team_invite" || type === "team_join") && (
                 <Tag
                   bordered={false}
@@ -208,4 +227,5 @@ NotificationCard.propTypes = {
   teamName: PropTypes.string,
   sender: PropTypes.object,
   hide: PropTypes.func,
+  isDateDeprecated: PropTypes.bool,
 };

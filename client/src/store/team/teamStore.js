@@ -124,6 +124,7 @@ const teamStore = create((set) => ({
   owner: {},
   rest: "",
   isRequested: false,
+  isDateDeprecated: false,
 
   setTeamData: (data) => set({ ...data }), // Method to set team data
 
@@ -137,6 +138,7 @@ const teamStore = create((set) => ({
       });
 
       const teamData = response.data;
+
       return {
         name: teamData.name,
         createdAt: teamData.created_at,
@@ -151,6 +153,7 @@ const teamStore = create((set) => ({
         owner: teamData.owner,
         rest: teamData.rest,
         isRequested: teamData.is_requested,
+        isDateDeprecated: teamData.is_date_deprecated,
       };
     } catch (error) {
       throw new Error(error.response ? error.response.status : error.message);
