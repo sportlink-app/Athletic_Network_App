@@ -22,26 +22,27 @@ function NavbarLinks({ links, className }) {
     <ul
       className={`flex gap-10 md:gap-4 items-center flex-col md:flex-row ${className}`}
     >
-      {links.map((link, index) => (
-        <li key={index}>
-          <Link to={link.href || "/"}>
-            <Button
-              onClick={() => scrollToSection(link.id)}
-              type="primary"
-              shape="round"
-              size="large"
-              icon={link.icon}
-              className={`${
-                location.pathname === link.href
-                  ? "!bg-black/5"
-                  : "!bg-transparent"
-              } hover:!bg-white/20 duration-300 capitalize`}
-            >
-              {link.title}
-            </Button>
-          </Link>
-        </li>
-      ))}
+      {links.map((link, index) => {
+        const isActive = location.pathname.startsWith(link.href); // Check if pathname starts with link.href
+        return (
+          <li key={index}>
+            <Link to={link.href || "/"}>
+              <Button
+                onClick={() => scrollToSection(link.id)}
+                type="primary"
+                shape="round"
+                size="large"
+                icon={link.icon}
+                className={`${
+                  isActive ? "!bg-black/5" : "!bg-transparent"
+                } hover:!bg-white/20 duration-300 capitalize`}
+              >
+                {link.title}
+              </Button>
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }
