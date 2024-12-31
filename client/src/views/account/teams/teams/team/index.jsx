@@ -123,6 +123,12 @@ export default function Team() {
       }
     }
   };
+  // Check if the contact info should be hidden
+  const contactHidden = () => {
+    const eventTime = new Date(date).getTime();
+    const currentTime = Date.now();
+    return currentTime > eventTime + 3600 * 1000; // One hour after the event
+  };
 
   return (
     <>
@@ -248,7 +254,9 @@ export default function Team() {
                 className="h-64 border-gray-200 hidden lg:block mx-4 xl:mx-8"
               />
               <div className="w-full lg:w-1/2 flex flex-col-reverse md:flex-col gap-4 xl:gap-6 mt-4 lg:mt-0">
-                {isCompleted && isMember && <ContactsModal members={members} />}
+                {!contactHidden() && isCompleted && isMember && (
+                  <ContactsModal members={members} />
+                )}
                 <div className="flex flex-col gap-2">
                   <span className="flex items-center gap-2 text-gray-500">
                     <UserOutlined className="text-[.8rem] pb-1" />
