@@ -229,5 +229,12 @@ textarea::placeholder,
 
 :where(.css-dev-only-do-not-override-14qglws).ant-select-dropdown
   .ant-select-item {
-  @apply rounded-xl;
+  @apply rounded-xl !important;
+}
+
+.ant-statistic-title {
+  @apply text-base text-gray-600 !important;
+}
+.ant-statistic-content-value {
+  @apply text-gray-700 font-medium !important;
 }

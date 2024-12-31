@@ -1,4 +1,4 @@
-import { Button, FloatButton, message } from "antd";
+import { Button, FloatButton } from "antd";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { HourglassOutlined, TrophyOutlined } from "@ant-design/icons";
 import HubRoutes from "../../../routes/HubRoutes";
@@ -6,10 +6,9 @@ import Footer from "../../../components/static/Footer";
 
 export default function Hub() {
   const location = useLocation(); // Import and use useLocation for current pathname
-  const [messageApi, contextHolder] = message.useMessage();
+
   return (
     <>
-      {contextHolder}
       <section className="min-h-screen container mx-auto px-4 my-10">
         <div className="flex gap-4">
           <Link to="/hub/upcoming">

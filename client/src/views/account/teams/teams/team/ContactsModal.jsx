@@ -99,5 +99,4 @@ ContactsModal.propTypes = {
       tel: PropTypes.string.isRequired,
     })
   ).isRequired,
-  ownerUsername: PropTypes.string.isRequired,
 };

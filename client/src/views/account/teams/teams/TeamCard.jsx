@@ -111,14 +111,15 @@ export default function TeamCard({
               </Link>
             ))}
           </Avatar.Group>
-
-          <Tag
-            bordered={false}
-            color="success"
-            className="w-fit rounded-full text-base"
-          >
-            -{rest} <span className="ml-1">Members</span>
-          </Tag>
+          {rest && (
+            <Tag
+              bordered={false}
+              color="success"
+              className="w-fit rounded-full text-base"
+            >
+              -{rest} <span className="ml-1">Members</span>
+            </Tag>
+          )}
 
           <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row justify-between gap-4">
             <div className="flex flex-col items-start gap-[.35rem]">

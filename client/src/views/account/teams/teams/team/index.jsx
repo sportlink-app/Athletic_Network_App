@@ -139,7 +139,7 @@ export default function Team() {
             <Spin size="large" className="green-spin mx-auto my-20" />
           </div>
         ) : (
-          <div className="flex flex-col gap-4 lg:gap-6">
+          <div className="flex flex-col gap-6 lg:gap-8">
             <div className="flex justify-between gap-4 ">
               <BackButton />
               {isDateDeprecated && isCompleted ? (

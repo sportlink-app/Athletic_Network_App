@@ -61,7 +61,6 @@ def create_team(current_user):
         "team_id": team.id,
     }), 201
 
-
 @team_blueprint.route('/teams', methods=['GET'])
 @token_required()  # Ensure the current user is authenticated
 def get_teams(current_user):
