@@ -1,28 +1,28 @@
 import { useEffect, useState, useCallback } from "react";
 import { Alert, Spin } from "antd";
-import EmptyData from "../../../../components/static/EmptyData";
-import Text from "../../../../components/static/Text";
-import TeamCard from "../../teams/teams/TeamCard";
-import upcomingStore from "../../../../store/team/upcomingStore";
+import EmptyData from "../../../components/static/EmptyData";
+import Text from "../../../components/static/Text";
+import TeamCard from "../teams/teams/TeamCard";
 import PropTypes from "prop-types";
+import hubStore from "../../../store/team/hubStore";
 
-export default function Activities({ title, filter }) {
+export default function Activities({ title, filter, message }) {
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  const { teams, fetchUpcoming } = upcomingStore();
+  const { teams, fetchHubData } = hubStore();
 
   const fetchTeamsData = useCallback(async () => {
     try {
-      await fetchUpcoming(filter);
+      await fetchHubData(filter);
       setIsDataFetched(true);
     } catch (error) {
       setError(true);
     } finally {
       setLoading(false);
     }
-  }, [fetchUpcoming, filter]);
+  }, [fetchHubData, filter]);
 
   useEffect(() => {
     fetchTeamsData();
@@ -49,7 +49,11 @@ export default function Activities({ title, filter }) {
 
   return (
     <div className="mb-2">
-      <Text type="title" text={title} className="mb-2" />
+      <Text
+        type="title"
+        text={title}
+        className="mb-2 !text-xl md:!text-2xl xl:!text-3xl"
+      />
 
       {isLoading && (
         <div className="w-full h-[70vh] flex justify-center items-center">
@@ -68,9 +72,7 @@ export default function Activities({ title, filter }) {
       {!isLoading &&
         !isError &&
         isDataFetched &&
-        filteredTeams.length === 0 && (
-          <EmptyData text="You don't have any scheduled activities" />
-        )}
+        filteredTeams.length === 0 && <EmptyData text={message} />}
     </div>
   );
 }
@@ -78,4 +80,5 @@ export default function Activities({ title, filter }) {
 Activities.propTypes = {
   title: PropTypes.string,
   filter: PropTypes.string,
+  message: PropTypes.string,
 };

@@ -2,12 +2,12 @@ import axios from "axios";
 import { create } from "zustand";
 import authStore from "../user/authStore";
 
-const upcomingStore = create((set) => ({
+const hubStore = create((set) => ({
   teams: {}, // Store data for each filter separately
 
-  fetchUpcoming: async (filter) => {
+  fetchHubData: async (filter) => {
     try {
-      const response = await axios.get(`/upcoming?filter=${filter}`, {
+      const response = await axios.get(`/hub?filter=${filter}`, {
         headers: {
           Authorization: `Bearer ${authStore.getState().token}`,
           "Content-Type": "application/json",
@@ -47,4 +47,4 @@ const upcomingStore = create((set) => ({
   },
 }));
 
-export default upcomingStore;
+export default hubStore;

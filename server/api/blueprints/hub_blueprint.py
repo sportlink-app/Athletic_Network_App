@@ -3,18 +3,18 @@ from ..models import Team
 from .user_blueprint import token_required
 from datetime import datetime, timedelta
 
-upcoming_blueprint = Blueprint('upcoming_blueprint', __name__)
+hub_blueprint = Blueprint('hub_blueprint', __name__)
 
-@upcoming_blueprint.route('/upcoming', methods=['GET'])
+@hub_blueprint.route('/hub', methods=['GET'])
 @token_required()  # Ensure the current user is authenticated
-def get_upcoming(current_user):
+def get_hub(current_user):
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
     current_datetime = datetime.utcnow()  # Use UTC for consistency
     start_of_week = current_datetime - timedelta(days=current_datetime.weekday())
     end_of_week = start_of_week + timedelta(days=6)
 
     # Get the filter option
-    filter_option = request.args.get('filter', 'this_week')  # Default to 'this_week'
+    filter_option = request.args.get('filter', 'finished')  # Default to 'this_week'
 
     # Base query to get teams where the current user is a member
     teams_query = Team.query.join(
@@ -22,15 +22,17 @@ def get_upcoming(current_user):
     ).filter(
         Team.isCompleted == True,
         Team.city == current_city,
-        Team.date >= current_datetime,  # Ensure the date is in the future or current
         Team.members.any(id=current_user.id)  # Ensure the current user is a member
     )
 
     # Apply the filter based on the `filter` query parameter
     if filter_option == 'this_week':
-        teams_query = teams_query.filter(Team.date >= start_of_week, Team.date <= end_of_week)
+        teams_query = teams_query.filter(Team.date >= current_datetime, Team.date >= start_of_week, Team.date <= end_of_week)
     elif filter_option == 'later':
         teams_query = teams_query.filter(Team.date > end_of_week)
+    elif filter_option == 'finished':
+        # Get completed teams with deprecated (past) dates
+        teams_query = teams_query.filter(Team.date < current_datetime)
 
     # Sort by date
     teams_query = teams_query.order_by(Team.date.desc())
@@ -61,7 +63,7 @@ def get_upcoming(current_user):
     }
     return jsonify(response), 200
 
-@upcoming_blueprint.route('/countdown', methods=['GET'])
+@hub_blueprint.route('/countdown', methods=['GET'])
 @token_required()  # Ensure the current user is authenticated
 def get_countdown(current_user):
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
@@ -81,7 +83,7 @@ def get_countdown(current_user):
 
     # Check if a team activity is found
     if not next_team:
-        return jsonify({"message": "No upcoming team activities found."}), 404
+        return jsonify({"message": "No hub team activities found."}), 404
 
     # Calculate the countdown (remaining time in milliseconds)
     deadline = int((next_team.date - current_datetime).total_seconds() * 1000)

@@ -43,7 +43,7 @@ export default function Hub() {
           </Link>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 xl:mt-8">
           <Routes>
             <Route path="/*" element={<HubRoutes />} />
           </Routes>
