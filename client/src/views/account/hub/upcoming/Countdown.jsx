@@ -79,7 +79,7 @@ export default function Countdown() {
       )}
 
       <div className="bg-light-cyan/25 px-8 py-6 rounded-xl border-[1px] border-cyan h-[99.71px] flex justify-center items-center w-fit">
-        {!isLoading && Countdown && message && (
+        {!isLoading && !Countdown && message && (
           <div className="flex gap-4">
             {isError ? (
               <CalendarOutlined className="text-base xl:text-lg" />
