@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Spin, Statistic } from "antd";
-import { AlertOutlined } from "@ant-design/icons";
+import { AlertOutlined, CalendarOutlined } from "@ant-design/icons";
 import { useStore } from "zustand"; // Ensure you use the Zustand hook
 import upcomingStore from "../../../../store/team/upcomingStore"; // Adjust the path based on your project structure
 
 export default function Countdown() {
   const [isLoading, setLoading] = useState(true); // Initially loading
+  const [isError, setError] = useState(false);
   const { Countdown } = Statistic;
 
   const { countdown, fetchCountdown } = useStore(upcomingStore); // Bind state and actions directly
@@ -17,7 +18,15 @@ export default function Countdown() {
     // Fetch the countdown data on component mount
     const fetchData = async () => {
       setLoading(true);
-      await fetchCountdown(); // Fetch data and update store state
+      try {
+        await fetchCountdown();
+      } catch (error) {
+        setMessage("You have no upcoming team activities");
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+      // Fetch data and update store state
       setLoading(false);
     };
 
@@ -63,28 +72,31 @@ export default function Countdown() {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading && (
         <div className="w-full h-[70vh] flex justify-center items-center">
           <Spin size="large" className="green-spin mx-auto my-20" />
         </div>
-      ) : (
-        <div className="bg-light-cyan/25 px-8 py-6 rounded-xl border-[1px] border-cyan h-[99.71px] flex justify-center items-center w-fit">
-          {message ? (
-            // Display the message when countdown reaches 0
-            <div className="flex gap-4">
-              <AlertOutlined className="text-base xl:text-lg" />
-              <span className="text-base text-slate-700">{message}</span>
-            </div>
-          ) : (
-            // Display the countdown when there is still time left
-            <Countdown
-              title="Time left until next activity"
-              value={deadline}
-              format={format}
-            />
-          )}
-        </div>
       )}
+
+      <div className="bg-light-cyan/25 px-8 py-6 rounded-xl border-[1px] border-cyan h-[99.71px] flex justify-center items-center w-fit">
+        {!isLoading && Countdown && message && (
+          <div className="flex gap-4">
+            {isError ? (
+              <CalendarOutlined className="text-base xl:text-lg" />
+            ) : (
+              <AlertOutlined className="text-base xl:text-lg" />
+            )}
+            <span className="text-base text-slate-700">{message}</span>
+          </div>
+        )}
+        {!isLoading && !isError && Countdown && (
+          <Countdown
+            title="Time left until next activity"
+            value={deadline}
+            format={format}
+          />
+        )}
+      </div>
     </>
   );
 }

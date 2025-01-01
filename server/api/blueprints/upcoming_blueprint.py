@@ -16,11 +16,14 @@ def get_upcoming(current_user):
     # Get the filter option
     filter_option = request.args.get('filter', 'this_week')  # Default to 'this_week'
 
-    # Base query
-    teams_query = Team.query.filter(
+    # Base query to get teams where the current user is a member
+    teams_query = Team.query.join(
+        Team.members  # Join with the 'members' relationship
+    ).filter(
         Team.isCompleted == True,
         Team.city == current_city,
-        Team.date >= current_datetime  # Ensure the date is in the future or current
+        Team.date >= current_datetime,  # Ensure the date is in the future or current
+        Team.members.any(id=current_user.id)  # Ensure the current user is a member
     )
 
     # Apply the filter based on the `filter` query parameter
@@ -56,7 +59,6 @@ def get_upcoming(current_user):
     response = {
         "teams": teams_data,
     }
-
     return jsonify(response), 200
 
 @upcoming_blueprint.route('/countdown', methods=['GET'])
@@ -65,12 +67,13 @@ def get_countdown(current_user):
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
     current_datetime = datetime.utcnow()  # Use UTC for consistency
 
-    # Query for the next team event in the user's city
+    # Query for the next team event in the user's city and that the user is a member of
     next_team = (
         Team.query.filter(
             Team.isCompleted == True,
             Team.city == current_city,
-            Team.date >= current_datetime  # Ensure the date is in the future or current
+            Team.date >= current_datetime,  # Ensure the date is in the future or current
+            Team.members.any(id=current_user.id)  # Ensure the user is a member of the team
         )
         .order_by(Team.date.asc())  # Order by the nearest date
         .first()  # Get the first match

@@ -39,9 +39,6 @@ const upcomingStore = create((set) => ({
       const { countdown, id, name } = response.data;
       const countdownData = { countdown, id, name };
 
-      // Log the response
-      console.log("Countdown Data:", countdownData);
-
       // Store the countdown data
       set({ countdown: countdownData });
     } catch (error) {

@@ -48,7 +48,7 @@ export default function Activities({ title, filter }) {
     ) : null;
 
   return (
-    <div>
+    <div className="mb-2">
       <Text type="title" text={title} className="mb-2" />
 
       {isLoading && (
@@ -68,7 +68,9 @@ export default function Activities({ title, filter }) {
       {!isLoading &&
         !isError &&
         isDataFetched &&
-        filteredTeams.length === 0 && <EmptyData text="No activity found!" />}
+        filteredTeams.length === 0 && (
+          <EmptyData text="You don't have any scheduled activities" />
+        )}
     </div>
   );
 }
