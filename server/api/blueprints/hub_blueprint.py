@@ -129,7 +129,7 @@ def get_progress(current_user):
         start_date = datetime.strptime(f'{year}-{week_number}-1', '%Y-%W-%w')
         end_date = start_date + timedelta(days=6)
         week_range = f'{start_date.strftime("%b %d")} - {end_date.strftime("%b %d")}'
-        data.append({'week': week_range, 'activites': times})
+        data.append({'week': week_range, 'activities': times})
 
     return jsonify(data), 200
 
