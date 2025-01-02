@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
-from ..models import Team
+from ..models import db, Team, Sport
 from .user_blueprint import token_required
 from datetime import datetime, timedelta
+from sqlalchemy import func, extract, cast, Date
 
 hub_blueprint = Blueprint('hub_blueprint', __name__)
 
@@ -66,6 +67,7 @@ def get_hub(current_user):
 @hub_blueprint.route('/countdown', methods=['GET'])
 @token_required()  # Ensure the current user is authenticated
 def get_countdown(current_user):
+
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
     current_datetime = datetime.utcnow()  # Use UTC for consistency
 
@@ -96,3 +98,64 @@ def get_countdown(current_user):
     }
 
     return jsonify(response), 200
+
+
+@hub_blueprint.route('/progress', methods=['GET'])
+@token_required()  # Ensure the current user is authenticated
+def get_progress(current_user):
+    # Get the current date
+    today = datetime.utcnow()
+    
+    # Determine the date 8 weeks ago
+    eight_weeks_ago = today - timedelta(weeks=8)
+
+    # Query to fetch completed teams grouped by week
+    results = db.session.query(
+        func.to_char(Team.created_at, 'IYYY-IW').label('week'),
+        func.count(Team.id).label('times')
+    ).filter(
+        Team.owner_id == current_user.id,
+        Team.isCompleted == True,  # Only count completed teams
+        Team.created_at >= eight_weeks_ago  # Limit to the last 8 weeks
+    ).group_by(
+        func.to_char(Team.created_at, 'IYYY-IW')
+    ).order_by('week').all()
+
+    # Format the data into the required structure
+    data = []
+    for week, times in results:
+        # Calculate the start and end dates of the week
+        year, week_number = map(int, week.split('-'))
+        start_date = datetime.strptime(f'{year}-{week_number}-1', '%Y-%W-%w')
+        end_date = start_date + timedelta(days=6)
+        week_range = f'{start_date.strftime("%b %d")} - {end_date.strftime("%b %d")}'
+        data.append({'week': week_range, 'activites': times})
+
+    return jsonify(data), 200
+
+
+@hub_blueprint.route('/engaging_sports', methods=['GET'])
+@token_required()  # Ensure the current user is authenticated
+def get_engaging_sports(current_user):
+    # Get the current date
+    today = datetime.utcnow()
+
+    # Query to fetch completed teams with sport names and their count
+    results = db.session.query(
+        Sport.name.label('sport_name'),
+        func.count(Team.id).label('times')
+    ).join(Team, Team.sport_id == Sport.id) \
+     .filter(
+         Team.owner_id == current_user.id,
+         Team.isCompleted == True  # Only count completed teams
+     ).group_by(Sport.name) \
+      .all()
+
+    # If no results, return an empty list
+    if not results:
+        return jsonify([]), 200
+
+    # Format the data into the required structure
+    engaging_sports = [{'sport': sport_name, 'times': times} for sport_name, times in results]
+
+    return jsonify(engaging_sports), 200
