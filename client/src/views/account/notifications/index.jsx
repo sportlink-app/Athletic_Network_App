@@ -117,7 +117,7 @@ export default function Notifications() {
             <Spin size="large" className="green-spin mx-auto my-20" />
           </div>
         ) : notification ? ( // Check if notification is not null
-          <div className="flex flex-col gap-4 lg:gap-6">
+          <div className="flex flex-col gap-4 ">
             <div className=" flex justify-between gap-4 ">
               <BackButton />
               <div
@@ -191,7 +191,7 @@ export default function Notifications() {
                   )}
               </div>
             </div>
-            <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize">
+            <h3 className="text-lg xl:text-2xl font-medium text-gray-900 capitalize mt-2">
               {getNotificationMessage(type, sender, teamName)}
             </h3>
             <div className="w-full mx-auto flex flex-col gap-4 ">

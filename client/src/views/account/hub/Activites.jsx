@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { Alert, Spin, Button } from "antd";
-import EmptyData from "../../../components/static/EmptyData";
 import Text from "../../../components/static/Text";
 import TeamCard from "../teams/teams/TeamCard";
 import PropTypes from "prop-types";
@@ -55,11 +54,7 @@ export default function Activities({ title, filter, message }) {
 
   return (
     <div className="mb-2">
-      <Text
-        type="title"
-        text={title}
-        className="mb-2 !text-xl md:!text-2xl xl:!text-3xl"
-      />
+      <Text text={title} className="mb-2 !text-xl md:!text-2xl xl:!text-3xl" />
 
       {isLoading && (
         <div className="w-full h-[70vh] flex justify-center items-center">
@@ -70,8 +65,8 @@ export default function Activities({ title, filter, message }) {
       {!isLoading && isError && (
         <Alert
           message="An unexpected error occurred, please refresh the page or try again later"
-          type="error"
-          className="rounded-xl p-3 my-10 xl:my-16 mx-auto w-fit"
+          type="warning"
+          className="rounded-xl px-5 py-4 my-16 w-fit "
           showIcon
         />
       )}
@@ -79,7 +74,12 @@ export default function Activities({ title, filter, message }) {
         !isError &&
         isDataFetched &&
         filteredTeams.length === 0 && (
-          <EmptyData text={message} className="!h-[30vh]" />
+          <Alert
+            message={message}
+            type="warning"
+            className="rounded-xl px-5 py-4 my-16 w-fit "
+            showIcon
+          />
         )}
 
       {/* Show buttons based on the state */}

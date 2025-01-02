@@ -16,10 +16,10 @@ export default function Hub() {
               type="primary"
               shape="round"
               size="large"
-              className={`w-fit capitalize !bg-cyan duration-300 ${
+              className={`w-fit capitalize  duration-300 font-medium ${
                 location.pathname === "/hub/upcoming"
-                  ? "brightness-[1.06]"
-                  : "hover:brightness-[1.06]"
+                  ? "!bg-cyan"
+                  : "!bg-transparent !text-cyan border-1 border-cyan hover:!text-white hover:!bg-cyan"
               } `}
               icon={<HourglassOutlined size={16} />}
             >
@@ -33,8 +33,8 @@ export default function Hub() {
               size="large"
               className={`w-fit capitalize !bg-cyan duration-300 ${
                 location.pathname === "/hub/achievements"
-                  ? "brightness-[1.06]"
-                  : "hover:brightness-[1.06]"
+                  ? "!bg-cyan"
+                  : "!bg-transparent !text-cyan border-1 border-cyan hover:!text-white hover:!bg-cyan"
               } `}
               icon={<TrophyOutlined size={16} />}
             >

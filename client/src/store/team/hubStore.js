@@ -45,6 +45,38 @@ const hubStore = create((set) => ({
       throw new Error(error);
     }
   },
+
+  progressData: [],
+  getProgress: async () => {
+    try {
+      const response = await axios.get("/progress", {
+        headers: {
+          Authorization: `Bearer ${authStore.getState().token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      set({ progressData: response.data });
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  engagingSports: [],
+  getEngagingSports: async () => {
+    try {
+      const response = await axios.get("/engaging_sports", {
+        headers: {
+          Authorization: `Bearer ${authStore.getState().token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      set({ engagingSports: response.data });
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 }));
 
 export default hubStore;

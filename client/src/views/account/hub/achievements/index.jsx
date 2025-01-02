@@ -1,5 +1,5 @@
 import Activities from "../Activites";
-import Chart from "./Chart";
+import Charts from "./Charts";
 
 export default function Achievements() {
   return (
@@ -9,7 +9,7 @@ export default function Achievements() {
         filter="finished"
         message="You haven't completed any activities yet"
       />
-      <Chart />
+      <Charts />
     </div>
   );
 }
