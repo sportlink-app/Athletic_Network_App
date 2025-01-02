@@ -7,7 +7,7 @@ from sqlalchemy import func, extract, cast, Date
 hub_blueprint = Blueprint('hub_blueprint', __name__)
 
 @hub_blueprint.route('/hub', methods=['GET'])
-@token_required()  # Ensure the current user is authenticated
+@token_required()
 def get_hub(current_user):
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
     current_datetime = datetime.utcnow()  # Use UTC for consistency
@@ -65,7 +65,7 @@ def get_hub(current_user):
     return jsonify(response), 200
 
 @hub_blueprint.route('/countdown', methods=['GET'])
-@token_required()  # Ensure the current user is authenticated
+@token_required()
 def get_countdown(current_user):
 
     current_city = current_user.city  # Assuming current_user has a 'city' attribute
@@ -101,7 +101,7 @@ def get_countdown(current_user):
 
 
 @hub_blueprint.route('/progress', methods=['GET'])
-@token_required()  # Ensure the current user is authenticated
+@token_required()
 def get_progress(current_user):
     # Get the current date
     today = datetime.utcnow()
@@ -135,7 +135,7 @@ def get_progress(current_user):
 
 
 @hub_blueprint.route('/engaging_sports', methods=['GET'])
-@token_required()  # Ensure the current user is authenticated
+@token_required()
 def get_engaging_sports(current_user):
     # Get the current date
     today = datetime.utcnow()

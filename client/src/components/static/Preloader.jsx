@@ -1,3 +1,4 @@
+// Full-screen container to center the loader
 const Preloader = () => {
   return (
     <div className="absolute top-0 left-0 bg-gradient-to-r from-cyan to-green w-full h-screen flex justify-center items-center ">

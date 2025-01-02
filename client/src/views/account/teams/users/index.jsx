@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Footer from "../../../../components/static/Footer";
 import { Button, Pagination, message } from "antd";
-import UsernameFilter from "./UsernameFilter"; // Updated import
+import UsernameFilter from "./UsernameFilter";
 import UserCard from "./UserCard";
 import usersStore from "../../../../store/user/usersStore";
 import EmptyData from "../../../../components/static/EmptyData";

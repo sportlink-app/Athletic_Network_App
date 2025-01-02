@@ -1,6 +1,6 @@
 import { create } from "zustand";
 const mainStore = create((set) => ({
-  // ************************** navbar toggle *************************
+  // navbar toggle
   isNavbarOpen: false,
   setIsNavbarOpen: () => {
     const { isNavbarOpen } = mainStore.getState();

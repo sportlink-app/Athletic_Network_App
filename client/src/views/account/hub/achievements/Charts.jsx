@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from "react";
 import { Pie } from "@ant-design/plots";
 import { isEqual } from "lodash-es";
 import PropTypes from "prop-types";
-import { Alert } from "antd"; // Assuming you're using Ant Design for Alert
+import { Alert } from "antd";
 import hubStore from "../../../../store/team/hubStore";
 
 export default function Charts() {

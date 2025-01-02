@@ -10,7 +10,7 @@ import { Button } from "antd";
 function Logout() {
   const navigate = useNavigate();
   const { setAuthState, setProfileCompletedState } = authStore();
-  const { clearUserInfo } = userInfoStore(); // Get the clearUserInfo method
+  const { clearUserInfo } = userInfoStore();
   const { closeNavbar } = mainStore();
 
   const handleLogout = () => {

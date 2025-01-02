@@ -4,37 +4,39 @@ import { getRandomColor } from "../utils/randomColor";
 import { useState, useEffect } from "react";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 
-// Simple hash function to generate a number from a string
+// Simple hash function to generate a numeric hash from a string
 const hashCode = (str) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    hash = str.charCodeAt(i) + ((hash << 5) - hash); // Efficient hash computation
   }
   return hash;
 };
 
-// Function to get a random element based on a hash
-const getElementByHash = (arr, hash) => arr[Math.abs(hash) % arr.length];
+// Utility function to select an array element based on hash
+const getElementByHash = (arr, hash) => arr[Math.abs(hash) % arr.length]; // Ensures index is within bounds
 
 function ProfileAvatar({
-  username,
-  gender,
-  size = 64,
-  dot = false,
-  offset = [-8, 50],
-  count,
-  color,
-  className = "",
+  username, // Required: Unique identifier for user
+  gender, // Required: Used to determine hair style
+  size = 64, // Optional: Avatar size, default is 64px
+  dot = false, // Optional: Whether to show a status dot
+  offset = [-8, 50], // Optional: Badge offset
+  count, // Optional: Badge count
+  color, // Optional: Badge color
+  className = "", // Optional: Additional CSS classes
 }) {
-  const [loading, setLoading] = useState(true);
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [loading, setLoading] = useState(true); // Loading state for avatar
+  const [avatarUrl, setAvatarUrl] = useState(""); // Stores generated avatar URL
 
+  // Predefined hair and mouth styles for avatars
   const maleHair = ["dougFunny", "dannyPhantom", "fonze", "mrClean"];
   const femaleHair = ["pixie", "full"];
   const mouth = ["laughing", "pucker", "smile", "smirk"];
 
-  const userHash = hashCode(username);
+  const userHash = hashCode(username); // Generate a unique hash for the username
 
+  // Determine hair and mouth styles based on user hash and gender
   const hairStyle =
     gender === "female"
       ? getElementByHash(femaleHair, userHash)
@@ -42,29 +44,33 @@ function ProfileAvatar({
 
   const mouthStyle = getElementByHash(mouth, userHash);
 
+  // Generate a background color based on username and gender
   const bgColor = getRandomColor(username, gender).replace("#", "");
 
+  // Fetch avatar URL when dependencies change
   useEffect(() => {
     const getAvatarUrl = (username, hairStyle, mouthStyle) => {
       return `https://api.dicebear.com/9.x/micah/svg?seed=${username}&hair=${hairStyle}&backgroundColor=${bgColor}&mouth=${mouthStyle}&facialHairProbability=0`;
     };
-    // Simulate a loading delay for fetching avatar URL
+
+    // Simulate a loading delay for avatar generation
     const url = getAvatarUrl(username, hairStyle, mouthStyle);
     setTimeout(() => {
-      setAvatarUrl(url);
-      setLoading(false);
-    }, 1000); // Simulate a 1-second loading delay
+      setAvatarUrl(url); // Set generated avatar URL
+      setLoading(false); // Update loading state
+    }, 1000); // Simulated delay (1 second)
   }, [username, hairStyle, mouthStyle, bgColor]);
 
   return (
     <Badge
-      count={count}
-      dot={dot}
-      color={color}
-      offset={offset}
-      className={`${className} rounded-full `}
+      count={count} // Display badge count, if provided
+      dot={dot} // Show a dot badge if true
+      color={color} // Set badge color
+      offset={offset} // Set badge offset
+      className={`${className} rounded-full`} // Additional styles
     >
       {loading ? (
+        // Show skeleton avatar while loading
         <SkeletonAvatar
           size={size}
           active
@@ -72,6 +78,7 @@ function ProfileAvatar({
           className="bg-white rounded-full overflow-hidden"
         />
       ) : (
+        // Show actual avatar once loaded
         <Avatar
           src={avatarUrl}
           size={size}
@@ -82,15 +89,16 @@ function ProfileAvatar({
   );
 }
 
+// Define component prop types for validation
 ProfileAvatar.propTypes = {
-  username: PropTypes.string.isRequired,
-  gender: PropTypes.string.isRequired,
-  size: PropTypes.number,
-  dot: PropTypes.bool,
-  count: PropTypes.number,
-  color: PropTypes.number,
-  offset: PropTypes.array,
-  className: PropTypes.string,
+  username: PropTypes.string.isRequired, // Username is mandatory
+  gender: PropTypes.string.isRequired, // Gender is mandatory
+  size: PropTypes.number, // Optional avatar size
+  dot: PropTypes.bool, // Optional badge dot
+  count: PropTypes.number, // Optional badge count
+  color: PropTypes.number, // Optional badge color
+  offset: PropTypes.array, // Optional badge offset
+  className: PropTypes.string, // Optional additional CSS classes
 };
 
 export default ProfileAvatar;

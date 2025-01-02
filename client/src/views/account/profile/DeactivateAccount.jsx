@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function DeactivateAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const deleteProfile = userInfoStore((state) => state.deleteProfile); // Get the deleteProfile function from the store
+  const deleteProfile = userInfoStore((state) => state.deleteProfile);
 
   const showModal = () => {
     setIsModalOpen(true);

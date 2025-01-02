@@ -30,7 +30,7 @@ function SignUpForm() {
 
     try {
       setLoading(true);
-      await signUp(); // Call signUp function from authStore
+      await signUp();
       navigate("/account/complete-profile");
     } catch (error) {
       setErrorMessage(error.message || "An unexpected error occurred");

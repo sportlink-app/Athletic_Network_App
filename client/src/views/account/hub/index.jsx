@@ -5,7 +5,7 @@ import HubRoutes from "../../../routes/HubRoutes";
 import Footer from "../../../components/static/Footer";
 
 export default function Hub() {
-  const location = useLocation(); // Import and use useLocation for current pathname
+  const location = useLocation();
 
   return (
     <>

@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Myusers  # Changed import to relative import
+from ..models import db, Myusers
 from werkzeug.security import generate_password_hash
 import jwt
 import datetime
-from ..utils.email_utils import send_reset_email  # Adjusted import path
-from ..config import Config  # Adjusted import path
+from ..utils.email_utils import send_reset_email
+from ..config import Config
 
 SECRET_KEY = Config.SECRET_KEY
 password_blueprint = Blueprint('password_blueprint', __name__)

@@ -23,7 +23,7 @@ const createTeamStore = create((set, get) => ({
     set((state) => ({
       teamForm: {
         ...state.teamForm,
-        location, // This correctly updates the location
+        location, // Updates the location field in the form
       },
     })),
 
@@ -31,13 +31,14 @@ const createTeamStore = create((set, get) => ({
     set((state) => ({
       teamForm: {
         ...state.teamForm,
-        ...formData,
+        ...formData, // Updates the team form with new data
       },
     })),
 
   clearFields: () =>
     set({
       teamForm: {
+        // Resets all form fields to their initial values
         name: "",
         sportId: "",
         membersCount: "",
@@ -46,6 +47,7 @@ const createTeamStore = create((set, get) => ({
         location: "",
       },
       errors: {
+        // Resets all error messages
         membersCountError: "",
         dateError: "",
         sportError: "",
@@ -58,6 +60,7 @@ const createTeamStore = create((set, get) => ({
 
     setTeamForm({ [name]: value });
 
+    // Validate members count range
     if (name === "membersCount") {
       const membersCount = parseInt(value, 10);
       if (membersCount > 22 || membersCount < 2) {
@@ -77,7 +80,7 @@ const createTeamStore = create((set, get) => ({
       }
     }
 
-    // Validate the date
+    // Validate date to ensure it's not in the past
     if (name === "date") {
       const selectedDate = dayjs(value);
       if (selectedDate.isBefore(dayjs(), "day")) {
@@ -103,6 +106,7 @@ const createTeamStore = create((set, get) => ({
       .filter((sport) => sport.name.toLowerCase().includes(text.toLowerCase()))
       .map((sport) => ({ value: sport.name, id: sport.id }));
 
+    // Show error if no valid sport found
     if (!filteredOptions.length) {
       set({
         errors: {
@@ -127,14 +131,14 @@ const createTeamStore = create((set, get) => ({
     const { name, sportId, membersCount, description, date, location } =
       teamForm;
 
+    // Check if any field is empty or has errors
     const isFieldEmpty =
       !name || !sportId || !membersCount || !description || !date || !location;
 
-    // Check if any error messages are set
+    // Return true if the form is invalid (either empty or errors present)
     const hasErrors =
       errors.sportError || errors.membersCountError || errors.dateError;
 
-    // Button should be disabled if any field is empty or there are errors
     return isFieldEmpty || hasErrors;
   },
 
@@ -143,6 +147,7 @@ const createTeamStore = create((set, get) => ({
       get().teamForm;
 
     try {
+      // Create team via API call
       const response = await axios.post(
         "/team",
         {
@@ -155,15 +160,16 @@ const createTeamStore = create((set, get) => ({
         },
         {
           headers: {
-            Authorization: `Bearer ${authStore.getState().token}`,
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${authStore.getState().token}`, // Pass token for auth
+            "Content-Type": "application/json", // Specify content type for the request
           },
         }
       );
-      set({ teamId: response.data.team_id });
+      set({ teamId: response.data.team_id }); // Save the team ID in state
 
-      get().clearFields();
+      get().clearFields(); // Clear the form fields after successful submission
     } catch (error) {
+      // Handle different error responses from the API
       if (error.response && error.response.status === 404) {
         throw new Error("Team name already exists");
       } else if (error.response && error.response.status === 400) {

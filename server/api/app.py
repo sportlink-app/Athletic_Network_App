@@ -15,6 +15,12 @@ from .utils.socketio import socketio
 from .utils.email.email_utils import mail, configure_email
 from .blueprints.hub_blueprint import hub_blueprint
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 migrate = Migrate()
 
 def create_app():
@@ -28,7 +34,9 @@ def create_app():
     socketio.init_app(app)
     mail.init_app(app)
 
-    CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
+    CLIENT_URL = os.getenv('CLIENT_URL')
+    
+    CORS(app, origins=[CLIENT_URL], supports_credentials=True)
 
     # Register blueprints
     app.register_blueprint(home_blueprint)

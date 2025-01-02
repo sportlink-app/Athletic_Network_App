@@ -34,7 +34,7 @@ function EditProfile() {
         footer={null}
         style={{ borderRadius: "100px", textAlign: "center" }}
       >
-        <EditProfileForm onSuccess={handleSuccess} /> {/* Pass handleSuccess */}
+        <EditProfileForm onSuccess={handleSuccess} />
       </Modal>
     </>
   );

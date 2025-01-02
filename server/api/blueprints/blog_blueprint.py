@@ -12,7 +12,7 @@ def create_blog(current_user):
         data = request.get_json()
         title = data.get('title')
         content = data.get('content')
-        sport_id = data.get('sport_id')  # Change to sport_id
+        sport_id = data.get('sport_id')
 
         # Validate data
         if not title or not content or not sport_id:

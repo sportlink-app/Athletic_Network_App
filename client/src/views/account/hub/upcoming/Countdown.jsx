@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { Spin, Statistic } from "antd";
 import { AlertOutlined, CalendarOutlined } from "@ant-design/icons";
-import { useStore } from "zustand"; // Ensure you use the Zustand hook
-import upcomingStore from "../../../../store/team/hubStore"; // Adjust the path based on your project structure
-
+import { useStore } from "zustand";
+import upcomingStore from "../../../../store/team/hubStore";
 export default function Countdown() {
   const [isLoading, setLoading] = useState(true); // Initially loading
   const [isError, setError] = useState(false);

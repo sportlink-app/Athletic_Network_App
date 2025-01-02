@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+// 'Container' component wraps content with padding, positioning, and text centering.
 const Container = ({ children, className = "" }) => {
   return (
     <div
@@ -10,6 +11,7 @@ const Container = ({ children, className = "" }) => {
   );
 };
 
+// Prop validation for 'children' and 'className'
 Container.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,

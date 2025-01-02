@@ -1,4 +1,4 @@
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 import Container from "../../components/static/Container";
 import Tags from "../../components/static/Tags";
 import Text from "../../components/static/Text";

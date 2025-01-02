@@ -36,7 +36,7 @@ def configure_email(app):
 def send_email(subject, recipients, template_name, **template_context):
     try:
         # Add client_url to the context
-        template_context['client_url'] = os.getenv('VITE_API_URL')
+        template_context['client_url'] = os.getenv('CLIENT_URL')
 
         # Provide the absolute path to the template
         template_path = os.path.join(os.getcwd(), 'api/utils/email/templates', template_name)

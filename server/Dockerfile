@@ -1,4 +1,3 @@
-
 # Dockerfile for Flask
 FROM python:3.9
 
@@ -11,7 +10,7 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --default-timeout=200 -r requirements.txt
 
-# Copy the rest of your application code
+# Copy the rest of your application code, including the .env file
 COPY . .
 
 # Command to run your Flask app
