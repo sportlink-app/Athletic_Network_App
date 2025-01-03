@@ -33,6 +33,7 @@ function DeactivateAccount() {
       setIsModalOpen(false);
 
       Cookies.remove("token");
+      localStorage.removeItem("user-info");
       // Update auth store state
       setAuthState(false);
       navigate("/");

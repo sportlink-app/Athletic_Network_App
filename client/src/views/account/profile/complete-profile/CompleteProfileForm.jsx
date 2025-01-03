@@ -279,7 +279,7 @@ function CompleteProfileForm() {
   const telInput = (
     <li className="flex flex-col gap-2 min-w-40">
       <label className="ml-2 font-medium leading-6 text-gray-900 capitalize">
-        Tel
+        Phone
       </label>
       <Input
         addonBefore={selectedCode || ""} // Dynamically set the phone code or clear it
@@ -287,7 +287,6 @@ function CompleteProfileForm() {
         value={updateForm.tel}
         onChange={handleUpdateFieldChange}
         status={errors.tel ? "error" : ""}
-        maxLength={12}
         type="number"
         placeholder="Your phone number"
         size="large"

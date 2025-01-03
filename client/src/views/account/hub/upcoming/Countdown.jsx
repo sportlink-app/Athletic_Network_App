@@ -10,7 +10,7 @@ export default function Countdown() {
 
   const { countdown, fetchCountdown } = useStore(upcomingStore); // Bind state and actions directly
   const [deadline, setDeadline] = useState(null); // Deadline in milliseconds
-  const [message, setMessage] = useState(""); // To display message when countdown ends
+  const [message, setMessage] = useState(false); // To display message when countdown ends
   const [format, setFormat] = useState(""); // To dynamically manage countdown format
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Countdown() {
               <span className="text-base text-slate-700">{message}</span>
             </div>
           )}
-          {!isLoading && !isError && deadline && (
+          {!isLoading && !isError && deadline && !message && (
             <Countdown
               title="Time left until next activity"
               value={deadline}

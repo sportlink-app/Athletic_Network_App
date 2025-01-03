@@ -54,7 +54,7 @@ function ProfileContent({ bio, sports, email, city, tel }) {
             icon={<EnvironmentOutlined className="text-sm pt-[3px]" />}
           />
           <DataField
-            title="Tel"
+            title="Phone"
             content={tel}
             icon={<PhoneOutlined className="text-sm pt-[3px]" />}
           />

@@ -84,7 +84,6 @@ const userInfoStore = create(
             tel: "",
             availability: false,
           });
-          userInfoStore.persist.clearStorage();
         } catch (error) {
           console.error("Error deleting profile:", error.message);
         }

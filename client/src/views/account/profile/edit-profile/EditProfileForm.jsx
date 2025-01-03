@@ -182,7 +182,6 @@ function EditProfileForm({ onSuccess }) {
         value={editForm.tel}
         onChange={handleUpdateFieldChange}
         status={errors.tel ? "error" : ""}
-        maxLength={12}
         placeholder="Your phone number"
         size="large"
         style={{ borderRadius: "50px" }}
