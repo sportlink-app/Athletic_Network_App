@@ -4,7 +4,7 @@ import Testimonials from "./Testimonials";
 import Discover from "./Discover";
 import Footer from "../../components/static/Footer";
 import { FloatButton } from "antd";
-
+import Newsletter from "./Newsletter";
 import Sports from "./Sports";
 
 export default function LandingPage() {
@@ -60,7 +60,11 @@ export default function LandingPage() {
         listAnimationVariables={listAnimationVariables}
         itemAnimationVariables={itemAnimationVariables}
       />
-
+      <Newsletter
+        titleAnimation={titleAnimation}
+        listAnimationVariables={listAnimationVariables}
+        itemAnimationVariables={itemAnimationVariables}
+      />
       <Footer />
       <FloatButton.BackTop duration={100} />
     </>
