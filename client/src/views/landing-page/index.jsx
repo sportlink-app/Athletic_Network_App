@@ -5,6 +5,7 @@ import Discover from "./Discover";
 import Footer from "../../components/static/Footer";
 import { FloatButton } from "antd";
 import Newsletter from "./Newsletter";
+
 import Sports from "./Sports";
 
 export default function LandingPage() {
