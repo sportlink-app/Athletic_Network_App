@@ -2,7 +2,7 @@
 
 #### Visit the web app [here](https://sportlink.onrender.com/).
 
-![SportLink Web App Screenshot](https://res.cloudinary.com/depztpide/image/upload/v1735848206/Screenshot_2568-01-02_at_21.02.39_ysf42g.png)
+![SportLink Web App GIF](https://res.cloudinary.com/depztpide/image/upload/v1736025194/ScreenRecording2568-01-04at22.02.52-ezgif.com-video-to-gif-converter_swmdgd.gif)
 
 ## 💡 Overview
 
