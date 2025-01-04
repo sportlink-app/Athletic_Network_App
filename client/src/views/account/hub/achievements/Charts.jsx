@@ -8,36 +8,9 @@ import { Alert } from "antd";
 import hubStore from "../../../../store/team/hubStore";
 
 export default function Charts() {
-  const { engagingSports, getProgress, getEngagingSports } =
+  const { progressData, engagingSports, getProgress, getEngagingSports } =
     hubStore();
   const [loading, setLoading] = useState(true);
-  const progressData = [
-    {
-        "activities": 3,
-        "week": "Dec 23 - Dec 29"
-    },
-    {
-        "activities": 4,
-        "week": "Dec 30 - Jan 05"
-    },
-    {
-        "activities": 2,
-        "week": "Jan 06 - Jan 12"
-    },
-    {
-        "activities": 5,
-        "week": "Jan 13 - Jan 19"
-    },
-    {
-        "activities": 4,
-        "week": "Jan 20 - Jan 26"
-    },
-    {
-        "activities": 3,
-        "week": "Jan 27 - Feb 02"
-    }
-]
-
 
   // Trigger API calls when the component is mounted
   useEffect(() => {
