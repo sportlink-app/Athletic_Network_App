@@ -1,14 +1,12 @@
 # SportLink: The Ultimate Sports Networking Platform
 
-SportLink is a dynamic web app that connects sports enthusiasts, enabling them to form teams, track progress, and stay updated on activities. With personalized profiles and intelligent matchmaking based on interests and location, it fosters seamless collaboration and engagement.
-
 #### Visit the web app [here](https://sportlink.onrender.com/).
 
 ![SportLink Web App Screenshot](https://res.cloudinary.com/depztpide/image/upload/v1735848206/Screenshot_2568-01-02_at_21.02.39_ysf42g.png)
 
 ## 💡 Overview
 
-SportLink is a dynamic web application tailored for sports enthusiasts to connect, collaborate, and optimize their athletic experience. This interactive platform enables users to create personalized profiles, connect with like-minded individuals, join or form teams, and track their progress in real-time. With intelligent matchmaking based on sports interests and location, users can easily find others to engage with, ensuring a seamless and enjoyable experience for all.
+SportLink is a dynamic web app for sports enthusiasts to connect, collaborate, and elevate their athletic experience intelligent matchmaking based on interests and location. Users can create profiles, organize activities, join or form teams, and track progress in real-time.
 
 ---
 
