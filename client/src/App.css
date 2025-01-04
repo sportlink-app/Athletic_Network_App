@@ -92,11 +92,11 @@ textarea::placeholder,
   border-radius: 18px !important;
 }
 .input-tel :where(.css-dev-only-do-not-override-14qglws).ant-input-lg {
-  @apply rounded-r-full;
+  @apply rounded-r-full !important;
 }
 :where(.css-dev-only-do-not-override-14qglws).ant-input-group-wrapper-lg
   .ant-input-group-addon {
-  @apply rounded-l-full;
+  @apply rounded-l-full !important;
 }
 
 .ant-pagination .ant-pagination-item-active a,
@@ -211,7 +211,7 @@ textarea::placeholder,
   @apply text-gray-500 text-sm !important;
 }
 .ant-select-selector {
-  @apply border-2 border-gray-300;
+  @apply border-2 border-gray-300 !important;
 }
 :where(.css-dev-only-do-not-override-14qglws).ant-select-outlined:not(
     .ant-select-customize-input
