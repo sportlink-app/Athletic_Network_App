@@ -121,7 +121,7 @@ Ensure you have:
 
 ```bash
   cd client
-  npm run dev
+  npm install
 ```
 
 #### 4. Start the Client
