@@ -4,22 +4,14 @@ services:
   server:
     build: ./server
     container_name: flask-server
-    env_file: ./server/.env
+    env_file: ./server/.env  # Load the environment variables from the .env file
     volumes:
       - ./server:/app
     ports:
       - "5001:5000"
     depends_on:
       - db
-
-  client:
-    build: ./client
-    container_name: react-client
-    volumes:
-      - ./client:/app
-      - /app/node_modules
-    ports:
-      - "5173:3000"
+    # No need to specify the environment variables again since they are loaded from .env
 
   db:
     image: postgres:13
