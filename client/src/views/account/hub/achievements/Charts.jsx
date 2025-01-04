@@ -8,9 +8,36 @@ import { Alert } from "antd";
 import hubStore from "../../../../store/team/hubStore";
 
 export default function Charts() {
-  const { progressData, engagingSports, getProgress, getEngagingSports } =
+  const { engagingSports, getProgress, getEngagingSports } =
     hubStore();
   const [loading, setLoading] = useState(true);
+  const progressData = [
+    {
+        "activities": 3,
+        "week": "Dec 23 - Dec 29"
+    },
+    {
+        "activities": 4,
+        "week": "Dec 30 - Jan 05"
+    },
+    {
+        "activities": 2,
+        "week": "Jan 06 - Jan 12"
+    },
+    {
+        "activities": 5,
+        "week": "Jan 13 - Jan 19"
+    },
+    {
+        "activities": 4,
+        "week": "Jan 20 - Jan 26"
+    },
+    {
+        "activities": 3,
+        "week": "Jan 27 - Feb 02"
+    }
+]
+
 
   // Trigger API calls when the component is mounted
   useEffect(() => {
@@ -74,10 +101,6 @@ export default function Charts() {
     data: PropTypes.array.isRequired,
     onReady: PropTypes.func.isRequired,
   };
-
-  if (loading) {
-    return <div>Loading...</div>; // You can show a loading spinner here
-  }
 
   return (
     <div className="flex flex-col gap-6 lg:gap-10 xl:gap-16 2xl:gap-20 lg:flex-row lg:justify-between">
